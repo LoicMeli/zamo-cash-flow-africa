@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Send, QrCode, Wallet, X } from "lucide-react";
 import { useLanguage } from "@/providers/LanguageProvider";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const FloatingActionButton = () => {

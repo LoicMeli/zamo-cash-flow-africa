@@ -17,6 +17,8 @@ const Profile = () => {
   if (!user) return null;
 
   const userInitial = user?.name ? user.name[0].toUpperCase() : "Z";
+  const userPhone = user?.phone || user?.phoneNumber || "";
+  const userEmail = user?.email || "";
 
   return (
     <div className="space-y-6 py-2">
@@ -31,7 +33,7 @@ const Profile = () => {
           )}
         </Avatar>
         <h1 className="text-xl font-bold">{user.name}</h1>
-        <p className="text-muted-foreground">{user.phone}</p>
+        <p className="text-muted-foreground">{userPhone}</p>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
@@ -50,12 +52,12 @@ const Profile = () => {
                 <Separator />
                 <div className="flex justify-between py-2">
                   <span className="text-muted-foreground">Phone Number</span>
-                  <span className="font-medium">{user.phone}</span>
+                  <span className="font-medium">{userPhone}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between py-2">
                   <span className="text-muted-foreground">Email</span>
-                  <span className="font-medium">{user.email || "Not set"}</span>
+                  <span className="font-medium">{userEmail || "Not set"}</span>
                 </div>
               </div>
             </CardContent>
