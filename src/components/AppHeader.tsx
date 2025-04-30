@@ -5,6 +5,7 @@ import { useLanguage } from "@/providers/LanguageProvider";
 import ZamoLogo from "./ZamoLogo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
+import AppMenu from "./AppMenu";
 
 const AppHeader = () => {
   const { user } = useAuth();
@@ -23,7 +24,9 @@ const AppHeader = () => {
             <span className="absolute top-1 right-1 w-2 h-2 bg-primary-blue rounded-full"></span>
           </button>
           
-          <Link to="/settings">
+          <AppMenu />
+          
+          <Link to="/profile">
             <Avatar className="h-9 w-9 border-2 border-primary-blue/20">
               {user?.photoURL ? (
                 <img src={user.photoURL} alt={user.name || "User"} />

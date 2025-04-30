@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import BottomNavigation from "@/components/BottomNavigation";
 import AppHeader from "@/components/AppHeader";
+import FloatingActionButton from "@/components/FloatingActionButton";
 
 const AppLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -29,6 +30,7 @@ const AppLayout = () => {
           <Outlet />
         </div>
       </main>
+      <FloatingActionButton />
       <BottomNavigation />
     </div>
   );

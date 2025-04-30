@@ -15,6 +15,7 @@ import Login from "./pages/auth/Login";
 import OTPVerification from "./pages/auth/OTPVerification";
 import SetupPIN from "./pages/auth/SetupPIN";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import SendMoney from "./pages/SendMoney";
 import ScanQR from "./pages/ScanQR";
 import FindAgent from "./pages/FindAgent";
@@ -48,6 +49,7 @@ const App = () => (
                 </Route>
                 <Route element={<AppLayout />}>
                   <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/send" element={<SendMoney />} />
                   <Route path="/scan" element={<ScanQR />} />
                   <Route path="/agents" element={<FindAgent />} />
