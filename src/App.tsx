@@ -21,6 +21,9 @@ import FindAgent from "./pages/FindAgent";
 import FamilyWallet from "./pages/FamilyWallet";
 import Savings from "./pages/Savings";
 import Settings from "./pages/Settings";
+import GroupSavings from "./pages/GroupSavings";
+import FamilyBills from "./pages/FamilyBills";
+import FinancialCoach from "./pages/FinancialCoach";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -50,6 +53,9 @@ const App = () => (
                   <Route path="/agents" element={<FindAgent />} />
                   <Route path="/family" element={<FamilyWallet />} />
                   <Route path="/savings" element={<Savings />} />
+                  <Route path="/group-savings" element={<GroupSavings />} />
+                  <Route path="/family-bills" element={<FamilyBills />} />
+                  <Route path="/financial-coach" element={<FinancialCoach />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

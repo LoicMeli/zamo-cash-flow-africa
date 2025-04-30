@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     common: {
@@ -21,6 +20,7 @@ export const translations = {
       savings: "Savings",
       settings: "Settings",
       balance: "Main Balance",
+      more: "More"
     },
     auth: {
       login: "Login",
@@ -92,6 +92,14 @@ export const translations = {
       member: "Member",
       balance: "Family Balance",
       transactions: "Wallet Activity",
+      bills: {
+        title: "Family Bills",
+        add: "Add New Bill",
+        contribute: "Contribute",
+        pay: "Pay Bill",
+        dueDate: "Due Date",
+        contributors: "Contributors"
+      }
     },
     savings: {
       title: "Smart Savings",
@@ -103,6 +111,13 @@ export const translations = {
       progress: "Progress",
       nextPayout: "Next payout",
       invite: "Invite Members",
+      tontine: {
+        title: "Group Savings",
+        nextRecipient: "Next Recipient",
+        createNew: "Create Tontine",
+        join: "Join Existing Tontine",
+        frequency: "Contribution Frequency"
+      }
     },
     settings: {
       title: "Settings",
@@ -123,6 +138,19 @@ export const translations = {
       changePinInstructions: "Enter your current PIN",
       newPin: "New PIN",
       confirmNewPin: "Confirm new PIN",
+    },
+    coach: {
+      title: "Financial Coach",
+      placeholder: "Ask your question...",
+      greeting: "Hello! I'm Zamo Coach, your financial advisor. How can I help you today?",
+      proverbs: [
+        "A penny saved is a penny earned.",
+        "Money is a good servant but a bad master.",
+        "Even the tallest tree starts as a small seed.",
+        "Don't put all your eggs in one basket.",
+        "Little by little, the bird builds its nest.",
+        "You cannot drink the water and forget the calabash."
+      ]
     }
   },
   fr: {
@@ -146,6 +174,7 @@ export const translations = {
       savings: "Épargne",
       settings: "Paramètres",
       balance: "Solde Principal",
+      more: "Plus"
     },
     auth: {
       login: "Connexion",
@@ -217,6 +246,14 @@ export const translations = {
       member: "Membre",
       balance: "Solde Familial",
       transactions: "Activité du Portefeuille",
+      bills: {
+        title: "Factures Familiales",
+        add: "Ajouter une Facture",
+        contribute: "Contribuer",
+        pay: "Payer la Facture",
+        dueDate: "Date d'Échéance",
+        contributors: "Contributeurs"
+      }
     },
     savings: {
       title: "Épargne Intelligente",
@@ -228,6 +265,13 @@ export const translations = {
       progress: "Progrès",
       nextPayout: "Prochain paiement",
       invite: "Inviter des Membres",
+      tontine: {
+        title: "Épargne Collective",
+        nextRecipient: "Prochain Bénéficiaire",
+        createNew: "Créer une Tontine",
+        join: "Rejoindre une Tontine",
+        frequency: "Fréquence de Contribution"
+      }
     },
     settings: {
       title: "Paramètres",
@@ -248,6 +292,19 @@ export const translations = {
       changePinInstructions: "Entrez votre PIN actuel",
       newPin: "Nouveau PIN",
       confirmNewPin: "Confirmer le nouveau PIN",
+    },
+    coach: {
+      title: "Coach Financier",
+      placeholder: "Posez votre question...",
+      greeting: "Bonjour! Je suis Zamo Coach, votre conseiller financier. Comment puis-je vous aider aujourd'hui?",
+      proverbs: [
+        "Un sou économisé est un sou gagné.",
+        "L'argent est un bon serviteur, mais un mauvais maître.",
+        "Même le plus grand arbre commence par une petite graine.",
+        "Ne mets pas tous tes œufs dans le même panier.",
+        "Petit à petit, l'oiseau fait son nid.",
+        "Tu ne peux pas boire l'eau et oublier la calebasse."
+      ]
     }
   }
 };
