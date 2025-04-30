@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { StrictMode } from "react";
 
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { LanguageProvider } from "@/providers/LanguageProvider";
@@ -29,45 +30,50 @@ import NotFound from "./pages/NotFound";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <LanguageProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route element={<AuthLayout />}>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/verify" element={<OTPVerification />} />
-                  <Route path="/setup-pin" element={<SetupPIN />} />
-                </Route>
-                <Route element={<AppLayout />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/send" element={<SendMoney />} />
-                  <Route path="/scan" element={<ScanQR />} />
-                  <Route path="/agents" element={<FindAgent />} />
-                  <Route path="/family" element={<FamilyWallet />} />
-                  <Route path="/savings" element={<Savings />} />
-                  <Route path="/group-savings" element={<GroupSavings />} />
-                  <Route path="/family-bills" element={<FamilyBills />} />
-                  <Route path="/financial-coach" element={<FinancialCoach />} />
-                  <Route path="/settings" element={<Settings />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route element={<AuthLayout />}>
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/verify" element={<OTPVerification />} />
+                      <Route path="/setup-pin" element={<SetupPIN />} />
+                    </Route>
+                    <Route element={<AppLayout />}>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/send" element={<SendMoney />} />
+                      <Route path="/scan" element={<ScanQR />} />
+                      <Route path="/agents" element={<FindAgent />} />
+                      <Route path="/family" element={<FamilyWallet />} />
+                      <Route path="/savings" element={<Savings />} />
+                      <Route path="/group-savings" element={<GroupSavings />} />
+                      <Route path="/family-bills" element={<FamilyBills />} />
+                      <Route path="/financial-coach" element={<FinancialCoach />} />
+                      <Route path="/settings" element={<Settings />} />
+                    </Route>
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </TooltipProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </StrictMode>
+  );
+};
 
 export default App;
