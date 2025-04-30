@@ -32,7 +32,7 @@ export function LanguageProvider({
 
   const t = (key: string): string => {
     const keys = key.split(".");
-    let translation = translations[language];
+    let translation: any = translations[language];
     
     for (const k of keys) {
       if (translation && typeof translation === 'object' && k in translation) {
@@ -42,7 +42,13 @@ export function LanguageProvider({
       }
     }
     
-    return translation as string;
+    // Check if the final result is a string
+    if (typeof translation === 'string') {
+      return translation;
+    } else {
+      // If it's an object, return the key as fallback
+      return key;
+    }
   };
 
   const value = {
