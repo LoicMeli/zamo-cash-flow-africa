@@ -1,3 +1,4 @@
+
 import { useAuth } from "@/providers/AuthProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { useTheme } from "@/providers/ThemeProvider";
@@ -11,7 +12,8 @@ import {
   Bell, 
   HelpCircle, 
   Info, 
-  LogOut 
+  LogOut,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -114,7 +116,7 @@ const Settings = () => {
             <span className="font-medium">{t("settings.profile")}</span>
           </div>
           <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <span>></span>
+            <ChevronRight size={18} />
           </Button>
         </div>
         
@@ -126,7 +128,7 @@ const Settings = () => {
             <span className="font-medium">{t("settings.security")}</span>
           </div>
           <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <span>></span>
+            <ChevronRight size={18} />
           </Button>
         </div>
         
@@ -138,7 +140,7 @@ const Settings = () => {
             <span className="font-medium">{t("settings.notifications")}</span>
           </div>
           <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <span>></span>
+            <ChevronRight size={18} />
           </Button>
         </div>
         
@@ -150,7 +152,7 @@ const Settings = () => {
             <span className="font-medium">{t("settings.help")}</span>
           </div>
           <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <span>></span>
+            <ChevronRight size={18} />
           </Button>
         </div>
         
