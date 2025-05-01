@@ -25,7 +25,7 @@ const AppLayout = () => {
   return (
     <div className="min-h-[100dvh] flex flex-col bg-zamo-light dark:bg-zamo-dark">
       <AppHeader />
-      <main className="flex-1 pt-16 pb-20 px-4 max-w-md mx-auto w-full">
+      <main className="flex-1 pt-16 pb-24 px-4 max-w-md mx-auto w-full">
         <div className="animate-fade-in">
           <Outlet />
         </div>
