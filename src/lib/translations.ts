@@ -6,6 +6,8 @@ export const translations = {
       receive: "Receive",
       scan: "Scan",
       home: "Home",
+      wallet: "Wallet",
+      agents: "Agents",
       profile: "Profile",
       balance: "Balance",
       settings: "Settings",
@@ -17,7 +19,9 @@ export const translations = {
       inviteContact: "Invite",
       savings: "Savings",
       hideCode: "Hide Code",
-      showCode: "Show Code"
+      showCode: "Show Code",
+      change: "Change",
+      logout: "Log Out"
     },
     dashboard: {
       greeting: "Welcome back",
@@ -36,6 +40,60 @@ export const translations = {
       zamoPass: "Your Zamo Pass",
       scanToReceive: "Scan to receive money"
     },
+    wallet: {
+      title: "My Wallet",
+      send: "Send Money",
+      sendLocal: "Send the cash",
+      receive: "Receive",
+      receiveLocal: "Get paid",
+      withdraw: "Withdraw",
+      withdrawLocal: "Take cash",
+      topUp: "Top Up",
+      topUpLocal: "Add money",
+      recentTransactions: "Recent Transfers",
+      noRecentTransactions: "No recent transfers to show"
+    },
+    agents: {
+      title: "Find Agents",
+      nearby: "Nearby Agents",
+      available: "Available",
+      unavailable: "Unavailable",
+      call: "Call",
+      directions: "Directions",
+      findNearest: "Find nearest"
+    },
+    profile: {
+      zamoID: "Zamo ID",
+      info: "My Info",
+      settings: "Settings",
+      fullName: "Full Name",
+      phoneNumber: "Phone Number",
+      email: "Email",
+      notSet: "Not set",
+      editProfile: "Edit Profile"
+    },
+    settings: {
+      title: "Settings",
+      language: "Language",
+      english: "English",
+      french: "French",
+      pidgin: "Pidgin",
+      security: "Security & PIN",
+      profile: "My Profile",
+      notifications: "Notifications",
+      help: "Help & Support",
+      about: "About Zamo",
+      version: "Version",
+      usePIN: "Use PIN for transactions",
+      biometrics: "Use biometrics",
+      changePin: "Change PIN code",
+      theme: "Theme",
+      light: "Light",
+      dark: "Dark",
+      system: "System",
+      whatsappSupport: "WhatsApp Support",
+      contactUs: "Contact Us"
+    },
     auth: {
       login: "Login",
       register: "Register",
@@ -48,18 +106,8 @@ export const translations = {
       setupPin: "Set up PIN",
       createPin: "Create a PIN for your account",
       confirmPin: "Confirm PIN",
-      finish: "Finish"
-    },
-    settings: {
-      language: "Language",
-      theme: "Theme",
-      light: "Light",
-      dark: "Dark",
-      system: "System",
-      notifications: "Notifications",
-      security: "Security",
-      help: "Help & Support",
-      about: "About Zamo"
+      finish: "Finish",
+      logout: "Log Out"
     }
   },
   fr: {
@@ -68,6 +116,8 @@ export const translations = {
       receive: "Recevoir",
       scan: "Scanner",
       home: "Accueil",
+      wallet: "Portefeuille",
+      agents: "Agents",
       profile: "Profil",
       balance: "Solde",
       settings: "Paramètres",
@@ -79,7 +129,9 @@ export const translations = {
       inviteContact: "Inviter",
       savings: "Épargne",
       hideCode: "Masquer Code",
-      showCode: "Afficher Code"
+      showCode: "Afficher Code",
+      change: "Modifier",
+      logout: "Déconnexion"
     },
     dashboard: {
       greeting: "Bon retour",
@@ -98,6 +150,60 @@ export const translations = {
       zamoPass: "Votre Zamo Pass",
       scanToReceive: "Scanner pour recevoir de l'argent"
     },
+    wallet: {
+      title: "Mon Portefeuille",
+      send: "Envoyer",
+      sendLocal: "Envoyer le Mbongo",
+      receive: "Recevoir",
+      receiveLocal: "Ton mbongo va rentrer",
+      withdraw: "Retirer",
+      withdrawLocal: "Prendre l'argent",
+      topUp: "Recharger",
+      topUpLocal: "Ajouter le mbongo",
+      recentTransactions: "Transferts Récents",
+      noRecentTransactions: "Aucun transfert récent à afficher"
+    },
+    agents: {
+      title: "Trouver des Agents",
+      nearby: "Agents à proximité",
+      available: "Disponible",
+      unavailable: "Indisponible",
+      call: "Appeler",
+      directions: "Itinéraire",
+      findNearest: "Le plus proche"
+    },
+    profile: {
+      zamoID: "ID Zamo",
+      info: "Mes Infos",
+      settings: "Paramètres",
+      fullName: "Nom Complet",
+      phoneNumber: "Numéro de Téléphone",
+      email: "Email",
+      notSet: "Non défini",
+      editProfile: "Modifier Profil"
+    },
+    settings: {
+      title: "Paramètres",
+      language: "Langue",
+      english: "Anglais",
+      french: "Français",
+      pidgin: "Pidgin",
+      security: "Sécurité et PIN",
+      profile: "Mon Profil",
+      notifications: "Notifications",
+      help: "Aide & Support",
+      about: "À propos de Zamo",
+      version: "Version",
+      usePIN: "Utiliser PIN pour transactions",
+      biometrics: "Utiliser biométrie",
+      changePin: "Changer code PIN",
+      theme: "Thème",
+      light: "Clair",
+      dark: "Sombre",
+      system: "Système",
+      whatsappSupport: "Support WhatsApp",
+      contactUs: "Nous Contacter"
+    },
     auth: {
       login: "Connexion",
       register: "S'inscrire",
@@ -110,18 +216,118 @@ export const translations = {
       setupPin: "Configurer PIN",
       createPin: "Créez un PIN pour votre compte",
       confirmPin: "Confirmer PIN",
-      finish: "Terminer"
+      finish: "Terminer",
+      logout: "Déconnexion"
+    }
+  },
+  pidgin: {
+    common: {
+      send: "Send",
+      receive: "Collect",
+      scan: "Scan",
+      home: "Home",
+      wallet: "Money",
+      agents: "Agents Dem",
+      profile: "My Profile",
+      balance: "Your Money",
+      settings: "Settings",
+      viewAll: "See all",
+      addAgent: "Add Agent", 
+      rechargeWallet: "Put Money",
+      payBill: "Pay Bill",
+      addContact: "Add Person",
+      inviteContact: "Call Person",
+      savings: "Keep Money",
+      hideCode: "Hide Code",
+      showCode: "Show Code",
+      change: "Change am",
+      logout: "Commot"
+    },
+    dashboard: {
+      greeting: "You don come back",
+      goodMorning: "Good morning",
+      goodAfternoon: "Afternoon",
+      goodEvening: "Evening",
+      user: "Person",
+      availableBalance: "Money Wey You Get",
+      totalBalance: "All Your Money",
+      recentTransactions: "Money Wey Don Move",
+      noTransactions: "No money don move",
+      moneyIn: "Money Wey Enter",
+      moneyOut: "Money Wey Commot",
+      monthlyStats: "This Month Activity",
+      accountNumber: "Account Number",
+      zamoPass: "Your Zamo Pass",
+      scanToReceive: "Scan make you collect money"
+    },
+    wallet: {
+      title: "My Money",
+      send: "Send Money",
+      sendLocal: "Send that yamo",
+      receive: "Collect Money",
+      receiveLocal: "Receive that mbongo",
+      withdraw: "Withdraw",
+      withdrawLocal: "Commot money",
+      topUp: "Add Money",
+      topUpLocal: "Put money inside",
+      recentTransactions: "Money Wey Don Move",
+      noRecentTransactions: "No money don move recently"
+    },
+    agents: {
+      title: "Find Agents Dem",
+      nearby: "Agents For This Area",
+      available: "Dey Work Now",
+      unavailable: "No Dey Work",
+      call: "Call Am",
+      directions: "Show Road",
+      findNearest: "Find closest"
+    },
+    profile: {
+      zamoID: "Zamo ID",
+      info: "My Info",
+      settings: "Settings",
+      fullName: "Full Name",
+      phoneNumber: "Phone Number",
+      email: "Email",
+      notSet: "Never set",
+      editProfile: "Change My Info"
     },
     settings: {
-      language: "Langue",
-      theme: "Thème",
-      light: "Clair",
-      dark: "Sombre",
-      system: "Système",
+      title: "Settings",
+      language: "Language",
+      english: "English",
+      french: "French",
+      pidgin: "Pidgin",
+      security: "Security & PIN",
+      profile: "My Profile",
       notifications: "Notifications",
-      security: "Sécurité",
-      help: "Aide & Support",
-      about: "À propos de Zamo"
+      help: "Help",
+      about: "About Zamo",
+      version: "Version",
+      usePIN: "Use PIN for money work",
+      biometrics: "Use finger or face",
+      changePin: "Change PIN number",
+      theme: "How App Look",
+      light: "Bright",
+      dark: "Dark",
+      system: "Follow Phone",
+      whatsappSupport: "WhatsApp Help",
+      contactUs: "Call Us"
+    },
+    auth: {
+      login: "Enter",
+      register: "Join",
+      phoneNumber: "Phone Number",
+      enterPhone: "Put your phone number",
+      continue: "Continue",
+      verifyCode: "Check Code",
+      enterCode: "Put the code wey we send you",
+      verify: "Check am",
+      setupPin: "Set PIN",
+      createPin: "Create PIN for your account",
+      confirmPin: "Confirm PIN",
+      finish: "Finish",
+      logout: "Commot"
     }
   }
 };

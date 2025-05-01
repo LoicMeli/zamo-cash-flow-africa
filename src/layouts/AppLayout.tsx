@@ -2,7 +2,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import BottomNavigation from "@/components/BottomNavigation";
-import FloatingActionButton from "@/components/FloatingActionButton";
 import { motion } from "framer-motion";
 
 const AppLayout = () => {
@@ -34,7 +33,6 @@ const AppLayout = () => {
           <Outlet />
         </motion.div>
       </main>
-      <FloatingActionButton />
       <BottomNavigation />
     </div>
   );

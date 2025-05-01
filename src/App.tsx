@@ -29,6 +29,7 @@ import FinancialCoach from "./pages/FinancialCoach";
 import NotFound from "./pages/NotFound";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
+import Wallet from "./pages/Wallet";
 
 // Create a new QueryClient instance with proper options
 const queryClient = new QueryClient({
@@ -61,6 +62,7 @@ const App = () => {
                     <Route element={<AppLayout />}>
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/profile" element={<Profile />} />
+                      <Route path="/wallet" element={<Wallet />} />
                       <Route path="/send" element={<SendMoney />} />
                       <Route path="/scan" element={<ScanQR />} />
                       <Route path="/agents" element={<FindAgent />} />

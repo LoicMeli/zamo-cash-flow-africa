@@ -1,5 +1,5 @@
 
-import { Home, Send, User } from "lucide-react";
+import { Home, Wallet, MapPin, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/providers/LanguageProvider";
@@ -16,9 +16,14 @@ const BottomNavigation = () => {
       href: "/dashboard",
     },
     {
-      icon: Send,
-      label: t("common.send"),
-      href: "/send",
+      icon: Wallet,
+      label: t("common.wallet"),
+      href: "/wallet",
+    },
+    {
+      icon: MapPin,
+      label: t("common.agents"),
+      href: "/agents",
     },
     {
       icon: User,

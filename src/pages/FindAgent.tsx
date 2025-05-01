@@ -15,6 +15,7 @@ const mockAgents = [
     address: "Marché Central, Yaoundé",
     isAvailable: true,
     phone: "+237 655 555 555",
+    services: ["Cash-in", "Cash-out", "Bill Payment"]
   },
   {
     id: "2",
@@ -24,6 +25,7 @@ const mockAgents = [
     address: "Rue de la Paix, Douala",
     isAvailable: true,
     phone: "+237 677 777 777",
+    services: ["Cash-in", "Cash-out"]
   },
   {
     id: "3",
@@ -33,6 +35,7 @@ const mockAgents = [
     address: "Boulevard de l'Indépendance, Garoua",
     isAvailable: false,
     phone: "+237 699 999 999",
+    services: ["Cash-in", "Cash-out", "Loans"]
   },
   {
     id: "4",
@@ -42,13 +45,14 @@ const mockAgents = [
     address: "Avenue Charles de Gaulle, Yaoundé",
     isAvailable: true,
     phone: "+237 688 888 888",
+    services: ["Cash-in", "Cash-out", "Bill Payment", "Currency Exchange"]
   },
 ];
 
 const FindAgent = () => {
   const [agents, setAgents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     // Simulate loading agents
@@ -71,28 +75,50 @@ const FindAgent = () => {
 
   return (
     <div className="space-y-6 py-2">
-      <h1 className="text-xl font-bold mb-6">
-        {t("agents.title")}
+      <h1 className="text-xl font-bold mb-2">
+        {t('agents.title')}
       </h1>
+      
+      <div className="text-sm text-muted-foreground mb-4">
+        {language === 'fr' ? 
+          'Trouvez les agents Zamo près de vous' : 
+          'Find Zamo agents near you'}
+      </div>
       
       {/* Map placeholder */}
       <div className="relative w-full h-64 bg-gray-200 dark:bg-gray-800 rounded-xl overflow-hidden mb-6">
+        {/* African pattern overlay */}
+        <div className="absolute inset-0 opacity-5">
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="bamileké" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M0,10 L20,10 M10,0 L10,20" stroke="black" strokeWidth="1" />
+              <path d="M0,0 L5,5 L10,0 L15,5 L20,0" stroke="black" strokeWidth="1" fill="none" />
+              <path d="M0,20 L5,15 L10,20 L15,15 L20,20" stroke="black" strokeWidth="1" fill="none" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#bamileké)" />
+          </svg>
+        </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <MapPin size={40} className="text-primary-blue" />
         </div>
         <div className="absolute bottom-4 right-4">
           <Button size="sm" className="bg-primary-blue text-white rounded-full shadow-md">
             <Navigation size={16} className="mr-1" />
-            {t("common.home")}
+            {t('agents.findNearest')}
           </Button>
         </div>
       </div>
       
       {/* Nearby agents */}
       <div>
-        <h2 className="text-lg font-medium mb-4">
-          {t("agents.nearby")}
-        </h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-medium">
+            {t('agents.nearby')}
+          </h2>
+          <div className="text-xs text-muted-foreground">
+            {language === 'fr' ? 'Montrer tout' : 'Show all'}
+          </div>
+        </div>
         
         {isLoading ? (
           <div className="flex justify-center py-10">
@@ -101,15 +127,23 @@ const FindAgent = () => {
         ) : agents.length > 0 ? (
           <div className="space-y-4">
             {agents.map((agent) => (
-              <div key={agent.id} className="zamo-card">
+              <div key={agent.id} className="bg-card border border-border rounded-lg p-4 shadow-sm">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-semibold">{agent.name}</h3>
                     <p className="text-sm text-muted-foreground">{agent.address}</p>
                   </div>
                   <Badge variant={agent.isAvailable ? "default" : "outline"} className={agent.isAvailable ? "bg-green-500" : "text-muted-foreground"}>
-                    {agent.isAvailable ? t("agents.available") : t("agents.unavailable")}
+                    {agent.isAvailable ? t('agents.available') : t('agents.unavailable')}
                   </Badge>
+                </div>
+                
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {agent.services.map((service: string, i: number) => (
+                    <div key={i} className="text-xs bg-primary-blue/10 text-primary-blue px-2 py-0.5 rounded-full">
+                      {service}
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="flex justify-between items-center mb-4">
@@ -125,11 +159,11 @@ const FindAgent = () => {
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" className="flex-1">
                     <Phone size={14} className="mr-1" />
-                    {t("agents.call")}
+                    {language === 'fr' ? 'Appeler' : 'Call'}
                   </Button>
                   <Button variant="outline" size="sm" className="flex-1">
                     <Navigation size={14} className="mr-1" />
-                    {t("agents.directions")}
+                    {language === 'fr' ? 'Itinéraire' : 'Directions'}
                   </Button>
                 </div>
               </div>
@@ -137,7 +171,7 @@ const FindAgent = () => {
           </div>
         ) : (
           <p className="text-center text-muted-foreground py-6">
-            No nearby agents found
+            {language === 'fr' ? 'Aucun agent à proximité' : 'No nearby agents found'}
           </p>
         )}
       </div>

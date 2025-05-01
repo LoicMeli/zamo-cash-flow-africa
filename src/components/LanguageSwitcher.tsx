@@ -30,6 +30,17 @@ const LanguageSwitcher = () => {
       >
         🇫🇷 FR
       </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className={cn(
+          "rounded-full px-3 h-8 text-sm font-medium",
+          language === "pidgin" && "bg-white dark:bg-primary shadow-sm"
+        )}
+        onClick={() => setLanguage("pidgin")}
+      >
+        🇨🇲 Pidgin
+      </Button>
     </div>
   );
 };

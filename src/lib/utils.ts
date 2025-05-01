@@ -11,6 +11,39 @@ export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("fr-FR").format(amount);
 }
 
+// Get local equivalent for an amount (e.g. rice bags, gas bottles)
+export function getLocalEquivalent(amount: number): string | null {
+  if (amount <= 0) return null;
+  
+  const riceBagPrice = 25000; // FCFA per 25kg rice bag
+  const gasBottlePrice = 40000; // FCFA per standard gas bottle
+  const beerCratePrice = 8500;  // FCFA per crate of beer
+  const fuelLiterPrice = 630;   // FCFA per liter of fuel
+  
+  if (amount >= riceBagPrice) {
+    const riceBags = Math.floor(amount / riceBagPrice);
+    const remainder = amount % riceBagPrice;
+    
+    if (remainder >= gasBottlePrice) {
+      const gasBottles = Math.floor(remainder / gasBottlePrice);
+      return `${riceBags} rice bag${riceBags > 1 ? 's' : ''} + ${gasBottles} gas bottle${gasBottles > 1 ? 's' : ''}`;
+    } else {
+      return `${riceBags} rice bag${riceBags > 1 ? 's' : ''}`;
+    }
+  } else if (amount >= gasBottlePrice) {
+    const gasBottles = Math.floor(amount / gasBottlePrice);
+    return `${gasBottles} gas bottle${gasBottles > 1 ? 's' : ''}`;
+  } else if (amount >= beerCratePrice) {
+    const beerCrates = Math.floor(amount / beerCratePrice);
+    return `${beerCrates} crate${beerCrates > 1 ? 's' : ''} of beer`;
+  } else if (amount >= fuelLiterPrice) {
+    const fuelLiters = Math.floor(amount / fuelLiterPrice);
+    return `${fuelLiters} liter${fuelLiters > 1 ? 's' : ''} of fuel`;
+  }
+  
+  return null;
+}
+
 // Format phone number
 export function formatPhoneNumber(phone: string): string {
   // Strip non-digits
