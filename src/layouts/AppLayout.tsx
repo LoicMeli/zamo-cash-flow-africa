@@ -2,8 +2,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/providers/AuthProvider";
 import BottomNavigation from "@/components/BottomNavigation";
-import AppHeader from "@/components/AppHeader";
 import FloatingActionButton from "@/components/FloatingActionButton";
+import { motion } from "framer-motion";
 
 const AppLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -24,11 +24,15 @@ const AppLayout = () => {
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-zamo-light dark:bg-zamo-dark">
-      <AppHeader />
-      <main className="flex-1 pt-16 pb-24 px-4 max-w-md mx-auto w-full">
-        <div className="animate-fade-in">
+      <main className="flex-1 pt-4 pb-24 px-4 max-w-md mx-auto w-full">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="animate-fade-in"
+        >
           <Outlet />
-        </div>
+        </motion.div>
       </main>
       <FloatingActionButton />
       <BottomNavigation />

@@ -2,107 +2,111 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
-import { Send, MessageSquare, CreditCard, Wallet } from "lucide-react";
-import BalanceCard from "@/components/BalanceCard";
-import TransactionCard from "@/components/TransactionCard";
-import ActivityCard from "@/components/ActivityCard";
-import { generateMockTransactions } from "@/lib/utils";
+import { Bell, ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import WalletCard from "@/components/WalletCard";
+import ActionButtons from "@/components/ActionButtons";
+import TransactionStats from "@/components/TransactionStats";
+import TransactionList from "@/components/TransactionList";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [greeting, setGreeting] = useState("");
+  
+  // Mock stats data
+  const stats = {
+    moneyIn: 75000,
+    moneyOut: 45000
+  };
   
   useEffect(() => {
-    // Generate mock transactions for demo
-    setTransactions(generateMockTransactions(3));
-  }, []);
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      setGreeting(t('dashboard.goodMorning'));
+    } else if (hour < 18) {
+      setGreeting(t('dashboard.goodAfternoon'));
+    } else {
+      setGreeting(t('dashboard.goodEvening'));
+    }
+  }, [t]);
 
   if (!user) return null;
+  
+  const userInitial = user?.name ? user.name[0].toUpperCase() : "Z";
 
-  const activities = [
-    {
-      icon: <Send size={20} className="text-blue-600" />,
-      title: "Transactions Today",
-      description: "You received 3 payments today",
-      linkText: "View details",
-      linkHref: "/send",
-      color: "bg-blue-600/10",
-    },
-    {
-      icon: <MessageSquare size={20} className="text-purple-600" />,
-      title: "Financial Coach",
-      description: "Get advice on managing your finances",
-      linkText: "Chat now",
-      linkHref: "/financial-coach",
-      color: "bg-purple-600/10",
-    },
-    {
-      icon: <CreditCard size={20} className="text-green-600" />,
-      title: "Bills Due Soon",
-      description: "2 family bills due in 3 days",
-      linkText: "Pay now",
-      linkHref: "/family-bills",
-      color: "bg-green-600/10",
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
     }
-  ];
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
 
   return (
-    <div className="space-y-6 py-2">
-      {/* Welcome message */}
-      <div>
-        <h1 className="text-xl font-bold">
-          {t("dashboard.greeting")}
-        </h1>
-      </div>
+    <motion.div 
+      className="space-y-6 py-2"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      {/* Greeting and profile section */}
+      <motion.div variants={item} className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-muted-foreground">{greeting}</p>
+          <h1 className="text-xl font-bold">
+            {user?.name || t('dashboard.user')}
+          </h1>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" className="rounded-full relative">
+            <Bell size={20} />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </Button>
+          <Avatar className="h-10 w-10 border-2 border-primary-blue/20">
+            {user?.photoURL ? (
+              <AvatarImage src={user.photoURL} alt={user.name || "User"} />
+            ) : (
+              <AvatarFallback className="bg-primary-blue/10 text-primary-blue">
+                {userInitial}
+              </AvatarFallback>
+            )}
+          </Avatar>
+        </div>
+      </motion.div>
       
       {/* Balance card */}
-      <BalanceCard amount={user.balance} />
+      <motion.div variants={item}>
+        <WalletCard />
+      </motion.div>
       
-      {/* Activity cards */}
-      <div className="mt-8 space-y-3">
-        <h2 className="text-lg font-medium mb-4">
-          Activities
-        </h2>
-        
-        {activities.map((activity, index) => (
-          <ActivityCard
-            key={index}
-            icon={activity.icon}
-            title={activity.title}
-            description={activity.description}
-            linkText={activity.linkText}
-            linkHref={activity.linkHref}
-            color={activity.color}
-          />
-        ))}
-      </div>
+      {/* Action buttons */}
+      <motion.div variants={item}>
+        <ActionButtons className="mt-4" />
+      </motion.div>
       
-      {/* Recent transactions */}
-      <div className="mt-8">
-        <h2 className="text-lg font-medium mb-4">
-          {t("dashboard.recentTransactions")}
-        </h2>
-        
-        {transactions.length > 0 ? (
-          <div className="space-y-3">
-            {transactions.map((transaction) => (
-              <TransactionCard
-                key={transaction.id}
-                type={transaction.type}
-                amount={transaction.amount}
-                name={transaction.name}
-                date={transaction.date}
-              />
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-muted-foreground py-6">
-            {t("dashboard.noTransactions")}
-          </p>
-        )}
-      </div>
-    </div>
+      {/* Stats and charts */}
+      <motion.div variants={item}>
+        <TransactionStats 
+          moneyIn={stats.moneyIn} 
+          moneyOut={stats.moneyOut}
+        />
+      </motion.div>
+      
+      {/* Transaction history */}
+      <motion.div variants={item}>
+        <TransactionList />
+      </motion.div>
+    </motion.div>
   );
 };
 
