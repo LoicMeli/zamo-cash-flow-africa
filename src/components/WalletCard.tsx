@@ -23,8 +23,8 @@ const WalletCard = ({ className }: WalletCardProps) => {
   const toggleQR = () => setShowQR(!showQR);
   
   // Generate a random account number for the demo
-  const accountNumber = user?.uid ? 
-    `**** **** ${user.uid.substring(0, 4).toUpperCase()}` : 
+  const accountNumber = user?.id ? 
+    `**** **** ${user.id.substring(0, 4).toUpperCase()}` : 
     "**** **** 7891";
   
   return (
