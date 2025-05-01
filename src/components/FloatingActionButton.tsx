@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { QrCode, Plus, Wallet, CreditCard, UserPlus, X } from "lucide-react";
+import { CreditCard, Plus, Wallet, UserPlus, X } from "lucide-react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -17,15 +17,15 @@ const FloatingActionButton = () => {
 
   const fabItems = [
     {
-      icon: QrCode,
-      label: t("common.scan"),
-      action: () => navigate("/scan"),
+      icon: UserPlus,
+      label: t("common.addAgent"),
+      action: () => navigate("/agents"),
       color: "bg-blue-600",
     },
     {
       icon: Wallet,
-      label: t("common.createTontine"),
-      action: () => navigate("/group-savings"),
+      label: t("common.rechargeWallet"),
+      action: () => navigate("/family"),
       color: "bg-purple-600",
     },
     {
@@ -36,7 +36,7 @@ const FloatingActionButton = () => {
     },
     {
       icon: UserPlus,
-      label: t("common.addContact"),
+      label: t("common.inviteContact"),
       action: () => navigate("/family"),
       color: "bg-green-600",
     },

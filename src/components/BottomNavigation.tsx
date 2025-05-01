@@ -1,5 +1,5 @@
 
-import { Home, Send, Wallet, User } from "lucide-react";
+import { Home, Send, QrCode, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/providers/LanguageProvider";
@@ -20,12 +20,9 @@ const BottomNavigation = () => {
       href: "/send",
     },
     {
-      spacer: true,
-    },
-    {
-      icon: Wallet,
-      label: t("common.savings"),
-      href: "/group-savings",
+      icon: QrCode,
+      label: t("common.scan"),
+      href: "/scan",
     },
     {
       icon: User,
@@ -39,10 +36,6 @@ const BottomNavigation = () => {
       <div className="max-w-md mx-auto px-1">
         <div className="flex justify-around items-center">
           {navItems.map((item, index) => {
-            if (item.spacer) {
-              return <div key="spacer" className="w-16" />;
-            }
-            
             const isActive = location.pathname === item.href;
             
             return (
