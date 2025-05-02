@@ -2,15 +2,18 @@
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
-import { Send, QrCode, CreditCard, Banknote } from "lucide-react";
+import { Send, QrCode, CreditCard, Banknote, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WalletCard from "@/components/WalletCard";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import PersonalQRCode from "@/components/PersonalQRCode";
 
 const Wallet = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const [showQRDialog, setShowQRDialog] = useState(false);
 
   const walletActions = [
     {
@@ -23,7 +26,7 @@ const Wallet = () => {
       icon: QrCode,
       label: t('wallet.receive'),
       localExpression: t('wallet.receiveLocal'),
-      href: "/scan"
+      action: () => setShowQRDialog(true)
     },
     {
       icon: Banknote,
@@ -76,19 +79,33 @@ const Wallet = () => {
       >
         {walletActions.map((action, index) => (
           <motion.div key={index} variants={item}>
-            <Button 
-              variant="outline" 
-              className="w-full h-24 flex flex-col items-center justify-center gap-2 rounded-xl"
-              asChild
-            >
-              <a href={action.href}>
+            {action.href ? (
+              <Button 
+                variant="outline" 
+                className="w-full h-24 flex flex-col items-center justify-center gap-2 rounded-xl"
+                asChild
+              >
+                <a href={action.href}>
+                  <action.icon size={24} className="text-primary-blue" />
+                  <div className="flex flex-col items-center">
+                    <span className="font-medium text-sm">{action.label}</span>
+                    <span className="text-xs text-muted-foreground italic">"{action.localExpression}"</span>
+                  </div>
+                </a>
+              </Button>
+            ) : (
+              <Button 
+                variant="outline" 
+                className="w-full h-24 flex flex-col items-center justify-center gap-2 rounded-xl"
+                onClick={action.action}
+              >
                 <action.icon size={24} className="text-primary-blue" />
                 <div className="flex flex-col items-center">
                   <span className="font-medium text-sm">{action.label}</span>
                   <span className="text-xs text-muted-foreground italic">"{action.localExpression}"</span>
                 </div>
-              </a>
-            </Button>
+              </Button>
+            )}
           </motion.div>
         ))}
       </motion.div>
@@ -107,6 +124,23 @@ const Wallet = () => {
           </div>
         </Card>
       </div>
+
+      {/* QR Code Dialog */}
+      <Dialog open={showQRDialog} onOpenChange={setShowQRDialog}>
+        <DialogContent className="sm:max-w-md">
+          <div className="absolute top-3 right-3">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="rounded-full h-7 w-7" 
+              onClick={() => setShowQRDialog(false)}
+            >
+              <X size={16} />
+            </Button>
+          </div>
+          <PersonalQRCode onClose={() => setShowQRDialog(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1,13 +1,15 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
-import { ArrowLeft, Check, Phone, MapPin } from "lucide-react";
+import { ArrowLeft, Check, Phone, MapPin, Copy, Share2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 
 const WithdrawDetails = () => {
   const { t } = useLanguage();
@@ -16,6 +18,13 @@ const WithdrawDetails = () => {
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<"amount" | "confirmation" | "success">("amount");
+  const [withdrawalCode, setWithdrawalCode] = useState("");
+  const [showSecurityDialog, setShowSecurityDialog] = useState(false);
+  const [useBiometrics, setUseBiometrics] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [codeExpiry, setCodeExpiry] = useState<Date | null>(null);
+  const [copied, setCopied] = useState(false);
   
   // Mock agent data (in a real app, you'd fetch this based on agentId)
   const agent = {
@@ -49,13 +58,73 @@ const WithdrawDetails = () => {
   };
 
   const handleConfirm = () => {
+    setShowSecurityDialog(true);
+  };
+  
+  const handleVerifyPinOrBiometrics = () => {
+    // In a real app, you'd verify the PIN or biometric auth here
+    setIsVerifying(true);
+    
+    setTimeout(() => {
+      setIsVerifying(false);
+      
+      if (useBiometrics || pinInput === "1234") { // Demo PIN is 1234
+        setShowSecurityDialog(false);
+        processWithdrawal();
+      } else {
+        toast.error("Incorrect PIN");
+      }
+    }, 1500);
+  };
+  
+  const processWithdrawal = () => {
     setIsLoading(true);
     
     // Simulate withdrawal process
     setTimeout(() => {
+      // Generate a random withdrawal code
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      setWithdrawalCode(code);
+      
+      // Set code expiry to 24 hours from now
+      const expiry = new Date();
+      expiry.setHours(expiry.getHours() + 24);
+      setCodeExpiry(expiry);
+      
       setIsLoading(false);
       setStep("success");
+      
+      // Send a push notification
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("Withdrawal Code Generated", {
+          body: `Your code: ${code} is valid for 24 hours`,
+          icon: "/favicon.ico"
+        });
+      }
     }, 1500);
+  };
+  
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(withdrawalCode).then(() => {
+      setCopied(true);
+      toast.success(t("common.success"), {
+        description: "Code copied to clipboard"
+      });
+      setTimeout(() => setCopied(false), 3000);
+    });
+  };
+  
+  const shareCode = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Zamo Withdrawal Code",
+        text: `My Zamo withdrawal code: ${withdrawalCode} - Valid until ${codeExpiry?.toLocaleString()}`,
+      }).catch(err => {
+        console.log("Error sharing:", err);
+      });
+    } else {
+      copyToClipboard();
+    }
   };
 
   return (
@@ -203,7 +272,7 @@ const WithdrawDetails = () => {
             </p>
             
             <div className="zamo-card w-full mb-6">
-              <div className="space-y-4">
+              <div className="space-y-4 mb-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{t("withdraw.agent")}</span>
                   <span className="font-medium">{agent.name}</span>
@@ -213,12 +282,39 @@ const WithdrawDetails = () => {
                   <span className="text-muted-foreground">{t("withdraw.amount")}</span>
                   <span className="font-medium">{formatCurrency(parseInt(amount))} FCFA</span>
                 </div>
-                
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">{t("withdraw.reference")}</span>
-                  <span className="font-medium">WD-{Math.floor(Math.random() * 1000000)}</span>
-                </div>
               </div>
+              
+              <div className="py-4 border-y border-border mb-4">
+                <p className="text-sm text-center text-muted-foreground mb-2">
+                  {t("withdraw.generatedCode")}
+                </p>
+                <div className="bg-primary-blue/5 border border-primary-blue/10 rounded-md py-3 px-4 flex items-center justify-between">
+                  <h3 className="text-2xl font-mono font-bold tracking-wider">
+                    {withdrawalCode}
+                  </h3>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="rounded-full hover:bg-primary-blue/10"
+                    onClick={copyToClipboard}
+                  >
+                    <Copy size={16} />
+                  </Button>
+                </div>
+                <p className="text-xs text-center text-muted-foreground mt-2">
+                  {t("withdraw.codeExpiry")}
+                  {codeExpiry && ` - ${codeExpiry.toLocaleString()}`}
+                </p>
+              </div>
+              
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-center"
+                onClick={shareCode}
+              >
+                <Share2 size={16} className="mr-2" />
+                {t("withdraw.shareCode")}
+              </Button>
             </div>
             
             <Button 
@@ -230,6 +326,102 @@ const WithdrawDetails = () => {
           </div>
         </div>
       )}
+      
+      {/* Security dialog for PIN/biometric authentication */}
+      <Dialog open={showSecurityDialog} onOpenChange={setShowSecurityDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogTitle className="text-center font-semibold">Verify Identity</DialogTitle>
+          
+          <div className="flex flex-col items-center py-4">
+            <div className="w-16 h-16 bg-primary-blue/10 rounded-full flex items-center justify-center mb-4">
+              <Lock size={30} className="text-primary-blue" />
+            </div>
+            
+            <p className="text-center text-sm text-muted-foreground mb-6">
+              Enter your PIN or use biometrics to authorize this withdrawal
+            </p>
+            
+            {!useBiometrics ? (
+              <div className="w-full space-y-4">
+                <div className="flex justify-center space-x-2">
+                  {Array(4).fill(0).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`w-12 h-12 rounded-full border-2 flex items-center justify-center text-lg font-bold
+                        ${i < pinInput.length ? 'border-primary-blue bg-primary-blue/10' : 'border-border'}`}
+                    >
+                      {i < pinInput.length ? '•' : ''}
+                    </div>
+                  ))}
+                </div>
+                
+                <Input 
+                  type="password"
+                  inputMode="numeric"
+                  className="sr-only"
+                  value={pinInput}
+                  autoFocus
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+                    setPinInput(value);
+                    if (value.length === 4) {
+                      handleVerifyPinOrBiometrics();
+                    }
+                  }}
+                />
+                
+                <div className="pt-4 flex items-center justify-between">
+                  <div className="text-sm flex items-center">
+                    <Switch
+                      checked={useBiometrics}
+                      onCheckedChange={setUseBiometrics}
+                      className="mr-2"
+                    />
+                    <span>Use biometrics</span>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="text-sm"
+                    onClick={() => {
+                      toast.info("Need help? Contact support.");
+                    }}
+                  >
+                    Forgot PIN?
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full space-y-4">
+                <Button
+                  className="w-full"
+                  onClick={handleVerifyPinOrBiometrics}
+                  disabled={isVerifying}
+                >
+                  {isVerifying ? "Verifying..." : "Authenticate with Biometrics"}
+                </Button>
+                
+                <div className="pt-2 flex items-center justify-between">
+                  <div className="text-sm flex items-center">
+                    <Switch
+                      checked={useBiometrics}
+                      onCheckedChange={setUseBiometrics}
+                      className="mr-2"
+                    />
+                    <span>Use biometrics</span>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    className="text-sm"
+                    onClick={() => setUseBiometrics(false)}
+                  >
+                    Use PIN instead
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

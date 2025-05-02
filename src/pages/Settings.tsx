@@ -1,215 +1,140 @@
+
+import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { useTheme } from "@/providers/ThemeProvider";
 import { 
-  Globe, 
-  Moon, 
-  Sun, 
-  Laptop, 
-  User, 
-  Lock, 
-  Bell, 
-  HelpCircle, 
-  Info, 
-  LogOut,
-  ChevronRight,
-  MessageCircle
+  User, Shield, Bell, Languages, Palette, HelpCircle, 
+  Info, LogOut, ChevronRight, Lock, QrCode, Gift 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const Settings = () => {
-  const { logout } = useAuth();
-  const { t, language, setLanguage } = useLanguage();
+  const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
+  const [showThemeDialog, setShowThemeDialog] = useState(false);
   
-  const handleWhatsAppSupport = () => {
-    // In a real app, this would open WhatsApp with a pre-filled message
-    toast.success(t("settings.whatsappSupportStarted"));
-    window.open("https://wa.me/12345678901?text=Hello%20Zamo%20Support", "_blank");
-  };
+  const settingsOptions = [
+    {
+      icon: User,
+      label: t("settings.profile"),
+      action: () => navigate("/profile"),
+    },
+    {
+      icon: Shield,
+      label: t("settings.security"),
+      action: () => navigate("/settings/security"),
+    },
+    {
+      icon: Bell,
+      label: t("settings.notifications"),
+      action: () => navigate("/settings/notifications"),
+    },
+    {
+      icon: Languages,
+      label: t("settings.language"),
+      action: () => setShowLanguageDialog(true),
+    },
+    {
+      icon: Palette,
+      label: t("settings.appearance"),
+      action: () => setShowThemeDialog(true),
+    },
+    {
+      icon: QrCode,
+      label: t("wallet.personalQR"),
+      action: () => navigate("/wallet"),
+      info: t("wallet.qrDescription")
+    },
+    {
+      icon: Gift,
+      label: t("referral.title"),
+      action: () => navigate("/referral"),
+      info: t("referral.subtitle")
+    },
+    {
+      icon: HelpCircle,
+      label: t("settings.help"),
+      action: () => {
+        // In a real app this would link to help resources
+        toast.info("Support & help resources coming soon");
+      },
+    },
+    {
+      icon: Info,
+      label: t("settings.about"),
+      action: () => {
+        // In a real app this would show an about dialog
+        toast.info("Zamo v1.0.0");
+      },
+      info: `v1.0.0`
+    },
+    {
+      icon: LogOut,
+      label: t("settings.logout"),
+      action: logout,
+      danger: true,
+    },
+  ];
   
-  const handleAboutZamo = () => {
-    toast.info("Zamo v1.0.0 - Financial inclusivity for Africa");
-  };
-
   return (
     <div className="space-y-6 py-2">
-      <div>
-        <h1 className="text-2xl font-bold mb-6">
-          {t("settings.title")}
-        </h1>
-      </div>
+      <h1 className="text-xl font-bold">
+        {t("settings.title")}
+      </h1>
       
-      {/* Language */}
-      <div className="zamo-card">
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-3">
-            <Globe className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.language")}</span>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`rounded-full h-8 ${language === 'en' ? 'bg-primary-blue text-white' : ''}`}
-              onClick={() => setLanguage("en")}
-            >
-              🇬🇧 {t("settings.english")}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`rounded-full h-8 ${language === 'fr' ? 'bg-primary-blue text-white' : ''}`}
-              onClick={() => setLanguage("fr")}
-            >
-              🇫🇷 {t("settings.french")}
-            </Button>
-          </div>
-        </div>
-        
-        <div className="flex justify-end mt-2">
+      <div className="space-y-1">
+        {settingsOptions.map((option, index) => (
           <Button
+            key={index}
             variant="ghost"
-            size="sm"
-            className={`rounded-full h-8 ${language === 'pidgin' ? 'bg-primary-blue text-white' : ''}`}
-            onClick={() => setLanguage("pidgin")}
+            className={`w-full justify-start py-6 px-4 mb-0.5 ${
+              option.danger ? "text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50" : ""
+            }`}
+            onClick={option.action}
           >
-            🇳🇬 {t("settings.pidgin")}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`rounded-full h-8 ${language === 'camfran' ? 'bg-primary-blue text-white' : ''} ml-2`}
-            onClick={() => setLanguage("camfran")}
-          >
-            🇨🇲 {t("settings.camfran")}
-          </Button>
-        </div>
-      </div>
-      
-      {/* Theme */}
-      <div className="zamo-card">
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-3">
-            {theme === "dark" ? (
-              <Moon className="text-primary-blue" size={20} />
-            ) : (
-              <Sun className="text-primary-blue" size={20} />
+            <option.icon size={20} className="mr-3" />
+            <span className="flex-1 text-left">{option.label}</span>
+            {option.info && (
+              <span className="text-xs text-muted-foreground mr-1">{option.info}</span>
             )}
-            <span className="font-medium">{t("settings.theme")}</span>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`rounded-full h-8 ${theme === 'light' ? 'bg-primary-blue text-white' : ''}`}
-              onClick={() => setTheme("light")}
-            >
-              <Sun size={16} className="mr-1" /> {t("settings.light")}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`rounded-full h-8 ${theme === 'dark' ? 'bg-primary-blue text-white' : ''}`}
-              onClick={() => setTheme("dark")}
-            >
-              <Moon size={16} className="mr-1" /> {t("settings.dark")}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className={`rounded-full h-8 ${theme === 'system' ? 'bg-primary-blue text-white' : ''}`}
-              onClick={() => setTheme("system")}
-            >
-              <Laptop size={16} className="mr-1" /> {t("settings.system")}
-            </Button>
-          </div>
-        </div>
+            {!option.danger && <ChevronRight size={16} />}
+          </Button>
+        ))}
       </div>
       
-      {/* Other settings */}
-      <div className="zamo-card space-y-4">
-        <div className="flex items-center justify-between" onClick={() => navigate("/profile")}>
-          <div className="flex items-center space-x-3">
-            <User className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.profile")}</span>
+      {/* Language Selection Dialog */}
+      <Dialog open={showLanguageDialog} onOpenChange={setShowLanguageDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("settings.language")}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <LanguageSwitcher onSelect={() => setShowLanguageDialog(false)} />
           </div>
-          <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <ChevronRight size={18} />
-          </Button>
-        </div>
-        
-        <Separator />
-        
-        <div className="flex items-center justify-between" onClick={() => navigate("/settings/security")}>
-          <div className="flex items-center space-x-3">
-            <Lock className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.security")}</span>
-          </div>
-          <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <ChevronRight size={18} />
-          </Button>
-        </div>
-        
-        <Separator />
-        
-        <div className="flex items-center justify-between" onClick={() => navigate("/notifications")}>
-          <div className="flex items-center space-x-3">
-            <Bell className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.notifications")}</span>
-          </div>
-          <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <ChevronRight size={18} />
-          </Button>
-        </div>
-        
-        <Separator />
-        
-        <div className="flex items-center justify-between" onClick={handleWhatsAppSupport}>
-          <div className="flex items-center space-x-3">
-            <MessageCircle className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.whatsappSupport")}</span>
-          </div>
-          <Button variant="ghost" size="sm" className="rounded-full h-8">
-            <ChevronRight size={18} />
-          </Button>
-        </div>
-        
-        <Separator />
-        
-        <div className="flex items-center justify-between" onClick={handleAboutZamo}>
-          <div className="flex items-center space-x-3">
-            <Info className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.about")}</span>
-          </div>
-          <span className="text-xs text-muted-foreground">
-            {t("settings.version")} 1.0.0
-          </span>
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
       
-      {/* Logout */}
-      <div className="pt-4">
-        <Button 
-          variant="destructive"
-          className="w-full"
-          onClick={handleLogout}
-        >
-          <LogOut size={16} className="mr-2" />
-          {t("auth.logout")}
-        </Button>
-      </div>
+      {/* Theme Selection Dialog */}
+      <Dialog open={showThemeDialog} onOpenChange={setShowThemeDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("settings.theme.title")}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <ThemeSwitcher onSelect={() => setShowThemeDialog(false)} />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

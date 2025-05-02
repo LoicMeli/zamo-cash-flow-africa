@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,6 +39,8 @@ import SavingsDetail from "./pages/SavingsDetail";
 import Notifications from "./pages/Notifications";
 import SecuritySettings from "./pages/SecuritySettings";
 import AddContact from "./pages/AddContact";
+import NotificationSettings from "./pages/NotificationSettings";
+import Referral from "./pages/Referral";
 
 // Create a new QueryClient instance with proper options
 const queryClient = new QueryClient({
@@ -87,8 +90,10 @@ const App = () => {
                       <Route path="/financial-coach" element={<FinancialCoach />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/settings/security" element={<SecuritySettings />} />
+                      <Route path="/settings/notifications" element={<NotificationSettings />} />
                       <Route path="/notifications" element={<Notifications />} />
                       <Route path="/add-contact" element={<AddContact />} />
+                      <Route path="/referral" element={<Referral />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>
