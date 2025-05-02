@@ -10,11 +10,15 @@ import ActionButtons from "@/components/ActionButtons";
 import TransactionStats from "@/components/TransactionStats";
 import TransactionList from "@/components/TransactionList";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [greeting, setGreeting] = useState("");
+  const [hasNotifications] = useState(true);
   
   // Mock stats data
   const stats = {
@@ -68,11 +72,21 @@ const Dashboard = () => {
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="rounded-full relative">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="rounded-full relative"
+            onClick={() => navigate("/notifications")}
+          >
             <Bell size={20} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            {hasNotifications && (
+              <Badge className="absolute -top-1 -right-1 w-2 h-2 p-0 bg-red-500" />
+            )}
           </Button>
-          <Avatar className="h-10 w-10 border-2 border-primary-blue/20">
+          <Avatar 
+            className="h-10 w-10 border-2 border-primary-blue/20 cursor-pointer"
+            onClick={() => navigate("/profile")}
+          >
             {user?.photoURL ? (
               <AvatarImage src={user.photoURL} alt={user.name || "User"} />
             ) : (

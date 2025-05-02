@@ -19,13 +19,13 @@ const FloatingActionButton = () => {
     {
       icon: UserPlus,
       label: t("common.addContact"),
-      action: () => navigate("/family"),
+      action: () => navigate("/add-contact"),
       color: "bg-green-500 text-white",
     },
     {
       icon: Wallet,
       label: t("common.rechargeWallet"),
-      action: () => navigate("/family"),
+      action: () => navigate("/topup"),
       color: "bg-blue-500 text-white",
     },
     {

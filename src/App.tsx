@@ -30,6 +30,15 @@ import NotFound from "./pages/NotFound";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 import Wallet from "./pages/Wallet";
+import Withdraw from "./pages/Withdraw";
+import WithdrawDetails from "./pages/WithdrawDetails";
+import TopUp from "./pages/TopUp";
+import TopUpMethod from "./pages/TopUpMethod";
+import FamilySettings from "./pages/FamilySettings";
+import SavingsDetail from "./pages/SavingsDetail";
+import Notifications from "./pages/Notifications";
+import SecuritySettings from "./pages/SecuritySettings";
+import AddContact from "./pages/AddContact";
 
 // Create a new QueryClient instance with proper options
 const queryClient = new QueryClient({
@@ -65,13 +74,22 @@ const App = () => {
                       <Route path="/wallet" element={<Wallet />} />
                       <Route path="/send" element={<SendMoney />} />
                       <Route path="/scan" element={<ScanQR />} />
+                      <Route path="/withdraw" element={<Withdraw />} />
+                      <Route path="/withdraw/:agentId" element={<WithdrawDetails />} />
+                      <Route path="/topup" element={<TopUp />} />
+                      <Route path="/topup/:method" element={<TopUpMethod />} />
                       <Route path="/agents" element={<FindAgent />} />
                       <Route path="/family" element={<FamilyWallet />} />
+                      <Route path="/family/settings" element={<FamilySettings />} />
                       <Route path="/savings" element={<Savings />} />
+                      <Route path="/savings/:id" element={<SavingsDetail />} />
                       <Route path="/group-savings" element={<GroupSavings />} />
                       <Route path="/family-bills" element={<FamilyBills />} />
                       <Route path="/financial-coach" element={<FinancialCoach />} />
                       <Route path="/settings" element={<Settings />} />
+                      <Route path="/settings/security" element={<SecuritySettings />} />
+                      <Route path="/notifications" element={<Notifications />} />
+                      <Route path="/add-contact" element={<AddContact />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>

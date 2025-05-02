@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/providers/AuthProvider";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { useTheme } from "@/providers/ThemeProvider";
@@ -13,11 +12,13 @@ import {
   HelpCircle, 
   Info, 
   LogOut,
-  ChevronRight
+  ChevronRight,
+  MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Settings = () => {
   const { logout } = useAuth();
@@ -28,6 +29,16 @@ const Settings = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+  
+  const handleWhatsAppSupport = () => {
+    // In a real app, this would open WhatsApp with a pre-filled message
+    toast.success(t("settings.whatsappSupportStarted"));
+    window.open("https://wa.me/12345678901?text=Hello%20Zamo%20Support", "_blank");
+  };
+  
+  const handleAboutZamo = () => {
+    toast.info("Zamo v1.0.0 - Financial inclusivity for Africa");
   };
 
   return (
@@ -64,6 +75,25 @@ const Settings = () => {
               🇫🇷 {t("settings.french")}
             </Button>
           </div>
+        </div>
+        
+        <div className="flex justify-end mt-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`rounded-full h-8 ${language === 'pidgin' ? 'bg-primary-blue text-white' : ''}`}
+            onClick={() => setLanguage("pidgin")}
+          >
+            🇳🇬 {t("settings.pidgin")}
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className={`rounded-full h-8 ${language === 'camfran' ? 'bg-primary-blue text-white' : ''} ml-2`}
+            onClick={() => setLanguage("camfran")}
+          >
+            🇨🇲 {t("settings.camfran")}
+          </Button>
         </div>
       </div>
       
@@ -110,7 +140,7 @@ const Settings = () => {
       
       {/* Other settings */}
       <div className="zamo-card space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" onClick={() => navigate("/profile")}>
           <div className="flex items-center space-x-3">
             <User className="text-primary-blue" size={20} />
             <span className="font-medium">{t("settings.profile")}</span>
@@ -122,7 +152,7 @@ const Settings = () => {
         
         <Separator />
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" onClick={() => navigate("/settings/security")}>
           <div className="flex items-center space-x-3">
             <Lock className="text-primary-blue" size={20} />
             <span className="font-medium">{t("settings.security")}</span>
@@ -134,7 +164,7 @@ const Settings = () => {
         
         <Separator />
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" onClick={() => navigate("/notifications")}>
           <div className="flex items-center space-x-3">
             <Bell className="text-primary-blue" size={20} />
             <span className="font-medium">{t("settings.notifications")}</span>
@@ -146,10 +176,10 @@ const Settings = () => {
         
         <Separator />
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" onClick={handleWhatsAppSupport}>
           <div className="flex items-center space-x-3">
-            <HelpCircle className="text-primary-blue" size={20} />
-            <span className="font-medium">{t("settings.help")}</span>
+            <MessageCircle className="text-primary-blue" size={20} />
+            <span className="font-medium">{t("settings.whatsappSupport")}</span>
           </div>
           <Button variant="ghost" size="sm" className="rounded-full h-8">
             <ChevronRight size={18} />
@@ -158,7 +188,7 @@ const Settings = () => {
         
         <Separator />
         
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between" onClick={handleAboutZamo}>
           <div className="flex items-center space-x-3">
             <Info className="text-primary-blue" size={20} />
             <span className="font-medium">{t("settings.about")}</span>
