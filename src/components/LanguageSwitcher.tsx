@@ -7,7 +7,7 @@ const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex items-center space-x-1 bg-secondary rounded-full p-1">
+    <div className="flex items-center space-x-1 bg-secondary rounded-full p-1 flex-wrap">
       <Button
         variant="ghost"
         size="sm"
@@ -40,6 +40,17 @@ const LanguageSwitcher = () => {
         onClick={() => setLanguage("pidgin")}
       >
         🇨🇲 Pidgin
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className={cn(
+          "rounded-full px-3 h-8 text-sm font-medium",
+          language === "camfran" && "bg-white dark:bg-primary shadow-sm"
+        )}
+        onClick={() => setLanguage("camfran")}
+      >
+        🇨🇲 Camfran
       </Button>
     </div>
   );

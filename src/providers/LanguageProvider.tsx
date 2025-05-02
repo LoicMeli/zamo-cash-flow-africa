@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { translations } from "@/lib/translations";
 
-type Language = "en" | "fr" | "pidgin";
+type Language = "en" | "fr" | "pidgin" | "camfran";
 
 interface LanguageProviderProps {
   children: React.ReactNode;

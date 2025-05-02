@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     common: {
@@ -328,6 +327,117 @@ export const translations = {
       confirmPin: "Confirm PIN",
       finish: "Finish",
       logout: "Commot"
+    }
+  },
+  camfran: {
+    common: {
+      send: "Dash",
+      receive: "Collect",
+      scan: "Scan",
+      home: "Home",
+      wallet: "Money Box",
+      agents: "Les Gars",
+      profile: "My Profil",
+      balance: "Mon Cash",
+      settings: "Settings",
+      viewAll: "See All",
+      addAgent: "Add Un Gars",
+      rechargeWallet: "Mettre Mbongo",
+      payBill: "Pay Les Factures",
+      addContact: "Add Le Number",
+      inviteContact: "Invite Le Gars",
+      savings: "Garde Money",
+      hideCode: "Cache Code",
+      showCode: "Show Code",
+      change: "Change am",
+      logout: "Sortir"
+    },
+    dashboard: {
+      greeting: "Tu don come back",
+      goodMorning: "Le Matin",
+      goodAfternoon: "L'après-midi",
+      goodEvening: "Le Soir",
+      user: "Le Gars",
+      availableBalance: "Cash Wey You Get",
+      totalBalance: "Tout Ton Cash",
+      recentTransactions: "Money Wey Don Move",
+      noTransactions: "No money move yet",
+      moneyIn: "Cash Don Enter",
+      moneyOut: "Cash Don Comot",
+      monthlyStats: "Ce Mois Stats",
+      accountNumber: "Account Numero",
+      zamoPass: "Ta Zamo Pass",
+      scanToReceive: "Scan pour collect le mbongo"
+    },
+    wallet: {
+      title: "Mon Cash",
+      send: "Dash Money",
+      sendLocal: "Dash le mbongo",
+      receive: "Collect Money",
+      receiveLocal: "Ton cash va venir",
+      withdraw: "Retirer",
+      withdrawLocal: "Prends ton cash",
+      topUp: "Add Cash",
+      topUpLocal: "Mettre le mbongo inside",
+      recentTransactions: "Cash Wey Don Move",
+      noRecentTransactions: "No money don move yet"
+    },
+    agents: {
+      title: "Find Les Gars",
+      nearby: "Les Gars for Area",
+      available: "Dispo",
+      unavailable: "Pas Dispo",
+      call: "Call Le Gars",
+      directions: "Show Road",
+      findNearest: "Nearest Le Gars"
+    },
+    profile: {
+      zamoID: "Zamo ID",
+      info: "My Info",
+      settings: "Settings",
+      fullName: "Nom Complet",
+      phoneNumber: "Le Number",
+      email: "Email",
+      notSet: "Pas encore set",
+      editProfile: "Edit My Info"
+    },
+    settings: {
+      title: "Settings",
+      language: "Le Language",
+      english: "English",
+      french: "Français",
+      pidgin: "Pidgin",
+      camfran: "Camfran",
+      security: "Security & PIN",
+      profile: "My Profil",
+      notifications: "Notifications",
+      help: "Aide",
+      about: "About Zamo",
+      version: "Version",
+      usePIN: "Use PIN for mbongo work",
+      biometrics: "Use finger ou face",
+      changePin: "Change PIN numero",
+      theme: "Style",
+      light: "Clair",
+      dark: "Noir",
+      system: "Follow Phone",
+      whatsappSupport: "WhatsApp Help",
+      contactUs: "Call We"
+    },
+    auth: {
+      login: "Enter",
+      register: "Join",
+      phoneNumber: "Le Number",
+      enterPhone: "Tape ton number",
+      continue: "Continue",
+      verifyCode: "Check Code",
+      enterCode: "Tape le code qu'on send you",
+      verify: "Verify",
+      setupPin: "Set PIN",
+      createPin: "Create PIN for ton compte",
+      confirmPin: "Confirm PIN",
+      finish: "Finish",
+      logout: "Sortir"
     }
   }
 };
