@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     common: {
@@ -1263,16 +1262,16 @@ export const translations = {
       nextDueDate: "Prochaine Date",
       yourContribution: "Ta Contribution",
       overview: "Aperçu",
-      members: "Membres",
+      members: "People",
       activity: "Activité",
       showStats: "Afficher Stats",
       startDate: "Date Début",
       endDate: "Date Fin",
-      currentRound: "Tour Actuel",
+      currentRound: "This Round",
       contributionMade: "Contribution Faite",
       payoutReceived: "Argent Reçu",
-      contributed: "Contribué",
-      pending: "En attente",
+      contributed: "Don Pay",
+      pending: "Never Pay",
       notFound: "Groupe Pas Trouvé",
       notFoundMessage: "Le ndjangui que tu cherches n'existe pas",
       backToSavings: "Retour aux Ndjangui",
