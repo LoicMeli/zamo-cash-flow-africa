@@ -1,43 +1,64 @@
 
-import { Moon, Sun, Laptop } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
-import { useLanguage } from "@/providers/LanguageProvider";
 import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+import { Moon, Sun, MonitorSmartphone } from "lucide-react";
+import { useLanguage } from "@/providers/LanguageProvider";
+import { cn } from "@/lib/utils";
 
-const ThemeSwitcher = () => {
+interface ThemeSwitcherProps {
+  onLanguageChange?: () => void;
+}
+
+const ThemeSwitcher = ({ onLanguageChange }: ThemeSwitcherProps) => {
   const { theme, setTheme } = useTheme();
   const { t } = useLanguage();
+  
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+    if (onLanguageChange) onLanguageChange();
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-9 w-9 rounded-full">
-          <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          <Sun className="h-4 w-4 mr-2" />
-          <span>{t('settings.light')}</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          <Moon className="h-4 w-4 mr-2" />
-          <span>{t('settings.dark')}</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          <Laptop className="h-4 w-4 mr-2" />
-          <span>{t('settings.system')}</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex flex-col space-y-2">
+      <Button
+        variant="outline"
+        size="lg"
+        className={cn(
+          "justify-start h-14 px-4",
+          theme === "light" && "border-primary-blue bg-primary-blue/5"
+        )}
+        onClick={() => handleThemeChange("light")}
+      >
+        <Sun className="mr-2 h-5 w-5" />
+        <span>{t("settings.theme.light")}</span>
+      </Button>
+      
+      <Button
+        variant="outline"
+        size="lg"
+        className={cn(
+          "justify-start h-14 px-4",
+          theme === "dark" && "border-primary-blue bg-primary-blue/5"
+        )}
+        onClick={() => handleThemeChange("dark")}
+      >
+        <Moon className="mr-2 h-5 w-5" />
+        <span>{t("settings.theme.dark")}</span>
+      </Button>
+      
+      <Button
+        variant="outline"
+        size="lg"
+        className={cn(
+          "justify-start h-14 px-4",
+          theme === "system" && "border-primary-blue bg-primary-blue/5"
+        )}
+        onClick={() => handleThemeChange("system")}
+      >
+        <MonitorSmartphone className="mr-2 h-5 w-5" />
+        <span>{t("settings.theme.system")}</span>
+      </Button>
+    </div>
   );
 };
 

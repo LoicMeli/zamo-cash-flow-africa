@@ -3,8 +3,17 @@ import { useLanguage } from "@/providers/LanguageProvider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  onLanguageChange?: () => void;
+}
+
+const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
   const { language, setLanguage } = useLanguage();
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage as any);
+    if (onLanguageChange) onLanguageChange();
+  };
 
   return (
     <div className="flex items-center space-x-1 bg-secondary rounded-full p-1 flex-wrap">
@@ -15,7 +24,7 @@ const LanguageSwitcher = () => {
           "rounded-full px-3 h-8 text-sm font-medium",
           language === "en" && "bg-white dark:bg-primary shadow-sm"
         )}
-        onClick={() => setLanguage("en")}
+        onClick={() => handleLanguageChange("en")}
       >
         🇬🇧 EN
       </Button>
@@ -26,7 +35,7 @@ const LanguageSwitcher = () => {
           "rounded-full px-3 h-8 text-sm font-medium",
           language === "fr" && "bg-white dark:bg-primary shadow-sm"
         )}
-        onClick={() => setLanguage("fr")}
+        onClick={() => handleLanguageChange("fr")}
       >
         🇫🇷 FR
       </Button>
@@ -37,7 +46,7 @@ const LanguageSwitcher = () => {
           "rounded-full px-3 h-8 text-sm font-medium",
           language === "pidgin" && "bg-white dark:bg-primary shadow-sm"
         )}
-        onClick={() => setLanguage("pidgin")}
+        onClick={() => handleLanguageChange("pidgin")}
       >
         🇨🇲 Pidgin
       </Button>
@@ -48,7 +57,7 @@ const LanguageSwitcher = () => {
           "rounded-full px-3 h-8 text-sm font-medium",
           language === "camfran" && "bg-white dark:bg-primary shadow-sm"
         )}
-        onClick={() => setLanguage("camfran")}
+        onClick={() => handleLanguageChange("camfran")}
       >
         🇨🇲 Camfran
       </Button>

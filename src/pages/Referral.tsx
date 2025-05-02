@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { ArrowLeft, Share2, Copy, CheckCircle, Users, Gift } from "lucide-react";
@@ -66,7 +65,7 @@ const Referral = () => {
     if (navigator.share) {
       navigator.share({
         title: "Zamo Referral",
-        text: t("referral.shareMessage", { code: referralCode }).replace("[link]", "https://zamo.app/download"),
+        text: t("referral.shareMessage", { code: referralCode }),
       }).catch(err => {
         console.log("Error sharing:", err);
       });

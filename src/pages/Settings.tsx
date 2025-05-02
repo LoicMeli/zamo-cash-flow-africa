@@ -119,7 +119,7 @@ const Settings = () => {
             <DialogTitle>{t("settings.language")}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <LanguageSwitcher onSelect={() => setShowLanguageDialog(false)} />
+            <LanguageSwitcher onLanguageChange={() => setShowLanguageDialog(false)} />
           </div>
         </DialogContent>
       </Dialog>
@@ -131,7 +131,7 @@ const Settings = () => {
             <DialogTitle>{t("settings.theme.title")}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <ThemeSwitcher onSelect={() => setShowThemeDialog(false)} />
+            <ThemeSwitcher onLanguageChange={() => setShowThemeDialog(false)} />
           </div>
         </DialogContent>
       </Dialog>
