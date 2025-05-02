@@ -1,0 +1,26 @@
+
+export const send = {
+  title: "Send Money",
+  recipient: "Recipient",
+  amount: "Amount",
+  note: "Note (optional)",
+  sendTo: "Send to",
+  searchContacts: "Search contacts",
+  recentContacts: "Recent contacts",
+  addContact: "Add new contact",
+  fee: "Fee",
+  total: "Total amount",
+  review: "Review payment",
+  sendingTo: "You're sending to",
+  sendingAmount: "Amount to send",
+  confirm: "Confirm & Send",
+  success: "Money Sent!",
+  successMessage: "Your money has been sent successfully",
+  reference: "Reference",
+  shareReceipt: "Share Receipt",
+  errors: {
+    insufficientFunds: "You don't have enough funds",
+    invalidAmount: "Please enter a valid amount",
+    minimumAmount: "Minimum amount is 100 FCFA",
+  },
+};

@@ -12,7 +12,7 @@ interface LanguageProviderProps {
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -30,7 +30,7 @@ export function LanguageProvider({
     document.documentElement.setAttribute("lang", language);
   }, [language]);
 
-  const t = (key: string): string => {
+  const t = (key: string, params?: Record<string, string | number>): string => {
     const keys = key.split(".");
     let translation: any = translations[language];
     
@@ -38,12 +38,36 @@ export function LanguageProvider({
       if (translation && typeof translation === 'object' && k in translation) {
         translation = translation[k];
       } else {
-        return key; // Fallback to key if translation not found
+        // If translation not found in current language, fallback to English
+        if (language !== 'en') {
+          let fallback: any = translations['en'];
+          for (const k of keys) {
+            if (fallback && typeof fallback === 'object' && k in fallback) {
+              fallback = fallback[k];
+            } else {
+              return key; // If not found in English either, return key
+            }
+          }
+          if (typeof fallback === 'string') {
+            translation = fallback;
+          } else {
+            return key;
+          }
+        } else {
+          return key;
+        }
       }
     }
     
     // Check if the final result is a string
     if (typeof translation === 'string') {
+      // If params are provided, replace placeholders
+      if (params) {
+        return Object.entries(params).reduce((str, [key, value]) => {
+          const regex = new RegExp(`{{${key}}}`, 'g');
+          return str.replace(regex, String(value));
+        }, translation);
+      }
       return translation;
     } else {
       // If it's an object, return the key as fallback

@@ -1,0 +1,22 @@
+
+export const contacts = {
+  title: "Contacts",
+  searchPlaceholder: "Search contacts",
+  addContact: "Add Contact",
+  editContact: "Edit Contact",
+  deleteContact: "Delete Contact",
+  confirmDelete: "Are you sure you want to delete this contact?",
+  noContacts: "You don't have any contacts yet",
+  name: "Name",
+  phoneNumber: "Phone Number",
+  email: "Email (Optional)",
+  notes: "Notes",
+  recent: "Recent",
+  all: "All",
+  favorite: "Favorites",
+  contactAdded: "Contact added successfully",
+  contactUpdated: "Contact updated successfully",
+  contactDeleted: "Contact deleted successfully",
+  invalidPhone: "Please enter a valid phone number",
+  alreadyExists: "This contact already exists",
+};

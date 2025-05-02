@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { ArrowLeft, Share2, Copy, CheckCircle, Users, Gift } from "lucide-react";
