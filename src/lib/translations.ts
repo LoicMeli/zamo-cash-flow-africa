@@ -357,6 +357,8 @@ export const translations = {
       languages: {
         en: "English",
         fr: "Français",
+        pidgin: "Pidgin",
+        camfran: "Camfranglais",
         languageChanged: "Language updated"
       },
       security: {

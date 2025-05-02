@@ -13,7 +13,7 @@ const ThemeSwitcher = ({ onLanguageChange }: ThemeSwitcherProps) => {
   const { theme, setTheme } = useTheme();
   const { t } = useLanguage();
   
-  const handleThemeChange = (newTheme: string) => {
+  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
     setTheme(newTheme);
     if (onLanguageChange) onLanguageChange();
   };
