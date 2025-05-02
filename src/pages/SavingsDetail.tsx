@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { 
@@ -18,6 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -180,7 +180,7 @@ const SavingsDetail = () => {
             <span className="opacity-80">{t("savings.progress")}</span>
             <span>{tontine.progress}%</span>
           </div>
-          <Progress value={tontine.progress} className="h-2 bg-white/20" indicatorClassName="bg-white" />
+          <Progress value={tontine.progress} className="h-2 bg-white/20" />
         </div>
         
         <div className="flex justify-between text-sm">

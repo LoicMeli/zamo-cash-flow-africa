@@ -1,6 +1,8 @@
 
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
+import { fr, enUS } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -65,4 +67,11 @@ export function formatRelativeTime(date: Date): string {
   
   const diffInYears = Math.floor(diffInDays / 365);
   return `${diffInYears}y ago`;
+}
+
+// Add the missing formatDate function
+export function formatDate(date: Date, locale: string = 'en-US'): string {
+  const localeObject = locale.startsWith('fr') ? fr : enUS;
+  
+  return format(date, 'PPP', { locale: localeObject });
 }
