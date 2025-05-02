@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { ArrowLeft, Share2, Copy, CheckCircle, Users, Gift } from "lucide-react";
@@ -55,7 +56,7 @@ const Referral = () => {
     navigator.clipboard.writeText(referralCode).then(() => {
       setCopied(true);
       toast.success(t("common.success"), {
-        description: "Code copied to clipboard"
+        description: t("referral.shareCode")
       });
       setTimeout(() => setCopied(false), 3000);
     });
