@@ -3,7 +3,7 @@ import { useLanguage } from "@/providers/LanguageProvider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useMediaQuery } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Languages } from "lucide-react";
 
 interface LanguageSwitcherProps {
@@ -12,7 +12,7 @@ interface LanguageSwitcherProps {
 
 const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
   const { language, setLanguage } = useLanguage();
-  const isMobile = useMediaQuery("(max-width: 640px)");
+  const isMobile = useIsMobile();
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage as any);
