@@ -34,26 +34,25 @@ export function LanguageProvider({
     const keys = key.split(".");
     let translation: any = translations[language];
     
+    // Try to get the translation from the selected language
     for (const k of keys) {
       if (translation && typeof translation === 'object' && k in translation) {
         translation = translation[k];
       } else {
         // If translation not found in current language, fallback to English
-        if (language !== 'en') {
-          let fallback: any = translations['en'];
-          for (const k of keys) {
-            if (fallback && typeof fallback === 'object' && k in fallback) {
-              fallback = fallback[k];
-            } else {
-              return key; // If not found in English either, return key
-            }
-          }
-          if (typeof fallback === 'string') {
-            translation = fallback;
-          } else {
-            return key;
-          }
+        translation = null;
+        break;
+      }
+    }
+    
+    // If translation wasn't found in the selected language, try English
+    if (translation === null && language !== 'en') {
+      translation = translations['en'];
+      for (const k of keys) {
+        if (translation && typeof translation === 'object' && k in translation) {
+          translation = translation[k];
         } else {
+          // If not found in English either, return key as fallback
           return key;
         }
       }
@@ -70,7 +69,7 @@ export function LanguageProvider({
       }
       return translation;
     } else {
-      // If it's an object, return the key as fallback
+      // If it's not a string (null, undefined, or object), return the key as fallback
       return key;
     }
   };
