@@ -85,10 +85,18 @@ export const settings = {
   },
   
   // About
-  about: {
+  aboutSection: {
     title: "À propos de ZAMO",
     version: "Version",
     developer: "Développeur",
     copyright: "Tous droits réservés"
-  }
+  },
+
+  // Extra settings
+  usePIN: "Utiliser le PIN pour les transactions",
+  biometrics: "Activer l'authentification biométrique",
+  changePin: "Changer le code PIN",
+  whatsappSupport: "Support WhatsApp",
+  contactUs: "Contactez-nous",
+  profile: "Profil"
 };

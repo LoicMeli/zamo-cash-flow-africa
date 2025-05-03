@@ -4,7 +4,7 @@ export const profile = {
   personalInfo: "Informations personnelles",
   accountDetails: "Détails du compte",
   preferences: "Préférences",
-  security: "Sécurité",
+  securitySettings: "Paramètres de sécurité",
   editProfile: "Modifier le profil",
   name: "Nom",
   email: "Email",
@@ -16,7 +16,6 @@ export const profile = {
   language: "Langue",
   theme: "Thème",
   notification: "Notifications",
-  security: "Sécurité",
   changePin: "Changer le code PIN",
   biometricLogin: "Connexion biométrique",
   twoFactorAuth: "Authentification à deux facteurs",
@@ -27,5 +26,10 @@ export const profile = {
   deleteAccount: "Supprimer le compte",
   accountNumber: "Numéro de compte",
   accountType: "Type de compte",
-  memberSince: "Membre depuis"
+  memberSince: "Membre depuis",
+  fullName: "Nom complet",
+  info: "Informations",
+  settings: "Paramètres",
+  zamoID: "ID ZAMO",
+  notSet: "Non défini"
 };
