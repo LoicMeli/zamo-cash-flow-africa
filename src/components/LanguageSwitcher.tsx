@@ -11,7 +11,7 @@ interface LanguageSwitcherProps {
 }
 
 const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const isMobile = useIsMobile();
 
   const handleLanguageChange = (newLanguage: string) => {
@@ -35,7 +35,7 @@ const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
           <Button variant="ghost" size="sm" className="gap-2">
             <Languages size={16} />
             {languageOptions.find(l => l.code === language)?.flag}
-            <span className="sr-only">Change language</span>
+            <span className="sr-only">{t('language.select')}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

@@ -29,5 +29,7 @@ export const common = {
   profile: "Profil",
   addContact: "Ajouter mbom",
   rechargeWallet: "Mettre l'argent",
-  payBill: "Payer facture"
+  payBill: "Payer facture",
+  change: "Changer le PIN",
+  logout: "Déconnexion"
 };

@@ -29,5 +29,7 @@ export const common = {
   profile: "Profil",
   addContact: "Ajouter un contact",
   rechargeWallet: "Recharger le portefeuille",
-  payBill: "Payer une facture"
+  payBill: "Payer une facture",
+  change: "Changer le PIN",
+  logout: "Déconnexion"
 };

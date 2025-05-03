@@ -1,4 +1,3 @@
-
 export const settings = {
   title: "Settings",
   account: "Account",
@@ -58,7 +57,7 @@ export const settings = {
   // Language settings
   languageSettings: {
     title: "Language Settings",
-    selectLanguage: "Select Language",
+    selectLanguage: "Choose your language",
     english: "English",
     french: "French",
     pidgin: "Pidgin",
@@ -97,5 +96,6 @@ export const settings = {
   biometrics: "Enable biometric authentication",
   changePin: "Change PIN",
   whatsappSupport: "WhatsApp Support",
-  contactUs: "Contact us"
+  contactUs: "Contact us",
+  profile: "Profile"
 };

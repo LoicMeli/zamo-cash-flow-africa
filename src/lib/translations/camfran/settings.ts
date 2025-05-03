@@ -58,7 +58,7 @@ export const settings = {
   // Language settings
   languageSettings: {
     title: "Paramètres de langue",
-    selectLanguage: "Choisir la langue",
+    selectLanguage: "Choisir votre langue",
     english: "Anglais",
     french: "Français",
     pidgin: "Pidgin",

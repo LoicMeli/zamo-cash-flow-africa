@@ -1,4 +1,3 @@
-
 export const settings = {
   title: "Paramètres",
   account: "Compte",
@@ -58,7 +57,7 @@ export const settings = {
   // Language settings
   languageSettings: {
     title: "Paramètres de langue",
-    selectLanguage: "Sélectionner la langue",
+    selectLanguage: "Choisissez votre langue",
     english: "Anglais",
     french: "Français",
     pidgin: "Pidgin",
