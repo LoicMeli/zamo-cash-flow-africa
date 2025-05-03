@@ -1,0 +1,25 @@
+
+export const savings = {
+  title: "Épargne",
+  totalSavings: "Épargne totale",
+  savingsGoals: "Objectifs d'épargne",
+  createGoal: "Créer un objectif",
+  addToSavings: "Ajouter à l'épargne",
+  withdrawFromSavings: "Retirer de l'épargne",
+  goalName: "Nom de l'objectif",
+  targetAmount: "Montant cible",
+  currentAmount: "Montant actuel",
+  deadline: "Date limite",
+  progress: "Progrès",
+  goalDetails: "Détails de l'objectif",
+  editGoal: "Modifier l'objectif",
+  deleteGoal: "Supprimer l'objectif",
+  achievedGoals: "Objectifs atteints",
+  ongoingGoals: "Objectifs en cours",
+  completedOn: "Complété le",
+  savingsTips: "Conseils d'épargne",
+  autoSave: "Épargne automatique",
+  savingsHistory: "Historique d'épargne",
+  noSavingsGoals: "Vous n'avez pas d'objectifs d'épargne",
+  createNewGoal: "Créer un nouvel objectif"
+};

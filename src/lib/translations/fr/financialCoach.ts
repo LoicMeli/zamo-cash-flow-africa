@@ -1,0 +1,25 @@
+
+export const financialCoach = {
+  title: "Coach financier",
+  overview: "Aperçu financier",
+  insights: "Analyses",
+  recommendations: "Recommandations",
+  spendingAnalysis: "Analyse des dépenses",
+  savingsTips: "Conseils d'épargne",
+  budgetPlanner: "Planificateur de budget",
+  financialGoals: "Objectifs financiers",
+  monthlyBreakdown: "Répartition mensuelle",
+  topCategories: "Principales catégories",
+  spendingTrend: "Tendance des dépenses",
+  savingsRate: "Taux d'épargne",
+  createBudget: "Créer un budget",
+  setBudgetLimits: "Définir des limites de budget",
+  category: "Catégorie",
+  allocated: "Alloué",
+  spent: "Dépensé",
+  remaining: "Restant",
+  healthScore: "Score de santé financière",
+  improveTips: "Conseils d'amélioration",
+  currentMonth: "Mois en cours",
+  previousMonth: "Mois précédent"
+};

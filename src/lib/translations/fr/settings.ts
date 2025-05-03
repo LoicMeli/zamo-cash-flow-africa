@@ -2,52 +2,45 @@
 export const settings = {
   title: "Paramètres",
   account: "Compte",
-  profile: "Profil",
   security: "Sécurité",
   notifications: "Notifications",
   language: "Langue",
-  appearance: "Apparence",
+  theme: "Thème",
   help: "Aide & Support",
-  about: "À propos de Zamo",
+  about: "À propos",
   logout: "Déconnexion",
-  version: "Version",
-  delete: "Supprimer Compte",
-  theme: {
-    title: "Thème",
-    light: "Clair",
-    dark: "Sombre",
-    system: "Système",
-    themeChanged: "Thème mis à jour"
+  
+  // Account settings
+  accountSettings: {
+    title: "Paramètres du compte",
+    personalInfo: "Informations personnelles",
+    name: "Nom",
+    email: "Email",
+    phone: "Téléphone",
+    dateOfBirth: "Date de naissance",
+    address: "Adresse",
+    updateInfo: "Mettre à jour",
+    deleteAccount: "Supprimer mon compte",
+    deleteWarning: "Cette action est irréversible. Toutes vos données seront supprimées."
   },
-  languages: {
-    en: "Anglais",
-    fr: "Français",
-    pidgin: "Pidgin",
-    camfran: "Camfranglais",
-    languageChanged: "Langue mise à jour"
+  
+  // Security settings
+  securitySettings: {
+    title: "Paramètres de sécurité",
+    changePin: "Modifier le code PIN",
+    currentPin: "Code PIN actuel",
+    newPin: "Nouveau code PIN",
+    confirmPin: "Confirmer le nouveau PIN",
+    biometric: "Authentification biométrique",
+    twoFactor: "Authentification à deux facteurs",
+    enableSms: "Activer la confirmation par SMS",
+    deviceManagement: "Gestion des appareils",
+    recentDevices: "Appareils récents",
+    logOutAllDevices: "Déconnecter tous les appareils"
   },
-  security: {
-    title: "Sécurité",
-    usePIN: "Utiliser le PIN pour les transactions",
-    usePINDescription: "Exiger un PIN pour les opérations sensibles",
-    useBiometrics: "Utiliser la biométrie",
-    useBiometricsDescription: "Utiliser l'empreinte digitale ou la reconnaissance faciale",
-    changePIN: "Changer le PIN",
-    currentPIN: "PIN actuel",
-    newPIN: "Nouveau PIN",
-    confirmPIN: "Confirmer le nouveau PIN",
-    pinChanged: "PIN changé avec succès",
-    enterCurrentPIN: "Veuillez entrer votre PIN actuel",
-    enterValidPIN: "Veuillez entrer un PIN valide",
-    pinsDontMatch: "Les nouveaux PIN ne correspondent pas",
-    pinEnabled: "PIN de transaction activé",
-    pinDisabled: "PIN de transaction désactivé",
-    biometricsEnabled: "Authentification biométrique activée",
-    biometricsDisabled: "Authentification biométrique désactivée",
-    pinChangedSuccess: "PIN changé avec succès",
-    pinChangedSuccessMessage: "Votre PIN a été mis à jour avec succès"
-  },
-  notifications: {
+  
+  // Notification settings
+  notificationSettings: {
     title: "Notifications",
     pushNotifications: "Notifications Push",
     transactions: "Transactions",
@@ -57,6 +50,45 @@ export const settings = {
     groupActivity: "Activité de groupe",
     emailNotifications: "Notifications par e-mail",
     smsNotifications: "Notifications par SMS",
-    notificationsUpdated: "Préférences de notification mises à jour"
+    doNotDisturb: "Ne pas déranger",
+    from: "De",
+    to: "À"
+  },
+  
+  // Language settings
+  languageSettings: {
+    title: "Paramètres de langue",
+    selectLanguage: "Sélectionner la langue",
+    english: "Anglais",
+    french: "Français",
+    pidgin: "Pidgin",
+    camfranglais: "Camfranglais"
+  },
+  
+  // Theme settings
+  themeSettings: {
+    title: "Paramètres de thème",
+    selectTheme: "Sélectionner le thème",
+    light: "Clair",
+    dark: "Sombre",
+    system: "Système"
+  },
+  
+  // Help & Support
+  helpSupport: {
+    title: "Aide & Support",
+    faq: "Questions fréquentes",
+    contactUs: "Contactez-nous",
+    reportIssue: "Signaler un problème",
+    termsOfService: "Conditions d'utilisation",
+    privacyPolicy: "Politique de confidentialité"
+  },
+  
+  // About
+  about: {
+    title: "À propos de ZAMO",
+    version: "Version",
+    developer: "Développeur",
+    copyright: "Tous droits réservés"
   }
 };

@@ -1,0 +1,26 @@
+
+export const agents = {
+  title: "Agents ZAMO",
+  findNearby: "Trouver des agents à proximité",
+  searchByLocation: "Rechercher par localisation",
+  searchAgents: "Rechercher des agents",
+  nearbyAgents: "Agents à proximité",
+  noAgentsFound: "Aucun agent trouvé dans cette zone",
+  distance: "Distance",
+  open: "Ouvert",
+  closed: "Fermé",
+  getDirections: "Obtenir l'itinéraire",
+  contactAgent: "Contacter l'agent",
+  filters: "Filtres",
+  sortBy: "Trier par",
+  distance: "Distance",
+  rating: "Note",
+  services: "Services",
+  withdraw: "Retrait",
+  deposit: "Dépôt",
+  accountOpening: "Ouverture de compte",
+  applyFilters: "Appliquer les filtres",
+  resetFilters: "Réinitialiser les filtres",
+  agentDetails: "Détails de l'agent",
+  openingHours: "Heures d'ouverture"
+};

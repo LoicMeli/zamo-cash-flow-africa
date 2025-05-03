@@ -1,0 +1,25 @@
+
+export const familyBills = {
+  title: "Factures familiales",
+  upcomingBills: "Factures à venir",
+  paidBills: "Factures payées",
+  addBill: "Ajouter une facture",
+  billName: "Nom de la facture",
+  amount: "Montant",
+  dueDate: "Date d'échéance",
+  category: "Catégorie",
+  payBill: "Payer la facture",
+  splitBill: "Partager la facture",
+  assignTo: "Assigner à",
+  billDetails: "Détails de la facture",
+  editBill: "Modifier la facture",
+  deleteBill: "Supprimer la facture",
+  markAsPaid: "Marquer comme payée",
+  paidOn: "Payée le",
+  paidBy: "Payée par",
+  reminderSettings: "Paramètres de rappel",
+  setReminder: "Définir un rappel",
+  reminderDate: "Date de rappel",
+  noBills: "Aucune facture à afficher",
+  addYourFirst: "Ajoutez votre première facture"
+};

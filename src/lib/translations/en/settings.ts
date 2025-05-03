@@ -2,52 +2,45 @@
 export const settings = {
   title: "Settings",
   account: "Account",
-  profile: "Profile",
   security: "Security",
   notifications: "Notifications",
   language: "Language",
-  appearance: "Appearance",
+  theme: "Theme",
   help: "Help & Support",
-  about: "About Zamo",
-  logout: "Log out",
-  version: "Version",
-  delete: "Delete Account",
-  theme: {
-    title: "Theme",
-    light: "Light",
-    dark: "Dark",
-    system: "System Default",
-    themeChanged: "Theme updated"
+  about: "About",
+  logout: "Log Out",
+  
+  // Account settings
+  accountSettings: {
+    title: "Account Settings",
+    personalInfo: "Personal Information",
+    name: "Name",
+    email: "Email",
+    phone: "Phone",
+    dateOfBirth: "Date of Birth",
+    address: "Address",
+    updateInfo: "Update Information",
+    deleteAccount: "Delete My Account",
+    deleteWarning: "This action is irreversible. All your data will be deleted."
   },
-  languages: {
-    en: "English",
-    fr: "Français",
-    pidgin: "Pidgin",
-    camfran: "Camfranglais",
-    languageChanged: "Language updated"
+  
+  // Security settings
+  securitySettings: {
+    title: "Security Settings",
+    changePin: "Change PIN",
+    currentPin: "Current PIN",
+    newPin: "New PIN",
+    confirmPin: "Confirm New PIN",
+    biometric: "Biometric Authentication",
+    twoFactor: "Two-Factor Authentication",
+    enableSms: "Enable SMS Verification",
+    deviceManagement: "Device Management",
+    recentDevices: "Recent Devices",
+    logOutAllDevices: "Log Out All Devices"
   },
-  security: {
-    title: "Security",
-    usePIN: "Use PIN for transactions",
-    usePINDescription: "Require PIN for sensitive operations",
-    useBiometrics: "Use Biometrics",
-    useBiometricsDescription: "Use fingerprint or face ID for authentication",
-    changePIN: "Change PIN",
-    currentPIN: "Current PIN",
-    newPIN: "New PIN",
-    confirmPIN: "Confirm New PIN",
-    pinChanged: "PIN Changed Successfully",
-    enterCurrentPIN: "Please enter your current PIN",
-    enterValidPIN: "Please enter a valid PIN",
-    pinsDontMatch: "New PINs don't match",
-    pinEnabled: "Transaction PIN enabled",
-    pinDisabled: "Transaction PIN disabled",
-    biometricsEnabled: "Biometric authentication enabled",
-    biometricsDisabled: "Biometric authentication disabled",
-    pinChangedSuccess: "PIN Changed Successfully",
-    pinChangedSuccessMessage: "Your PIN has been successfully updated"
-  },
-  notifications: {
+  
+  // Notification settings
+  notificationSettings: {
     title: "Notifications",
     pushNotifications: "Push Notifications",
     transactions: "Transactions",
@@ -57,6 +50,45 @@ export const settings = {
     groupActivity: "Group Activity",
     emailNotifications: "Email Notifications",
     smsNotifications: "SMS Notifications",
-    notificationsUpdated: "Notification preferences updated"
+    doNotDisturb: "Do Not Disturb",
+    from: "From",
+    to: "To"
+  },
+  
+  // Language settings
+  languageSettings: {
+    title: "Language Settings",
+    selectLanguage: "Select Language",
+    english: "English",
+    french: "French",
+    pidgin: "Pidgin",
+    camfranglais: "Camfranglais"
+  },
+  
+  // Theme settings
+  themeSettings: {
+    title: "Theme Settings",
+    selectTheme: "Select Theme",
+    light: "Light",
+    dark: "Dark",
+    system: "System"
+  },
+  
+  // Help & Support
+  helpSupport: {
+    title: "Help & Support",
+    faq: "Frequently Asked Questions",
+    contactUs: "Contact Us",
+    reportIssue: "Report an Issue",
+    termsOfService: "Terms of Service",
+    privacyPolicy: "Privacy Policy"
+  },
+  
+  // About
+  about: {
+    title: "About ZAMO",
+    version: "Version",
+    developer: "Developer",
+    copyright: "All Rights Reserved"
   }
 };

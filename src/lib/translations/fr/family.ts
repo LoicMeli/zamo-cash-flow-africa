@@ -1,0 +1,26 @@
+
+export const family = {
+  title: "Portefeuille Familial",
+  createFamily: "Créer un groupe familial",
+  joinFamily: "Rejoindre un groupe familial",
+  inviteMembers: "Inviter des membres",
+  familyMembers: "Membres de la famille",
+  familyBalance: "Solde familial",
+  sharedExpenses: "Dépenses partagées",
+  contributionGoal: "Objectif de contribution",
+  addFunds: "Ajouter des fonds",
+  withdraw: "Retirer",
+  transferToFamily: "Transférer vers le portefeuille familial",
+  transferFromFamily: "Transférer depuis le portefeuille familial",
+  familyCode: "Code famille",
+  enterFamilyCode: "Entrez le code famille",
+  createGroup: "Créer un groupe",
+  manageMembers: "Gérer les membres",
+  leaveFamily: "Quitter le groupe familial",
+  familySettings: "Paramètres du groupe familial",
+  familyName: "Nom du groupe",
+  expenseCategories: "Catégories de dépenses",
+  pendingInvitations: "Invitations en attente",
+  noFamily: "Vous n'êtes pas membre d'un groupe familial",
+  createOrJoin: "Créez ou rejoignez un groupe familial pour commencer"
+};

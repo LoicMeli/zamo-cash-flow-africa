@@ -1,0 +1,25 @@
+
+export const contacts = {
+  title: "Contacts",
+  searchContacts: "Rechercher des contacts",
+  addContact: "Ajouter un contact",
+  recentContacts: "Contacts récents",
+  allContacts: "Tous les contacts",
+  favorites: "Favoris",
+  noContacts: "Aucun contact",
+  addYourFirst: "Ajoutez votre premier contact",
+  name: "Nom",
+  phoneNumber: "Numéro de téléphone",
+  email: "Email",
+  addToFavorites: "Ajouter aux favoris",
+  removeFromFavorites: "Retirer des favoris",
+  editContact: "Modifier le contact",
+  deleteContact: "Supprimer le contact",
+  contactDetails: "Détails du contact",
+  sendMoney: "Envoyer de l'argent",
+  recentTransactions: "Transactions récentes",
+  importContacts: "Importer des contacts",
+  phoneContacts: "Contacts téléphoniques",
+  zamoUsers: "Utilisateurs ZAMO",
+  inviteToZamo: "Inviter à ZAMO"
+};

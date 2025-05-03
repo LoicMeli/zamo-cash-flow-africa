@@ -1,0 +1,26 @@
+
+export const groupSavings = {
+  title: "Épargne de groupe",
+  createGroup: "Créer un groupe d'épargne",
+  joinGroup: "Rejoindre un groupe",
+  myGroups: "Mes groupes",
+  groupBalance: "Solde du groupe",
+  members: "Membres",
+  contribute: "Contribuer",
+  withdraw: "Retirer",
+  groupHistory: "Historique du groupe",
+  groupName: "Nom du groupe",
+  groupGoal: "Objectif du groupe",
+  targetDate: "Date cible",
+  inviteMembers: "Inviter des membres",
+  manageGroup: "Gérer le groupe",
+  leaveGroup: "Quitter le groupe",
+  groupCode: "Code du groupe",
+  enterGroupCode: "Entrez le code du groupe",
+  contributionAmount: "Montant de la contribution",
+  totalContributed: "Total contribué",
+  yourContribution: "Votre contribution",
+  recentContributions: "Contributions récentes",
+  noGroups: "Vous n'êtes pas membre d'un groupe d'épargne",
+  createOrJoin: "Créez ou rejoignez un groupe pour commencer"
+};

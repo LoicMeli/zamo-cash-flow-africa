@@ -1,0 +1,25 @@
+
+export const notifications = {
+  title: "Notifications",
+  all: "Tous",
+  unread: "Non lus",
+  markAllAsRead: "Marquer tout comme lu",
+  deleteAll: "Supprimer tout",
+  noNotifications: "Aucune notification",
+  transaction: "Transaction",
+  security: "Sécurité",
+  account: "Compte",
+  promotion: "Promotion",
+  transactionReceived: "Transaction reçue",
+  transactionSent: "Transaction envoyée",
+  securityAlert: "Alerte de sécurité",
+  newDevice: "Nouvel appareil",
+  accountUpdate: "Mise à jour du compte",
+  promotionalOffer: "Offre promotionnelle",
+  justNow: "À l'instant",
+  minutesAgo: "minutes",
+  hoursAgo: "heures",
+  daysAgo: "jours",
+  markAsRead: "Marquer comme lu",
+  delete: "Supprimer"
+};
