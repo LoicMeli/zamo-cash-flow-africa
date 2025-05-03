@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { useLanguage } from "@/providers/LanguageProvider";
@@ -9,26 +8,51 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type Transaction = {
+export type Transaction = {
   id: string;
-  type: 'send' | 'receive' | 'payment';
+  type: 'send' | 'receive' | 'payment' | 'deposit' | 'withdrawal';
   amount: number;
-  name: string;
+  name?: string;
   date: Date;
   avatar?: string;
+  fee?: number;
+  status?: string;
+  user?: {
+    name: string;
+    phone: string;
+  };
 };
 
 interface TransactionListProps {
   className?: string;
   limit?: number;
+  transactions?: Transaction[];
 }
 
-const TransactionList = ({ className, limit = 5 }: TransactionListProps) => {
+const TransactionList = ({ className, limit = 5, transactions: propTransactions }: TransactionListProps) => {
   const { t, language } = useLanguage();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    // This would normally be an API call
+    // If transactions are provided as props, use them
+    if (propTransactions && propTransactions.length > 0) {
+      // Map the incoming transactions format to our internal format if needed
+      const mappedTransactions = propTransactions.map(tx => {
+        // If transaction already has a name, use it; otherwise try to get from user object
+        if (!tx.name && tx.user) {
+          return {
+            ...tx,
+            name: tx.user.name,
+          };
+        }
+        return tx;
+      });
+      
+      setTransactions(mappedTransactions.slice(0, limit));
+      return;
+    }
+    
+    // Otherwise use mock data (this would normally be an API call)
     const mockTransactions: Transaction[] = [
       {
         id: "tx1",
@@ -79,12 +103,13 @@ const TransactionList = ({ className, limit = 5 }: TransactionListProps) => {
     ];
 
     setTransactions(mockTransactions.slice(0, limit));
-  }, [limit]);
+  }, [limit, propTransactions]);
 
   // Get transaction details based on type
-  const getTransactionDetails = (type: 'send' | 'receive' | 'payment') => {
+  const getTransactionDetails = (type: Transaction['type']) => {
     switch (type) {
       case "send":
+      case "withdrawal":
         return {
           iconColor: "text-red-500",
           bgColor: "bg-red-50 dark:bg-red-950/30",
@@ -92,6 +117,7 @@ const TransactionList = ({ className, limit = 5 }: TransactionListProps) => {
           sign: "-",
         };
       case "receive":
+      case "deposit":
         return {
           iconColor: "text-green-500",
           bgColor: "bg-green-50 dark:bg-green-950/30",
@@ -154,6 +180,7 @@ const TransactionList = ({ className, limit = 5 }: TransactionListProps) => {
         >
           {transactions.map((tx) => {
             const details = getTransactionDetails(tx.type);
+            const displayName = tx.name || (tx.user ? tx.user.name : 'Unknown');
             
             return (
               <motion.div
@@ -164,23 +191,23 @@ const TransactionList = ({ className, limit = 5 }: TransactionListProps) => {
               >
                 <Avatar className="h-10 w-10 mr-3">
                   {tx.avatar ? (
-                    <AvatarImage src={tx.avatar} alt={tx.name} />
+                    <AvatarImage src={tx.avatar} alt={displayName} />
                   ) : (
-                    <AvatarFallback className={cn(details.bgColor, details.textColor)}>
-                      {tx.name.substring(0, 1)}
+                    <AvatarFallback className={cn(details?.bgColor, details?.textColor)}>
+                      {displayName.substring(0, 1)}
                     </AvatarFallback>
                   )}
                 </Avatar>
                 
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium truncate">{tx.name}</p>
+                  <p className="font-medium truncate">{displayName}</p>
                   <p className="text-xs text-muted-foreground">
                     {formatDate(tx.date, language === 'fr' ? 'fr-FR' : 'en-US')}
                   </p>
                 </div>
                 
-                <div className={cn("font-semibold", details.textColor)}>
-                  {details.sign}{formatCurrency(tx.amount)} FCFA
+                <div className={cn("font-semibold", details?.textColor)}>
+                  {details?.sign}{formatCurrency(tx.amount)} FCFA
                 </div>
               </motion.div>
             );

@@ -2,14 +2,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-interface User {
+export interface User {
   id: string;
   phoneNumber: string;
   name?: string;
   photoURL?: string;
   balance: number;
-  phone?: string; // Add phone property
-  email?: string; // Add email property
+  phone?: string;
+  email?: string;
+  // We won't add displayName since we're using name instead
 }
 
 interface AuthContextType {
@@ -91,8 +92,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const newUser: User = {
         id: Math.random().toString(36).substring(2, 15),
         phoneNumber,
-        phone: phoneNumber, // Add phone property
-        email: "", // Add empty email property
+        phone: phoneNumber,
+        name: "",  // Use name instead of displayName
+        email: "",
         balance: 12000,
       };
       

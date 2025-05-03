@@ -16,7 +16,7 @@ const BecomeAgent = () => {
   const navigate = useNavigate();
   
   const [loading, setLoading] = useState(false);
-  const [fullName, setFullName] = useState(user?.displayName || "");
+  const [fullName, setFullName] = useState(user?.name || "");
   const [phone, setPhone] = useState(user?.phoneNumber || "");
   const [location, setLocation] = useState("");
   const [idPhoto, setIdPhoto] = useState<File | null>(null);

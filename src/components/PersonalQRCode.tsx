@@ -10,9 +10,11 @@ import { motion } from "framer-motion";
 
 interface PersonalQRCodeProps {
   onClose?: () => void;
+  value?: string; // Added value prop
+  size?: number;  // Added size prop
 }
 
-const PersonalQRCode = ({ onClose }: PersonalQRCodeProps) => {
+const PersonalQRCode = ({ onClose, value: propValue, size = 200 }: PersonalQRCodeProps) => {
   const { t } = useLanguage();
   const { user } = useAuth();
   const [qrUrl, setQrUrl] = useState("");
@@ -21,21 +23,21 @@ const PersonalQRCode = ({ onClose }: PersonalQRCodeProps) => {
   // Generate a random QR code to simulate user's personal QR code
   useEffect(() => {
     generateQR();
-  }, []);
+  }, [propValue]); // Re-generate when propValue changes
   
   const generateQR = () => {
     setIsLoading(true);
     
     // In a real app, this would generate a secure QR with user's account info
     // For this demo, we're using a public QR code API
-    const qrData = JSON.stringify({
+    const qrData = propValue || JSON.stringify({
       userId: user?.id || "demo-user",
       phoneNumber: user?.phoneNumber || "",
       timestamp: new Date().toISOString(),
     });
     
     const encodedData = encodeURIComponent(qrData);
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedData}`;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodedData}`;
     
     setQrUrl(qrApiUrl);
     setIsLoading(false);
