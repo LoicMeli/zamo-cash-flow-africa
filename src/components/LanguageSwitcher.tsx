@@ -11,11 +11,12 @@ interface LanguageSwitcherProps {
 }
 
 const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage, t, reload } = useLanguage();
   const isMobile = useIsMobile();
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage as any);
+    reload(); // Force reload translations
     if (onLanguageChange) onLanguageChange();
   };
 

@@ -5,7 +5,7 @@ import { useLanguage } from "@/providers/LanguageProvider";
 import { useTheme } from "@/providers/ThemeProvider";
 import { 
   User, Shield, Bell, Languages, Palette, HelpCircle, 
-  Info, LogOut, ChevronRight, Lock, QrCode, Gift 
+  Info, LogOut, ChevronRight, Lock, QrCode, Gift, Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,9 @@ const Settings = () => {
   
   const [showLanguageDialog, setShowLanguageDialog] = useState(false);
   const [showThemeDialog, setShowThemeDialog] = useState(false);
+  
+  // Check if the user is an agent (this would come from auth provider in real app)
+  const isAgent = false; // This would be a value from user profile
   
   const settingsOptions = [
     {
@@ -61,6 +64,21 @@ const Settings = () => {
       action: () => navigate("/referral"),
       info: t("referral.subtitle")
     },
+    // Only show Agent Space if user is an agent
+    ...(isAgent ? [
+      {
+        icon: Users,
+        label: t("common.agentSpace"),
+        action: () => navigate("/agent-space"),
+        highlight: true,
+      }
+    ] : [
+      {
+        icon: Users,
+        label: t("common.becomeAgent"),
+        action: () => navigate("/become-agent"),
+      }
+    ]),
     {
       icon: HelpCircle,
       label: t("settings.help"),
@@ -80,7 +98,7 @@ const Settings = () => {
     },
     {
       icon: LogOut,
-      label: t("settings.logout"),
+      label: t("common.logout"),
       action: logout,
       danger: true,
     },
@@ -99,6 +117,8 @@ const Settings = () => {
             variant="ghost"
             className={`w-full justify-start py-6 px-4 mb-0.5 ${
               option.danger ? "text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50" : ""
+            } ${
+              option.highlight ? "bg-blue-50 dark:bg-blue-950/50" : ""
             }`}
             onClick={option.action}
           >

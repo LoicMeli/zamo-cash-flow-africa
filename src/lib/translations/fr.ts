@@ -18,6 +18,8 @@ import { profile } from './fr/profile';
 import { scan } from './fr/scan';
 import { contacts } from './fr/contacts';
 import { referral } from './fr/referral';
+import { security } from './fr/security';
+import { language } from './fr/language';
 
 export const fr = {
   common,
@@ -38,5 +40,7 @@ export const fr = {
   profile,
   scan,
   contacts,
-  referral
+  referral,
+  security,
+  language
 };

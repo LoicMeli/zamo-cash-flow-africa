@@ -31,5 +31,7 @@ export const common = {
   rechargeWallet: "Recharge Wallet",
   payBill: "Pay Bill",
   change: "Change PIN",
-  logout: "Logout"
+  logout: "Logout",
+  becomeAgent: "Become an Agent",
+  agentSpace: "Agent Space"
 };

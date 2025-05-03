@@ -41,6 +41,8 @@ import SecuritySettings from "./pages/SecuritySettings";
 import AddContact from "./pages/AddContact";
 import NotificationSettings from "./pages/NotificationSettings";
 import Referral from "./pages/Referral";
+import BecomeAgent from "./pages/BecomeAgent";
+import AgentSpace from "./pages/AgentSpace";
 
 // Create a new QueryClient instance with proper options
 const queryClient = new QueryClient({
@@ -94,6 +96,8 @@ const App = () => {
                       <Route path="/notifications" element={<Notifications />} />
                       <Route path="/add-contact" element={<AddContact />} />
                       <Route path="/referral" element={<Referral />} />
+                      <Route path="/become-agent" element={<BecomeAgent />} />
+                      <Route path="/agent-space" element={<AgentSpace />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                   </Routes>
