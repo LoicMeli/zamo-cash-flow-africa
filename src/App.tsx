@@ -59,7 +59,7 @@ const App = () => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <LanguageProvider>
+          <LanguageProvider defaultLanguage="en">
             <AuthProvider>
               <TooltipProvider>
                 <Toaster />

@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { translations } from "@/lib/translations";
 
-type Language = "en" | "fr" | "pidgin" | "camfran";
+type Language = "en" | "fr" | "pidgin";
 
 interface LanguageProviderProps {
   children: React.ReactNode;
@@ -22,9 +22,16 @@ export function LanguageProvider({
   children,
   defaultLanguage = "en",
 }: LanguageProviderProps) {
-  const [language, setLanguage] = useState<Language>(
-    () => (localStorage.getItem("zamo-language") as Language) || defaultLanguage
-  );
+  // Check if stored language is valid (not camfran) and use default if not
+  const getInitialLanguage = (): Language => {
+    const storedLang = localStorage.getItem("zamo-language") as Language;
+    if (storedLang && (storedLang === "en" || storedLang === "fr" || storedLang === "pidgin")) {
+      return storedLang;
+    }
+    return defaultLanguage;
+  };
+
+  const [language, setLanguage] = useState<Language>(getInitialLanguage);
   
   // Add a reload counter to force re-renders when needed
   const [reloadCounter, setReloadCounter] = useState(0);

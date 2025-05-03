@@ -20,12 +20,11 @@ const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
     if (onLanguageChange) onLanguageChange();
   };
 
-  // Language options with flags
+  // Language options with flags - removed Camfran
   const languageOptions = [
     { code: "en", label: "English", flag: "🇬🇧" },
     { code: "fr", label: "Français", flag: "🇫🇷" },
-    { code: "pidgin", label: "Pidgin", flag: "🇨🇲" },
-    { code: "camfran", label: "Camfranglais", flag: "🇨🇲" }
+    { code: "pidgin", label: "Pidgin", flag: "🇨🇲" }
   ];
 
   // For small screens, show a dropdown menu

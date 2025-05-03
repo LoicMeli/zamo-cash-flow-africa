@@ -12,5 +12,10 @@ export const dashboard = {
   goodMorning: "Bonjour",
   goodAfternoon: "Bon après-midi",
   goodEvening: "Bonsoir",
-  user: "Utilisateur"
+  user: "Utilisateur",
+  moneyIn: "Entrées",
+  moneyOut: "Sorties",
+  monthlyStats: "Statistiques mensuelles",
+  recentTransactions: "Transactions récentes",
+  noTransactions: "Aucune transaction récente"
 };
