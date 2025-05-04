@@ -49,7 +49,7 @@ const Settings = () => {
     },
     {
       icon: Palette,
-      label: t("settings.appearance"),
+      label: t("settings.theme"),
       action: () => setShowThemeDialog(true),
     },
     {
@@ -148,7 +148,7 @@ const Settings = () => {
       <Dialog open={showThemeDialog} onOpenChange={setShowThemeDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("settings.theme.title")}</DialogTitle>
+            <DialogTitle>{t("settings.themeSettings.title")}</DialogTitle>
           </DialogHeader>
           <div className="py-4">
             <ThemeSwitcher onLanguageChange={() => setShowThemeDialog(false)} />
