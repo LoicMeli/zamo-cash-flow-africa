@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { toast } from "sonner";
@@ -8,7 +7,7 @@ import AgentStatsCards from "@/components/agent/AgentStatsCards";
 import AgentTransactionTabs from "@/components/agent/AgentTransactionTabs";
 import AgentQRCodeModal from "@/components/agent/AgentQRCodeModal";
 import AgentStatusToggle from "@/components/agent/AgentStatusToggle";
-import { Transaction } from "@/components/TransactionList";
+import { Transaction } from "@/components/transactions/types";
 
 const AgentSpace = () => {
   const { t } = useLanguage();

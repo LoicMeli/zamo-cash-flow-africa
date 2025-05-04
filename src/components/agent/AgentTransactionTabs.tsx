@@ -2,7 +2,7 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TransactionList from "@/components/TransactionList";
-import { Transaction } from "@/components/TransactionList";
+import { Transaction } from "@/components/transactions/types";
 
 interface AgentTransactionTabsProps {
   transactions: Transaction[];
