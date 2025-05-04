@@ -15,12 +15,13 @@ const LanguageSwitcher = ({ onLanguageChange }: LanguageSwitcherProps) => {
   const isMobile = useIsMobile();
 
   const handleLanguageChange = (newLanguage: string) => {
+    console.log("Changing language to:", newLanguage);
     setLanguage(newLanguage as any);
     reload(); // Force reload translations
     if (onLanguageChange) onLanguageChange();
   };
 
-  // Language options with flags - removed Camfran
+  // Language options with flags
   const languageOptions = [
     { code: "en", label: "English", flag: "🇬🇧" },
     { code: "fr", label: "Français", flag: "🇫🇷" },

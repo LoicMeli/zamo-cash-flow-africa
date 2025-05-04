@@ -22,7 +22,7 @@ export function LanguageProvider({
   children,
   defaultLanguage = "en",
 }: LanguageProviderProps) {
-  // Check if stored language is valid (not camfran) and use default if not
+  // Check if stored language is valid and use default if not
   const getInitialLanguage = (): Language => {
     const storedLang = localStorage.getItem("zamo-language") as Language;
     if (storedLang && (storedLang === "en" || storedLang === "fr" || storedLang === "pidgin")) {
@@ -39,6 +39,7 @@ export function LanguageProvider({
   useEffect(() => {
     localStorage.setItem("zamo-language", language);
     document.documentElement.setAttribute("lang", language);
+    console.log("Language changed to:", language);
   }, [language]);
 
   // Force a reload of translations
@@ -50,9 +51,18 @@ export function LanguageProvider({
     const keys = key.split(".");
     let translation: any = translations[language];
     let fallbackTranslation: any = translations["en"];
-    let result: string | null = null;
+    
+    // For debugging
+    console.log("Translating key:", key, "in language:", language);
+    
+    // If no translation found for this language, use English
+    if (!translation) {
+      console.log("No translation object found for language:", language);
+      translation = fallbackTranslation;
+    }
     
     // Try to get the translation from the selected language
+    let result: string | null = null;
     if (translation) {
       let currentTranslation = translation;
       let allKeysFound = true;
@@ -62,6 +72,7 @@ export function LanguageProvider({
           currentTranslation = currentTranslation[k];
         } else {
           allKeysFound = false;
+          console.log(`Key part "${k}" not found in ${language} translation`);
           break;
         }
       }
@@ -81,6 +92,7 @@ export function LanguageProvider({
           currentFallback = currentFallback[k];
         } else {
           allKeysFound = false;
+          console.log(`Key part "${k}" not found in fallback translation`);
           break;
         }
       }
@@ -88,7 +100,6 @@ export function LanguageProvider({
       if (allKeysFound && typeof currentFallback === 'string') {
         result = currentFallback;
       } else {
-        // If still not found, return a formatted error message instead of the raw key
         result = `[Missing: ${key}]`;
       }
     }
