@@ -1,37 +1,82 @@
 
 export const common = {
-  send: "Send",
-  receive: "Collect",
-  scan: "Scan",
-  withdraw: "Comot Money",
-  topUp: "Add Money",
-  add: "Add",
-  next: "Next-là",
+  // General
+  welcome: "Welcome",
+  loading: "Dey load...",
+  error: "Error don happen",
+  success: "E don work!",
+  retry: "Try again",
   cancel: "Cancel",
   confirm: "Confirm",
-  back: "Go Back",
-  loading: "E dey load...",
-  success: "E don work!",
-  error: "Wahala",
-  home: "Home",
-  done: "E done",
-  save: "Save am",
-  edit: "Change am",
-  delete: "Delete am",
-  search: "Find",
-  calling: "Calling",
-  viewAll: "See all",
-  hideCode: "Hide code",
-  balance: "Money wey dey",
-  agents: "Agents dem",
+  continue: "Continue",
+  save: "Save",
+  edit: "Edit",
+  delete: "Delete",
   settings: "Settings",
-  wallet: "Money bag",
+  search: "Search",
+  
+  // Auth related
+  login: "Login",
+  signup: "Sign up",
+  logout: "Log out",
+  register: "Register",
+  verifyOTP: "Verify OTP",
+  enterPhone: "Enter your phone number",
+  enterOTP: "Enter OTP code",
+  
+  // Navigation
+  home: "Home",
+  dashboard: "Dashboard",
   profile: "Profile",
-  addContact: "Add person",
-  rechargeWallet: "Put money",
-  payBill: "Pay bill",
-  change: "Change PIN",
-  logout: "Comot",
+  wallet: "Wallet",
+  agents: "Agents",
+  agentSpace: "Agent Space",
   becomeAgent: "Become Agent",
-  agentSpace: "Agent Area"
+  
+  // Action verbs
+  send: "Send",
+  receive: "Receive",
+  deposit: "Deposit",
+  withdraw: "Withdraw",
+  transfer: "Transfer",
+  pay: "Pay",
+  request: "Request",
+  share: "Share",
+  
+  // Time related
+  today: "Today",
+  yesterday: "Yesterday",
+  thisWeek: "This week",
+  thisMonth: "This month",
+  date: "Date",
+  time: "Time",
+  
+  // Financial terms
+  amount: "Amount",
+  balance: "Balance",
+  total: "Total",
+  fee: "Fee",
+  change: "Change",
+  
+  // Status
+  pending: "Dey process",
+  completed: "Completed",
+  failed: "Failed",
+  cancelled: "Cancelled",
+  
+  // Notifications
+  notifications: "Notifications",
+  noNotifications: "No notifications",
+  markAllAsRead: "Mark all as read",
+  
+  // Misc
+  contactUs: "Contact us",
+  help: "Help",
+  about: "About",
+  legal: "Legal",
+  terms: "Terms of Service",
+  privacy: "Privacy Policy",
+  version: "Version",
+  seeAll: "See all",
+  viewAll: "View all"
 };

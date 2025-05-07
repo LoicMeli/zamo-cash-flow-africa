@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MessageSquare, Settings, MapPin, Wallet } from "lucide-react";
+import { MessageSquare, Settings, MapPin, Wallet, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/providers/LanguageProvider";
 
@@ -40,6 +40,16 @@ const AppMenu = () => {
       icon: MessageSquare,
       label: "Financial Coach",
       href: "/financial-coach",
+    },
+    {
+      icon: Users,
+      label: t("common.agentSpace"),
+      href: "/agent-space",
+    },
+    {
+      icon: Users,
+      label: t("common.becomeAgent"),
+      href: "/become-agent",
     },
   ];
 

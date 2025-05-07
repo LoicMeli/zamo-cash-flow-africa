@@ -8,7 +8,7 @@ export const settings = {
   theme: "Theme",
   help: "Help & Support",
   about: "About",
-  logout: "Comot",
+  logout: "Log Out",
   
   // Account settings
   accountSettings: {
@@ -17,11 +17,11 @@ export const settings = {
     name: "Name",
     email: "Email",
     phone: "Phone",
-    dateOfBirth: "Date wey you born",
+    dateOfBirth: "Date of Birth",
     address: "Address",
     updateInfo: "Update Information",
     deleteAccount: "Delete My Account",
-    deleteWarning: "This action no fit reverse. All your data go delete."
+    deleteWarning: "This action no dey reversible. All your data go disappear."
   },
   
   // Security settings
@@ -31,12 +31,12 @@ export const settings = {
     currentPin: "Current PIN",
     newPin: "New PIN",
     confirmPin: "Confirm New PIN",
-    biometric: "Biometric Security",
-    twoFactor: "Two-Factor Security",
+    biometric: "Biometric Authentication",
+    twoFactor: "Two-Factor Authentication",
     enableSms: "Enable SMS Verification",
     deviceManagement: "Device Management",
     recentDevices: "Recent Devices",
-    logOutAllDevices: "Comot for All Devices"
+    logOutAllDevices: "Log Out All Devices"
   },
   
   // Notification settings
@@ -61,8 +61,7 @@ export const settings = {
     selectLanguage: "Choose your language",
     english: "English",
     french: "French",
-    pidgin: "Pidgin",
-    camfranglais: "Camfranglais"
+    pidgin: "Pidgin"
   },
   
   // Theme settings
@@ -77,10 +76,10 @@ export const settings = {
   // Help & Support
   helpSupport: {
     title: "Help & Support",
-    faq: "Questions wey people dey ask",
+    faq: "Frequently Asked Questions",
     contactUs: "Contact Us",
-    reportIssue: "Report Problem",
-    termsOfService: "Terms of Service",
+    reportIssue: "Report Wahala",
+    termsOfService: "Rules of Service",
     privacyPolicy: "Privacy Policy"
   },
   
@@ -94,7 +93,7 @@ export const settings = {
 
   // Extra settings
   usePIN: "Use PIN for transactions",
-  biometrics: "Enable biometric security",
+  biometrics: "Enable biometric authentication",
   changePin: "Change PIN",
   whatsappSupport: "WhatsApp Support",
   contactUs: "Contact us",
