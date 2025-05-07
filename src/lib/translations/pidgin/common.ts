@@ -14,6 +14,7 @@ export const common = {
   delete: "Delete",
   settings: "Settings",
   search: "Search",
+  change: "Change",
   
   // Auth related
   login: "Login",

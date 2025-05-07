@@ -43,13 +43,14 @@ const AppMenu = () => {
     },
     {
       icon: Users,
-      label: t("common.agentSpace"),
-      href: "/agent-space",
+      label: t("common.becomeAgent"),
+      href: "/become-agent",
+      highlight: true,
     },
     {
       icon: Users,
-      label: t("common.becomeAgent"),
-      href: "/become-agent",
+      label: t("common.agentSpace"),
+      href: "/agent-space",
     },
   ];
 
@@ -65,8 +66,11 @@ const AppMenu = () => {
         <DropdownMenuSeparator />
         {menuItems.map((item) => (
           <DropdownMenuItem key={item.href} asChild>
-            <Link to={item.href} className="flex items-center gap-2 cursor-pointer">
-              <item.icon className="w-4 h-4 text-primary-blue" />
+            <Link 
+              to={item.href} 
+              className={`flex items-center gap-2 cursor-pointer ${item.highlight ? "text-primary-blue font-medium" : ""}`}
+            >
+              <item.icon className={`w-4 h-4 ${item.highlight ? "text-primary-blue" : ""}`} />
               <span>{item.label}</span>
             </Link>
           </DropdownMenuItem>

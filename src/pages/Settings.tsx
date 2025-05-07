@@ -64,6 +64,13 @@ const Settings = () => {
       action: () => navigate("/referral"),
       info: t("referral.subtitle")
     },
+    // Always show the Become Agent option prominently
+    {
+      icon: Users,
+      label: t("common.becomeAgent"),
+      action: () => navigate("/become-agent"),
+      highlight: true,
+    },
     // Only show Agent Space if user is an agent
     ...(isAgent ? [
       {
@@ -72,13 +79,7 @@ const Settings = () => {
         action: () => navigate("/agent-space"),
         highlight: true,
       }
-    ] : [
-      {
-        icon: Users,
-        label: t("common.becomeAgent"),
-        action: () => navigate("/become-agent"),
-      }
-    ]),
+    ] : []),
     {
       icon: HelpCircle,
       label: t("settings.help"),
