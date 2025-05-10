@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-const Login = () => {
+const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -24,6 +25,11 @@ const Login = () => {
     e.preventDefault();
     
     // Simple validation
+    if (!fullName.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    
     const digits = phoneNumber.replace(/\D/g, "");
     if (digits.length < 9) {
       toast.error("Please enter a valid phone number");
@@ -33,6 +39,8 @@ const Login = () => {
     setIsLoading(true);
     
     try {
+      // In a real app, we would register the user first
+      // For now, we're reusing the login flow
       await login(digits);
       navigate("/verify");
     } catch (error) {
@@ -45,11 +53,27 @@ const Login = () => {
   return (
     <div className="animate-fade-in">
       <h1 className="text-2xl font-bold mb-6 text-center">
-        {t("auth.login")}
+        {t("auth.register")}
       </h1>
       
-      <form onSubmit={handleSubmit}>
-        <div className="mb-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label htmlFor="fullName" className="block text-sm font-medium mb-2">
+            {t("auth.fullName")}
+          </label>
+          <Input
+            id="fullName"
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder={t("auth.enterFullName")}
+            className="zamo-input"
+            autoComplete="name"
+            required
+          />
+        </div>
+        
+        <div>
           <label htmlFor="phoneNumber" className="block text-sm font-medium mb-2">
             {t("auth.phoneNumber")}
           </label>
@@ -67,18 +91,18 @@ const Login = () => {
         
         <Button 
           type="submit" 
-          className="zamo-btn-primary w-full mb-4"
+          className="zamo-btn-primary w-full"
           disabled={isLoading}
         >
-          {isLoading ? t("common.loading") : t("common.continue")}
+          {isLoading ? t("common.loading") : t("auth.register")}
         </Button>
         
         <div className="text-center text-sm">
           <span className="text-muted-foreground">
-            {t("auth.dontHaveAccount")}
+            {t("auth.alreadyHaveAccount")} 
           </span>{" "}
-          <Link to="/register" className="text-primary-blue font-medium hover:underline">
-            {t("auth.signup")}
+          <Link to="/login" className="text-primary-blue font-medium hover:underline">
+            {t("auth.login")}
           </Link>
         </div>
       </form>
@@ -86,4 +110,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

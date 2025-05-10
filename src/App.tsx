@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +12,7 @@ import { AuthProvider } from "@/providers/AuthProvider";
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import OTPVerification from "./pages/auth/OTPVerification";
 import SetupPIN from "./pages/auth/SetupPIN";
 import Dashboard from "./pages/Dashboard";
@@ -69,6 +69,7 @@ const App = () => {
                     <Route path="/" element={<Index />} />
                     <Route element={<AuthLayout />}>
                       <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
                       <Route path="/verify" element={<OTPVerification />} />
                       <Route path="/setup-pin" element={<SetupPIN />} />
                     </Route>

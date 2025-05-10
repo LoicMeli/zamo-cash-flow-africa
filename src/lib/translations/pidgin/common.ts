@@ -57,7 +57,6 @@ export const common = {
   balance: "Balance",
   total: "Total",
   fee: "Fee",
-  change: "Change",
   
   // Status
   pending: "Dey process",
