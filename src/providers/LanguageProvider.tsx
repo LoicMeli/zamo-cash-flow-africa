@@ -115,19 +115,17 @@ export function LanguageProvider({
     return result || `[Missing: ${key}]`;
   };
 
-  const value = {
-    language,
-    setLanguage: (newLang: Language) => {
-      setLanguage(newLang);
-      // Automatically reload after language change
-      setTimeout(reload, 0);
-    },
-    t,
-    reload,
-  };
-
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider value={{
+      language,
+      setLanguage: (newLang: Language) => {
+        setLanguage(newLang);
+        // Automatically reload after language change
+        setTimeout(reload, 0);
+      },
+      t,
+      reload,
+    }}>
       {children}
     </LanguageContext.Provider>
   );
