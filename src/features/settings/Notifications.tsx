@@ -1,202 +1,161 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Switch } from 'react-native';
+
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+// Replace @expo/vector-icons import with our custom Icon
+import { Icon } from '../../components/common/Icon';
+import { ThemedView, ThemedText } from '../../components/common/ThemedView';
+import { ThemedButton, ThemedDivider } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
+import { useTheme } from '../../theme/ThemeContext';
+import { COLORS } from '../../theme/colors';
 
-type NotificationsSettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
+type NotificationsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-export const NotificationsSettings = () => {
-  const navigation = useNavigation<NotificationsSettingsScreenNavigationProp>();
-  const [settings, setSettings] = React.useState({
-    transactions: true,
-    security: true,
-    promotions: false,
-    updates: true,
-    marketing: false,
-  });
+interface NotificationSetting {
+  id: string;
+  title: string;
+  description?: string;
+  enabled: boolean;
+}
 
-  const toggleSetting = (key: keyof typeof settings) => {
-    setSettings((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+export const NotificationSettings: React.FC = () => {
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSetting[]>([
+    { id: 'transactions', title: 'Transactions', description: 'Alertes de transactions et transferts', enabled: true },
+    { id: 'security', title: 'Sécurité', description: 'Alertes de sécurité importantes', enabled: true },
+    { id: 'promotions', title: 'Promotions', description: 'Offres spéciales et réductions', enabled: false },
+    { id: 'account', title: 'Compte', description: 'Mises à jour du compte', enabled: true },
+  ]);
+  
+  const navigation = useNavigation<NotificationsScreenNavigationProp>();
+  const { colors } = useTheme();
+
+  const toggleSetting = (id: string) => {
+    setNotificationSettings(
+      notificationSettings.map((setting) =>
+        setting.id === id ? { ...setting, enabled: !setting.enabled } : setting
+      )
+    );
   };
 
-  const notificationTypes = [
-    {
-      id: 'transactions',
-      title: 'Transactions',
-      description: 'Notifications pour les transactions et les paiements',
-      icon: 'cash-outline',
-    },
-    {
-      id: 'security',
-      title: 'Sécurité',
-      description: 'Alertes de sécurité et connexions',
-      icon: 'shield-checkmark-outline',
-    },
-    {
-      id: 'promotions',
-      title: 'Promotions',
-      description: 'Offres spéciales et réductions',
-      icon: 'gift-outline',
-    },
-    {
-      id: 'updates',
-      title: 'Mises à jour',
-      description: 'Nouvelles fonctionnalités et améliorations',
-      icon: 'refresh-outline',
-    },
-    {
-      id: 'marketing',
-      title: 'Marketing',
-      description: 'Newsletter et communications marketing',
-      icon: 'mail-outline',
-    },
-  ];
+  const saveSettings = () => {
+    // Save notification settings
+    navigation.goBack();
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
+    <ThemedView style={styles.container}>
+      <ScrollView>
+        <View style={styles.header}>
+          <ThemedText style={styles.title}>Paramètres de notification</ThemedText>
+          <ThemedText secondary style={styles.subtitle}>
+            Gérez comment et quand vous recevez des notifications
+          </ThemedText>
+        </View>
+
+        <TouchableOpacity 
+          style={[styles.toggleAllContainer, { borderBottomColor: colors.border }]}
         >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+          <ThemedText style={styles.toggleAllText}>
+            Activer toutes les notifications
+          </ThemedText>
+          <Switch 
+            value={notificationSettings.every((s) => s.enabled)}
+            onValueChange={() => {
+              const allEnabled = notificationSettings.every((s) => s.enabled);
+              setNotificationSettings(
+                notificationSettings.map((s) => ({ ...s, enabled: !allEnabled }))
+              );
+            }}
+            trackColor={{ false: '#767577', true: COLORS.primary }}
+            thumbColor={'#f4f3f4'}
+          />
         </TouchableOpacity>
-        <Text style={styles.title}>Notifications</Text>
-      </View>
 
-      <ScrollView style={styles.content}>
-        <View style={styles.section}>
-          <Text style={styles.sectionDescription}>
-            Gérez vos préférences de notifications pour rester informé de vos activités et des mises à jour importantes.
-          </Text>
-        </View>
+        <ThemedDivider />
 
-        <View style={styles.section}>
-          {notificationTypes.map((type) => (
-            <View key={type.id} style={styles.notificationItem}>
-              <View style={styles.notificationInfo}>
-                <Ionicons
-                  name={type.icon as any}
-                  size={24}
-                  color={theme.colors.primary}
-                  style={styles.notificationIcon}
-                />
-                <View>
-                  <Text style={styles.notificationTitle}>{type.title}</Text>
-                  <Text style={styles.notificationDescription}>
-                    {type.description}
-                  </Text>
-                </View>
-              </View>
-              <Switch
-                value={settings[type.id as keyof typeof settings]}
-                onValueChange={() => toggleSetting(type.id as keyof typeof settings)}
-                trackColor={{ false: theme.colors.light, true: theme.colors.primary }}
-              />
+        {notificationSettings.map((setting) => (
+          <View 
+            key={setting.id} 
+            style={[styles.settingItem, { borderBottomColor: colors.border }]}
+          >
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>{setting.title}</ThemedText>
+              {setting.description && (
+                <ThemedText secondary style={styles.settingDescription}>
+                  {setting.description}
+                </ThemedText>
+              )}
             </View>
-          ))}
-        </View>
+            <Switch
+              value={setting.enabled}
+              onValueChange={() => toggleSetting(setting.id)}
+              trackColor={{ false: '#767577', true: COLORS.primary }}
+              thumbColor={'#f4f3f4'}
+            />
+          </View>
+        ))}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Préférences avancées</Text>
-          <View style={styles.preferenceItem}>
-            <Text style={styles.preferenceTitle}>Notifications silencieuses</Text>
-            <Text style={styles.preferenceDescription}>
-              Recevez les notifications sans son ni vibration
-            </Text>
-          </View>
-          <View style={styles.preferenceItem}>
-            <Text style={styles.preferenceTitle}>Heures calmes</Text>
-            <Text style={styles.preferenceDescription}>
-              Ne pas déranger entre 22h et 7h
-            </Text>
-          </View>
-        </View>
+        <ThemedButton
+          title="Sauvegarder"
+          onPress={saveSettings}
+          containerStyle={styles.saveButton}
+        />
       </ScrollView>
-    </SafeAreaView>
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: theme.spacing.lg,
-  },
-  backButton: {
-    marginRight: theme.spacing.md,
+    marginBottom: 24,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 22,
+    fontWeight: 'bold' as 'bold',
+    marginBottom: 8,
   },
-  content: {
-    padding: theme.spacing.lg,
+  subtitle: {
+    fontSize: 16,
   },
-  section: {
-    marginBottom: theme.spacing.xl,
-  },
-  sectionDescription: {
-    ...theme.typography.body,
-    color: theme.colors.secondary,
-    marginBottom: theme.spacing.lg,
-  },
-  sectionTitle: {
-    ...theme.typography.h2,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
-  },
-  notificationItem: {
+  toggleAllContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
-  },
-  notificationInfo: {
-    flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+  },
+  toggleAllText: {
+    fontSize: 16,
+    fontWeight: '500' as any,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+  },
+  settingInfo: {
     flex: 1,
   },
-  notificationIcon: {
-    marginRight: theme.spacing.md,
+  settingTitle: {
+    fontSize: 16,
+    fontWeight: '500' as any,
+    marginBottom: 4,
   },
-  notificationTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    fontWeight: 'bold',
+  settingDescription: {
+    fontSize: 14,
   },
-  notificationDescription: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
-    marginTop: theme.spacing.xs,
+  saveButton: {
+    marginTop: 32,
+    marginBottom: 16,
   },
-  preferenceItem: {
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
-  },
-  preferenceTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    fontWeight: 'bold',
-  },
-  preferenceDescription: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
-    marginTop: theme.spacing.xs,
-  },
-}); 
+});
+
+export default NotificationSettings;

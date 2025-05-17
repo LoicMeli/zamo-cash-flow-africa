@@ -1,111 +1,109 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+// Replace @expo/vector-icons import with our custom Icon
+import { Icon } from '../../components/common/Icon';
+import { ThemedView, ThemedText } from '../../components/common/ThemedView';
+import { ThemedButton, ThemedCard } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
+import { useTheme } from '../../theme/ThemeContext';
+import { COLORS } from '../../theme/colors';
 
-type LanguageScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
+type LanguageScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const languages = [
-  { code: 'fr', name: 'Français', nativeName: 'Français' },
-  { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية' },
-  { code: 'sw', name: 'Swahili', nativeName: 'Kiswahili' },
+type Language = 'fr' | 'en' | 'pidgin' | 'camfranglais';
+
+interface LanguageOption {
+  code: Language;
+  name: string;
+}
+
+const languages: LanguageOption[] = [
+  { code: 'fr', name: 'Français' },
+  { code: 'en', name: 'English' },
+  { code: 'pidgin', name: 'Pidgin' },
+  { code: 'camfranglais', name: 'Camfranglais' },
 ];
 
-export const Language = () => {
+export const LanguageSettings: React.FC = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>('fr');
   const navigation = useNavigation<LanguageScreenNavigationProp>();
-  const [selectedLanguage, setSelectedLanguage] = React.useState('fr');
+  const { colors } = useTheme();
 
-  const handleLanguageSelect = (code: string) => {
-    setSelectedLanguage(code);
-    // TODO: Implement language change logic
+  const handleSave = () => {
+    // Save language preference
+    navigation.goBack();
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Langue</Text>
-      </View>
-
-      <View style={styles.content}>
-        {languages.map((language) => (
-          <TouchableOpacity
-            key={language.code}
-            style={[
-              styles.languageItem,
-              selectedLanguage === language.code && styles.selectedLanguage,
-            ]}
-            onPress={() => handleLanguageSelect(language.code)}
-          >
-            <View style={styles.languageInfo}>
-              <Text style={styles.languageName}>{language.name}</Text>
-              <Text style={styles.languageNativeName}>{language.nativeName}</Text>
-            </View>
-            {selectedLanguage === language.code && (
-              <Ionicons
-                name="checkmark-circle"
-                size={24}
-                color={theme.colors.primary}
-              />
-            )}
-          </TouchableOpacity>
-        ))}
-      </View>
-    </SafeAreaView>
+    <ThemedView style={styles.container}>
+      <ScrollView>
+        <ThemedText style={styles.title}>Choisissez votre langue</ThemedText>
+        
+        <View style={styles.optionsContainer}>
+          {languages.map((lang) => (
+            <TouchableOpacity
+              key={lang.code}
+              style={[
+                styles.option,
+                selectedLanguage === lang.code && [styles.selectedOption, { borderColor: COLORS.primary }],
+                { backgroundColor: colors.card, borderColor: colors.border }
+              ]}
+              onPress={() => setSelectedLanguage(lang.code)}
+            >
+              <ThemedText style={styles.optionLabel}>{lang.name}</ThemedText>
+              {selectedLanguage === lang.code && (
+                <Icon name="checkmark-circle" size={24} color={COLORS.primary} />
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+        
+        <ThemedButton
+          title="Sauvegarder"
+          onPress={handleSave}
+          containerStyle={styles.saveButton}
+        />
+      </ScrollView>
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: theme.spacing.lg,
-  },
-  backButton: {
-    marginRight: theme.spacing.md,
+    padding: 16,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 22,
+    fontWeight: 'bold' as 'bold',
+    marginBottom: 24,
+    textAlign: 'center',
   },
-  content: {
-    padding: theme.spacing.lg,
+  optionsContainer: {
+    marginBottom: 32,
   },
-  languageItem: {
+  option: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    padding: theme.spacing.md,
-    backgroundColor: theme.colors.light,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 12,
   },
-  selectedLanguage: {
-    backgroundColor: theme.colors.primary + '10',
+  selectedOption: {
+    borderWidth: 2,
   },
-  languageInfo: {
-    flex: 1,
+  optionLabel: {
+    fontSize: 16,
+    fontWeight: '500' as any,
   },
-  languageName: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    fontWeight: 'bold',
+  saveButton: {
+    marginTop: 16,
   },
-  languageNativeName: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
-  },
-}); 
+});
+
+export default LanguageSettings;

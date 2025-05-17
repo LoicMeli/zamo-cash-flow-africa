@@ -1,121 +1,100 @@
+
 import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
-  ScrollView,
+  Platform,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { RootStackParamList } from '../../types/navigation';
-import { ThemeSelector } from '../../components/ThemeSelector';
-import { useTheme } from '../../theme/ThemeContext';
-import { COLORS } from '../../theme/colors';
+// Replace Ionicons with our custom Icon component
+import { Icon } from '../../components/common/Icon';
+import { useTheme, ThemeMode } from '../../theme/ThemeContext';
 
-type ThemeSettingsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ThemeSettings'>;
+interface ThemeSelectorProps {
+  containerStyle?: object;
+}
 
-export const ThemeSettings = () => {
-  const navigation = useNavigation<ThemeSettingsNavigationProp>();
-  const { colors, isDarkMode } = useTheme();
-  
-  // Go back to previous screen
-  const handleBack = () => {
-    navigation.goBack();
-  };
-  
+export const ThemeSettings: React.FC = () => {
+  const { themeMode, setThemeMode, colors } = useTheme();
+
+  const options: { value: ThemeMode; label: string; icon: string }[] = [
+    { value: 'system', label: 'Système', icon: '📱' },
+    { value: 'light', label: 'Clair', icon: '☀️' },
+    { value: 'dark', label: 'Sombre', icon: '🌙' },
+  ];
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header */}
-      <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Paramètres d'affichage</Text>
-        <View style={{ width: 40 }} />
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>Thème</Text>
       
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.section}>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>
-            Choisissez le mode d'affichage qui vous convient le mieux. Vous pouvez suivre le paramètre système de votre appareil, ou choisir manuellement le mode clair ou sombre.
-          </Text>
-          
-          <ThemeSelector containerStyle={styles.themeSelector} />
-          
-          <View style={[styles.infoCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <Ionicons name="information-circle" size={22} color={COLORS.primary} style={styles.infoIcon} />
-            <Text style={[styles.infoText, { color: colors.textSecondary }]}>
-              Le choix du thème sera appliqué instantanément et sauvegardé pour vos futures sessions.
+      <View style={styles.optionsContainer}>
+        {options.map((option) => (
+          <TouchableOpacity
+            key={option.value}
+            style={[
+              styles.option,
+              themeMode === option.value && [styles.selectedOption, { borderColor: colors.primary }],
+              { backgroundColor: colors.card, borderColor: colors.border }
+            ]}
+            onPress={() => setThemeMode(option.value)}
+          >
+            <Text style={styles.optionIcon}>{option.icon}</Text>
+            <Text
+              style={[
+                styles.optionLabel,
+                { color: themeMode === option.value ? colors.primary : colors.text }
+              ]}
+            >
+              {option.label}
             </Text>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            {themeMode === option.value && (
+              <Text style={[styles.checkIcon, { color: colors.primary }]}>✓</Text>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
     padding: 24,
-    paddingBottom: 40,
   },
-  section: {
-    marginBottom: 32,
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
   },
-  sectionDescription: {
-    fontSize: 15,
-    lineHeight: 22,
-    marginBottom: 20,
+  optionsContainer: {
+    width: '100%',
   },
-  themeSelector: {
-    marginBottom: 24,
-  },
-  infoCard: {
+  option: {
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderRadius: 12,
     borderWidth: 1,
-    marginTop: 16,
+    marginBottom: 8,
   },
-  infoIcon: {
+  selectedOption: {
+    borderWidth: 2,
+  },
+  optionIcon: {
     marginRight: 12,
-    marginTop: 2,
+    fontSize: 22,
   },
-  infoText: {
-    fontSize: 14,
+  optionLabel: {
+    fontSize: 15,
+    fontWeight: '500',
     flex: 1,
-    lineHeight: 20,
   },
-}); 
+  checkIcon: {
+    marginLeft: 8,
+    fontSize: 18,
+  },
+});
+
+export default ThemeSettings;

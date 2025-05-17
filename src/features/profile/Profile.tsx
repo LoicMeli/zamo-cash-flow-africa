@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Icon } from '../../utils/IconsWrapper';
+import { Icon } from '../../components/common/Icon';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
 import { ThemedButton, ThemedCard, ThemedDivider } from '../../components/common/ThemedComponents';
 import { ROUTES } from '../../config/constants';
