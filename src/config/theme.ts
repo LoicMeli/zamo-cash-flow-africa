@@ -1,3 +1,4 @@
+
 import { DefaultTheme } from '@react-navigation/native';
 import { COLORS } from './constants';
 
@@ -24,6 +25,13 @@ export const colors = {
     divider: '#EAEAEA',
     disabled: '#CCCCCC',
     overlay: 'rgba(0, 0, 0, 0.5)',
+    cardGradient: 'linear-gradient(135deg, #F5F7FA 0%, #E4E9F2 100%)',
+    buttonGradient: {
+      blue: 'linear-gradient(135deg, #4776E6 0%, #3B5BFE 100%)',
+      green: 'linear-gradient(135deg, #11998e 0%, #22C55E 100%)',
+      red: 'linear-gradient(135deg, #FF416C 0%, #FF3B30 100%)',
+      orange: 'linear-gradient(135deg, #FF8008 0%, #FF9500 100%)',
+    }
   },
 
   // Dark theme
@@ -39,6 +47,13 @@ export const colors = {
     divider: '#333333',
     disabled: '#444444',
     overlay: 'rgba(0, 0, 0, 0.7)',
+    cardGradient: 'linear-gradient(135deg, #2A2D3E 0%, #1A1D2C 100%)',
+    buttonGradient: {
+      blue: 'linear-gradient(135deg, #324376 0%, #3B5BFE 100%)',
+      green: 'linear-gradient(135deg, #0F766E 0%, #22C55E 100%)',
+      red: 'linear-gradient(135deg, #A91B42 0%, #FF3B30 100%)',
+      orange: 'linear-gradient(135deg, #B63D00 0%, #FF9500 100%)',
+    }
   },
 };
 
@@ -132,6 +147,16 @@ export const shadows = {
     shadowRadius: 4.65,
     elevation: 8,
   },
+  card: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+    elevation: 6,
+  }
 };
 
 // Create light and dark navigation themes

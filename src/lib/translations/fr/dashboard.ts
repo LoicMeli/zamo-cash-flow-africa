@@ -17,5 +17,8 @@ export const dashboard = {
   moneyOut: "Sorties",
   monthlyStats: "Statistiques mensuelles",
   recentTransactions: "Transactions récentes",
-  noTransactions: "Aucune transaction récente"
+  noTransactions: "Aucune transaction récente",
+  sendMoney: "Envoyer de l'argent",
+  receiveMoney: "Recevoir de l'argent",
+  seeAll: "Voir tout"
 };

@@ -1,1 +1,9 @@
-<resources/>
+
+<resources>
+    <color name="colorPrimary">#3B5BFE</color>
+    <color name="colorPrimaryDark">#2A3DBF</color>
+    <color name="colorAccent">#22C55E</color>
+    <color name="iconBackground">#121212</color>
+    <color name="colorBackground">#121212</color>
+    <color name="splashscreen_background">#121212</color>
+</resources>

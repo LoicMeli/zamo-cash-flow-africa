@@ -1,3 +1,4 @@
+
 export const wallet = {
   title: "Portefeuille",
   availableBalance: "Solde disponible",
@@ -33,4 +34,13 @@ export const wallet = {
   shareQR: "Partager le code QR",
   personalQR: "Votre QR personnel",
   qrDescription: "Montrez ce code QR pour recevoir de l'argent",
+  walletBalance: "Solde de votre portefeuille",
+  accountLevel: "Niveau de compte",
+  accountDetails: "Détails du compte",
+  secretQuestion: "Question de sécurité",
+  classic: "Classique",
+  gold: "Or",
+  diamond: "Diamant",
+  platinum: "Platine",
+  basic: "Basique"
 };

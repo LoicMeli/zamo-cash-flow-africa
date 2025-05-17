@@ -1,3 +1,4 @@
+
 export const wallet = {
   title: "Wallet",
   send: "Send Money",
@@ -25,4 +26,14 @@ export const wallet = {
   collect: "Collect",
   withdrawMoney: "Withdraw Money",
   addMoney: "Add Money",
+  walletBalance: "Your Wallet Balance",
+  accountLevel: "Account Level",
+  viewTransactions: "View Transactions",
+  accountDetails: "Account Details",
+  secretQuestion: "Security Question",
+  classic: "Classic",
+  gold: "Gold",
+  diamond: "Diamond",
+  platinum: "Platinum",
+  basic: "Basic"
 };
