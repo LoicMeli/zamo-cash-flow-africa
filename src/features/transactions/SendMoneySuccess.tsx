@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { RootStackParamList } from '../../types/navigation';
 import { TransactionReceipt } from '../../components/TransactionReceipt';
 import { PDFReceipt, PDFGenerator } from '../../utils/PDFGenerator';
@@ -97,7 +97,7 @@ export const SendMoneySuccess = () => {
       useNativeDriver: true
     }).start(() => {
       // Go back to the dashboard
-      navigation.navigate('Main', { screen: 'Dashboard' });
+      navigation.navigate('Main');
     });
   };
 
@@ -221,7 +221,7 @@ export const SendMoneySuccess = () => {
             }
           ]}
         >
-          <Ionicons name="checkmark" size={60} color="#0D0D0D" />
+          <Icon name="checkmark" size={60} color="#0D0D0D" />
         </Animated.View>
         
         <Animated.Text 
@@ -283,7 +283,7 @@ export const SendMoneySuccess = () => {
             style={styles.downloadButton}
             onPress={handleDownloadReceipt}
           >
-            <Ionicons name="download-outline" size={20} color="#FFF" style={styles.buttonIcon} />
+            <Icon name="download-outline" size={20} color="#FFF" style={styles.buttonIcon} />
             <Text style={styles.downloadButtonText}>Download PDF Receipt</Text>
           </TouchableOpacity>
           
@@ -316,7 +316,7 @@ export const SendMoneySuccess = () => {
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Transaction Receipt</Text>
               <TouchableOpacity onPress={closePDFModal}>
-                <Ionicons name="close" size={24} color="#FFF" />
+                <Icon name="close" size={24} color="#FFF" />
               </TouchableOpacity>
             </View>
             
@@ -329,7 +329,7 @@ export const SendMoneySuccess = () => {
                 style={styles.modalButton}
                 onPress={handleSavePDF}
               >
-                <Ionicons name="download-outline" size={20} color="#FFF" style={styles.buttonIcon} />
+                <Icon name="download-outline" size={20} color="#FFF" style={styles.buttonIcon} />
                 <Text style={styles.modalButtonText}>Save PDF</Text>
               </TouchableOpacity>
               
@@ -338,7 +338,7 @@ export const SendMoneySuccess = () => {
                   style={[styles.modalButton, styles.shareButton]}
                   onPress={handleSharePDF}
                 >
-                  <Ionicons name="share-outline" size={20} color="#FFF" style={styles.buttonIcon} />
+                  <Icon name="share-outline" size={20} color="#FFF" style={styles.buttonIcon} />
                   <Text style={styles.modalButtonText}>Share</Text>
                 </TouchableOpacity>
               )}
@@ -498,4 +498,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-}); 
+});

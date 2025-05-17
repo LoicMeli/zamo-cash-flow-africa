@@ -1,184 +1,93 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   SafeAreaView, 
   TouchableOpacity, 
-  Animated, 
-  Easing,
   Dimensions 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Icon } from '../../components/common/Icon';
-import { Button } from '../../components/common/Button';
 import { RootStackParamList } from '../../types/navigation';
+import { useTheme } from '../../theme/ThemeContext';
 
-type ScanQRScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
+type ScanQRScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const { width } = Dimensions.get('window');
-const QR_BOX_SIZE = Math.min(width * 0.6, 200);
+const qrSize = width * 0.7;
 
 export const ScanQR = () => {
   const navigation = useNavigation<ScanQRScreenNavigationProp>();
-  
-  // Animation values
-  const scanLineAnim = useRef(new Animated.Value(0)).current;
-  const glowAnim = useRef(new Animated.Value(0)).current;
-  const qrBoxScale = useRef(new Animated.Value(1)).current;
-  const textFadeAnim = useRef(new Animated.Value(0)).current;
-  
-  // Start animations on component mount
-  useEffect(() => {
-    // Scan line animation - moves top to bottom
-    Animated.loop(
-      Animated.timing(scanLineAnim, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
-    
-    // Glow pulsing animation
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(glowAnim, {
-          toValue: 1,
-          duration: 1500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
-        }),
-        Animated.timing(glowAnim, {
-          toValue: 0,
-          duration: 1500,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: false,
-        })
-      ])
-    ).start();
-    
-    // Text fade-in animation
-    Animated.timing(textFadeAnim, {
-      toValue: 1,
-      duration: 800,
-      delay: 500,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-  
-  // Calculate scan line position
-  const scanLinePosition = scanLineAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, QR_BOX_SIZE]
-  });
-  
-  // Calculate glow intensity
-  const glowIntensity = glowAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['rgba(59, 91, 254, 0.25)', 'rgba(59, 91, 254, 0.6)']
-  });
-  
-  // Handle QR box press
-  const handleQRBoxPress = () => {
-    // Scale animation on press
-    Animated.sequence([
-      Animated.timing(qrBoxScale, {
-        toValue: 1.05,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-      Animated.timing(qrBoxScale, {
-        toValue: 1,
-        duration: 150,
-        useNativeDriver: true,
-      })
-    ]).start();
-    
-    // After a brief delay, pretend we've scanned a code and navigate
-    setTimeout(() => {
-      // Navigate to SendMoney
-      navigation.navigate('SendMoney');
-    }, 800);
-  };
-  
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Icon name="arrow-back" size={24} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Scan QR Code</Text>
-      </View>
+  const { colors } = useTheme();
+  const [flashEnabled, setFlashEnabled] = useState(false);
 
-      <View style={styles.content}>
-        {/* Animated QR Scan Box */}
-        <Animated.View 
-          style={[
-            styles.qrScanBox,
-            { 
-              transform: [{ scale: qrBoxScale }],
-              shadowColor: '#3B5BFE',
-              shadowOpacity: 0.5,
-              shadowRadius: glowAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [8, 16]
-              }),
-              shadowOffset: { width: 0, height: 0 },
-              elevation: glowAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [4, 8]
-              }),
-            }
-          ]}
-        >
-          {/* Animated Scan Line */}
-          <Animated.View 
-            style={[
-              styles.scanLine,
-              { transform: [{ translateY: scanLinePosition }] }
-            ]}
-          />
-          
-          {/* QR Icon */}
-          <TouchableOpacity 
-            onPress={handleQRBoxPress}
-            activeOpacity={0.8}
-            style={styles.qrIconContainer}
-          >
-            <Icon name="qr-code" size={QR_BOX_SIZE * 0.4} color="#3B5BFE" />
-          </TouchableOpacity>
-        </Animated.View>
-        
-        {/* Animated Text */}
-        <Animated.Text 
-          style={[
-            styles.scanNote,
-            { opacity: textFadeAnim }
-          ]}
-        >
-          Secure QR transfer
-        </Animated.Text>
-        
-        <Animated.Text 
-          style={[
-            styles.scanInstructions,
-            { opacity: textFadeAnim }
-          ]}
-        >
-          Tap on the QR code to simulate scanning
-        </Animated.Text>
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  const toggleFlash = () => {
+    setFlashEnabled(!flashEnabled);
+  };
+
+  // Mock QR code scan result handler
+  const handleQRCodeScanned = ({ data }: { data: string }) => {
+    // Process QR data
+    console.log('QR code scanned:', data);
+    
+    // Typically you would parse the QR data and navigate accordingly
+    if (data.startsWith('PAYMENT:')) {
+      const recipient = {
+        name: 'QR Payment',
+        phone: '+237612345678'
+      };
+      
+      navigation.navigate('SendMoneyAmount', { recipient });
+    }
+  };
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.light.background }]}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+          <Icon name="arrow-back" size={24} color={colors.light.text} />
+        </TouchableOpacity>
+        <Text style={[styles.title, { color: colors.light.text }]}>Scanner le code QR</Text>
       </View>
       
-      <View style={styles.infoContainer}>
-        <Icon name="information-circle" size={24} color="#3B5BFE" />
-        <Text style={styles.infoText}>
-          Scan any Zamo user's QR code to send money instantly and securely.
+      <View style={styles.cameraContainer}>
+        {/* Camera placeholder - in a real app this would be a camera component */}
+        <View style={styles.qrFrame}>
+          <View style={styles.topLeft} />
+          <View style={styles.topRight} />
+          <View style={styles.bottomLeft} />
+          <View style={styles.bottomRight} />
+        </View>
+        
+        <Text style={styles.scanInstructions}>
+          Positionnez le code QR à l'intérieur du cadre
         </Text>
+      </View>
+      
+      <View style={styles.controls}>
+        <TouchableOpacity 
+          style={[styles.controlButton, flashEnabled && styles.activeButton]}
+          onPress={toggleFlash}
+        >
+          <Icon 
+            name={flashEnabled ? "flash" : "flash-off"} 
+            size={24} 
+            color={flashEnabled ? "#FFFFFF" : "#888888"} 
+          />
+          <Text style={[
+            styles.buttonText, 
+            { color: flashEnabled ? "#FFFFFF" : "#888888" }
+          ]}>
+            Flash
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -187,7 +96,6 @@ export const ScanQR = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D0D0D',
   },
   header: {
     flexDirection: 'row',
@@ -195,75 +103,95 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   backButton: {
-    width: 40,
-    height: 40,
+    padding: 8,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
+    marginRight: 8,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '700',
   },
-  content: {
+  cameraContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.8)',
+  },
+  qrFrame: {
+    width: qrSize,
+    height: qrSize,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.5)',
+    position: 'relative',
+  },
+  topLeft: {
+    position: 'absolute',
+    top: -2,
+    left: -2,
+    width: 30,
+    height: 30,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#3B5BFE',
+  },
+  topRight: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    width: 30,
+    height: 30,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#3B5BFE',
+  },
+  bottomLeft: {
+    position: 'absolute',
+    bottom: -2,
+    left: -2,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#3B5BFE',
+  },
+  bottomRight: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    width: 30,
+    height: 30,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#3B5BFE',
+  },
+  scanInstructions: {
+    color: '#FFFFFF',
+    marginTop: 30,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  controls: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#0D0D0D',
   },
-  qrScanBox: {
-    width: QR_BOX_SIZE,
-    height: QR_BOX_SIZE,
-    borderRadius: 16,
-    backgroundColor: '#111',
-    display: 'flex',
-    justifyContent: 'center',
+  controlButton: {
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#3B5BFE',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  qrIconContainer: {
-    width: '100%',
-    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: '#222222',
+    width: 100,
   },
-  scanLine: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: 4,
-    backgroundColor: 'rgba(59, 91, 254, 0.5)',
-    borderRadius: 2,
+  activeButton: {
+    backgroundColor: '#3B5BFE',
   },
-  scanNote: {
-    fontSize: 16,
-    color: '#3B5BFE',
-    marginTop: 24,
-    fontWeight: '600',
-  },
-  scanInstructions: {
-    fontSize: 14,
-    color: '#888',
+  buttonText: {
     marginTop: 8,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(59, 91, 254, 0.1)',
-    margin: 20,
-    padding: 16,
-    borderRadius: 12,
-  },
-  infoText: {
-    color: '#FFFFFF',
-    marginLeft: 12,
-    flex: 1,
     fontSize: 14,
-  },
+  }
 });
+
+export default ScanQR;

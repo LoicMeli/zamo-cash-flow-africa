@@ -8,8 +8,21 @@ export type RootStackParamList = {
       phone: string;
     };
   };
-  SendMoneyConfirm: undefined;
-  SendMoneySuccess: undefined;
+  SendMoneyConfirm: {
+    recipient: {
+      name: string;
+      phone: string;
+    };
+    amount: number;
+  };
+  SendMoneySuccess: {
+    recipient: {
+      name: string;
+      phone: string;
+    };
+    amount: number;
+    reference: string;
+  };
   ScanQR: undefined;
   Withdraw: undefined;
   FindAgent: undefined;

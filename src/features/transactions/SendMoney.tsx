@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
 import { ThemedText } from '../../components/common/ThemedView';
@@ -56,7 +56,6 @@ export const SendMoney = () => {
   const [selectedContact, setSelectedContact] = useState<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const { colors, isDarkMode } = useTheme();
-  const { t } = useLanguage();
   
   // Animation values
   const tabIndicatorPosition = useRef(new Animated.Value(0)).current;
@@ -342,7 +341,7 @@ export const SendMoney = () => {
                 }
               ]}
             >
-              <Ionicons name="person" size={24} color="#3B5BFE" />
+              <Icon name="person" size={24} color="#3B5BFE" />
             </Animated.View>
             <Text style={styles.contactName}>{contact.name}</Text>
             <Text style={styles.contactPhone}>{contact.phone}</Text>
@@ -388,7 +387,7 @@ export const SendMoney = () => {
             }
           ]}
         >
-          <Ionicons name="qr-code" size={80} color="#3B5BFE" />
+          <Icon name="qr-code" size={80} color="#3B5BFE" />
         </Animated.View>
         <Text style={styles.scanText}>Scan QR to Send Money</Text>
         <Text style={styles.scanSubText}>Position the QR code in the frame to scan</Text>
@@ -421,7 +420,7 @@ export const SendMoney = () => {
             }
           ]}
         >
-          <Ionicons name="search" size={20} color="#C2C2C2" style={styles.searchIcon} />
+          <Icon name="search" size={20} color="#C2C2C2" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search contacts"
@@ -456,7 +455,7 @@ export const SendMoney = () => {
               onPress={() => handleContactPress(contact, index)}
             >
               <View style={styles.fullContactAvatar}>
-                <Ionicons name="person" size={24} color="#3B5BFE" />
+                <Icon name="person" size={24} color="#3B5BFE" />
               </View>
               <View style={styles.contactInfo}>
                 <Text style={styles.fullContactName}>{contact.name}</Text>
@@ -473,7 +472,7 @@ export const SendMoney = () => {
           onPressIn={handleButtonPressIn}
           onPressOut={handleButtonPressOut}
         >
-          <Ionicons name="person-add" size={20} color="#FFF" />
+          <Icon name="person-add" size={20} color="#FFF" />
           <Text style={styles.addContactText}>Add Contact</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -494,13 +493,13 @@ export const SendMoney = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={styles.container}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={handleGoBack}
         >
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Icon name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <ThemedText style={styles.headerTitle}>Send Money</ThemedText>
         <View style={styles.placeholder} />
@@ -866,4 +865,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-}); 
+});

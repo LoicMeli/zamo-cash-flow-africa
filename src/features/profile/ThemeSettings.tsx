@@ -24,8 +24,8 @@ export const ThemeSettings: React.FC = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
-      <Text style={[styles.title, { color: '#1A1A1A' }]}>Thème</Text>
+    <View style={[styles.container, { backgroundColor: colors.light.background }]}>
+      <Text style={[styles.title, { color: colors.light.text }]}>Thème</Text>
       
       <View style={styles.optionsContainer}>
         {options.map((option) => (

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { RootStackParamList } from '../../types/navigation';
 
 type SendMoneyAmountScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -112,7 +112,7 @@ export const SendMoneyAmount = () => {
   };
 
   const handleContinue = () => {
-    if (parseFloat(amount.replace(/,/g, '')) > 0) {
+    if (parseFloat(amount.replace(/,/g, '')) > 0 && recipient) {
       // Button press animation
       Animated.sequence([
         Animated.timing(buttonScale, {
@@ -224,12 +224,26 @@ export const SendMoneyAmount = () => {
     outputRange: [0, 0.5]
   });
 
+  // Guard against undefined recipient
+  if (!recipient) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#FFF" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Error: No recipient specified</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#FFF" />
+            <Icon name="arrow-back" size={24} color="#FFF" />
           </TouchableOpacity>
           <Text style={styles.title}>Send Money</Text>
         </View>
@@ -251,7 +265,7 @@ export const SendMoneyAmount = () => {
             ]}
           >
             <View style={styles.recipientAvatar}>
-              <Ionicons name="person" size={32} color="#3B5BFE" />
+              <Icon name="person" size={32} color="#3B5BFE" />
             </View>
             <View style={styles.recipientInfo}>
               <Text style={styles.recipientName}>{recipient.name}</Text>
@@ -444,4 +458,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-}); 
+});

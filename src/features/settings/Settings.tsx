@@ -85,24 +85,24 @@ export const Settings = () => {
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.light.background }]}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
-          <Text style={[styles.title, { color: colors.text }]}>Paramètres</Text>
+          <Text style={[styles.title, { color: colors.light.text }]}>Paramètres</Text>
         </View>
 
         {settingsSections.map((section) => (
           <View key={section.id} style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>{section.title}</Text>
+            <Text style={[styles.sectionTitle, { color: colors.light.text }]}>{section.title}</Text>
             {section.items.map((item) => (
               <TouchableOpacity
                 key={item.id}
                 style={styles.settingItem}
-                onPress={() => navigation.navigate(item.route)}
+                onPress={() => navigation.navigate(item.route as keyof RootStackParamList)}
               >
                 <View style={styles.settingItemLeft}>
                   <Icon name={item.icon} size={24} color="#3B5BFE" />
-                  <Text style={[styles.settingItemText, { color: colors.text }]}>{item.title}</Text>
+                  <Text style={[styles.settingItemText, { color: colors.light.text }]}>{item.title}</Text>
                 </View>
                 <Icon name="chevron-forward" size={24} color="#888" />
               </TouchableOpacity>
@@ -111,11 +111,11 @@ export const Settings = () => {
         ))}
 
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>Sécurité</Text>
+          <Text style={[styles.sectionTitle, { color: colors.light.text }]}>Sécurité</Text>
           <View style={styles.settingItem}>
             <View style={styles.settingItemLeft}>
               <Icon name="finger-print" size={24} color="#3B5BFE" />
-              <Text style={[styles.settingItemText, { color: colors.text }]}>Authentification biométrique</Text>
+              <Text style={[styles.settingItemText, { color: colors.light.text }]}>Authentification biométrique</Text>
             </View>
             <Switch
               value={biometricEnabled}

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { RootStackParamList } from '../../types/navigation';
 
 type SendMoneyConfirmScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -126,7 +126,7 @@ export const SendMoneyConfirm = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Icon name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Send Money</Text>
       </View>
@@ -315,4 +315,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-}); 
+});

@@ -7,9 +7,9 @@ export const FindAgent = () => {
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.light.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: '#1A1A1A' }]}>Trouver un Agent</Text>
+        <Text style={[styles.title, { color: colors.light.text }]}>Trouver un Agent</Text>
       </View>
     </SafeAreaView>
   );
