@@ -1,8 +1,4 @@
 
-import { DefaultTheme } from '@react-navigation/native';
-import { COLORS } from './constants';
-
-// Update the colors to match our new definition
 export const colors = {
   // Base colors (consistent across themes)
   primary: '#3B5BFE',  // Zamo Blue
@@ -159,12 +155,10 @@ export const shadows = {
   }
 };
 
-// Create light and dark navigation themes
+// Create color-mode compatible theme objects
 export const navigationThemes = {
   light: {
-    ...DefaultTheme,
     colors: {
-      ...DefaultTheme.colors,
       primary: colors.primary,
       background: colors.light.background,
       card: colors.light.surface,
@@ -174,9 +168,7 @@ export const navigationThemes = {
     },
   },
   dark: {
-    ...DefaultTheme,
     colors: {
-      ...DefaultTheme.colors,
       primary: colors.primary,
       background: colors.dark.background,
       card: colors.dark.surface,
@@ -207,4 +199,4 @@ export type Theme = typeof theme;
 export type Colors = typeof colors;
 export type Spacing = typeof spacing;
 export type Typography = typeof typography;
-export type Shadows = typeof shadows; 
+export type Shadows = typeof shadows;

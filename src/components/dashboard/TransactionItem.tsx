@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '../common/ThemedView';
 import { useTheme } from '../../theme/ThemeContext';
 
