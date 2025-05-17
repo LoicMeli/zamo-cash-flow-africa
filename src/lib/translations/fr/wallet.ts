@@ -1,4 +1,3 @@
-
 export const wallet = {
   title: "Portefeuille",
   availableBalance: "Solde disponible",
@@ -19,5 +18,19 @@ export const wallet = {
   transactionFee: "Frais de transaction",
   totalAmount: "Montant total",
   confirm: "Confirmer",
-  showQR: "Afficher mon QR code"
+  showQR: "Afficher mon QR code",
+  
+  // Added new keys
+  moneyBag: "Porte-monnaie",
+  localEquivalent: "≈ 24 litres d'huile de palme",
+  thisWeek: "cette semaine",
+  pinEnabled: "Code PIN activé",
+  sendMoney: "Envoyer de l'argent",
+  collect: "Collecter",
+  withdrawMoney: "Retirer de l'argent",
+  addMoney: "Ajouter de l'argent",
+  generateQR: "Générer QR",
+  shareQR: "Partager le code QR",
+  personalQR: "Votre QR personnel",
+  qrDescription: "Montrez ce code QR pour recevoir de l'argent",
 };

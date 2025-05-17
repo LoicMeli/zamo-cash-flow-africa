@@ -1,0 +1,25 @@
+export const auth = {
+  welcomeBack: "Bienvenue encore",
+  enterPhoneNumber: "Entre ton numéro",
+  phoneNumber: "Numéro de portable",
+  verificationCode: "Code de vérification",
+  enterCode: "Entre le code qu'on a envoyé",
+  resendCode: "Renvoyer le code",
+  setupPIN: "Crée ton code PIN",
+  createPIN: "Fais un code PIN à 4 chiffres pour sécuriser ton compte",
+  confirmPIN: "Confirme ton code PIN",
+  pinMismatch: "Les codes PIN ne match pas. Essaie encore.",
+  login: "Connecte-toi",
+  signUp: "Inscris-toi",
+  forgotPIN: "Tu as oublié ton PIN?",
+  logout: "Déconnecte-toi",
+  dontHaveAccount: "Tu n'as pas de compte?",
+  createAccount: "Crée un compte",
+  
+  // For the Login screen
+  phoneLabel: "Numéro de portable",
+  phonePlaceholder: "Entre ton numéro",
+  sendOTP: "Envoie le code",
+  newUser: "Nouveau? Crée un compte",
+  selectLanguage: "Choisis la langue",
+}; 

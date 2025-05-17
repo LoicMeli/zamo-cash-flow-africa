@@ -1,4 +1,3 @@
-
 export const common = {
   // General
   welcome: "Welcome",
@@ -15,6 +14,7 @@ export const common = {
   settings: "Settings",
   search: "Search",
   change: "Change",
+  optional: "if you want",
   
   // Auth related
   login: "Login",
@@ -57,7 +57,7 @@ export const common = {
   balance: "Balance",
   total: "Total",
   fee: "Fee",
-  change: "Change",
+  changeValue: "Change",
   
   // Status
   pending: "Dey process",
@@ -79,5 +79,12 @@ export const common = {
   privacy: "Privacy Policy",
   version: "Version",
   seeAll: "See all",
-  viewAll: "View all"
+  viewAll: "View all",
+  back: "Go back",
+  next: "Next",
+  
+  // Greetings
+  morningGreeting: "Good morning o",
+  afternoonGreeting: "Afternoon dey go",
+  eveningGreeting: "Evening don reach",
 };

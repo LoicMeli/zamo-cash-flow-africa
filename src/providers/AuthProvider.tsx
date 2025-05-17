@@ -1,142 +1,125 @@
-
-import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "sonner";
-
-export interface User {
-  id: string;
-  phoneNumber: string;
-  name?: string;
-  photoURL?: string;
-  balance: number;
-  phone?: string;
-  email?: string;
-  // We won't add displayName since we're using name instead
-}
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../types';
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (phoneNumber: string) => Promise<void>;
-  verifyOTP: (otp: string) => Promise<boolean>;
-  setupPIN: (pin: string) => Promise<boolean>;
-  logout: () => void;
+  login: (phone: string, pin: string) => Promise<void>;
+  logout: () => Promise<void>;
+  verifyOTP: (phone: string, otp: string) => Promise<void>;
+  setupPIN: (pin: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   useEffect(() => {
-    // Check for stored auth
-    const storedUser = localStorage.getItem("zamo-user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error("Failed to parse stored user", error);
-        localStorage.removeItem("zamo-user");
-      }
-    }
-    setIsLoading(false);
+    loadUser();
   }, []);
 
-  // Mock API calls
-  const login = async (phoneNumber: string) => {
-    setIsLoading(true);
-    
+  const loadUser = async () => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Store phone number for OTP verification step
-      setPhoneNumber(phoneNumber);
-      
-      setIsLoading(false);
-      return;
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
     } catch (error) {
+      console.error('Error loading user:', error);
+    } finally {
       setIsLoading(false);
-      toast.error("Login failed. Please try again.");
-      throw error;
     }
   };
 
-  const verifyOTP = async (otp: string) => {
-    setIsLoading(true);
-    
+  const login = async (phone: string, pin: string) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Success
-      setIsLoading(false);
-      return true;
+      setIsLoading(true);
+      // TODO: Implement actual API call
+      const mockUser: User = {
+        id: '1',
+        firstName: 'John',
+        lastName: 'Doe',
+        phone,
+        balance: 250000,
+        currency: 'FCFA',
+        isVerified: true,
+        createdAt: new Date(),
+      };
+
+      await AsyncStorage.setItem('user', JSON.stringify(mockUser));
+      setUser(mockUser);
     } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    } finally {
       setIsLoading(false);
-      toast.error("OTP verification failed");
-      return false;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setIsLoading(true);
+      await AsyncStorage.removeItem('user');
+      setUser(null);
+    } catch (error) {
+      console.error('Error logging out:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyOTP = async (phone: string, otp: string) => {
+    try {
+      setIsLoading(true);
+      // TODO: Implement actual API call
+      // For now, just simulate a successful verification
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const setupPIN = async (pin: string) => {
-    setIsLoading(true);
-    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Create mock user
-      const newUser: User = {
-        id: Math.random().toString(36).substring(2, 15),
-        phoneNumber,
-        phone: phoneNumber,
-        name: "",  // Use name instead of displayName
-        email: "",
-        balance: 12000,
-      };
-      
-      setUser(newUser);
-      localStorage.setItem("zamo-user", JSON.stringify(newUser));
-      
-      setIsLoading(false);
-      return true;
+      setIsLoading(true);
+      // TODO: Implement actual API call
+      // For now, just simulate a successful PIN setup
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
+      console.error('Error setting up PIN:', error);
+      throw error;
+    } finally {
       setIsLoading(false);
-      toast.error("Failed to set PIN");
-      return false;
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("zamo-user");
-    setUser(null);
-    toast.info("You have been logged out");
+  const value = {
+    user,
+    isLoading,
+    isAuthenticated: !!user,
+    login,
+    logout,
+    verifyOTP,
+    setupPIN,
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        isAuthenticated: !!user,
-        login,
-        verifyOTP,
-        setupPIN,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

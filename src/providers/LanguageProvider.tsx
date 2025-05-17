@@ -1,142 +1,198 @@
+import React, { createContext, useContext, useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { I18n } from "i18n-js";
+import { text } from "../lib/translations";
+import { AppState, AppStateStatus } from "react-native";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { translations } from "@/lib/translations";
+// Create a new i18n instance
+const i18n = new I18n(text);
 
-type Language = "en" | "fr" | "pidgin";
+// Language type including all supported languages
+export type Language = "en" | "fr" | "pidgin";
 
+// Storage key for language preference
+export const LANGUAGE_STORAGE_KEY = "zamo-language";
+
+// Props for the LanguageProvider component
 interface LanguageProviderProps {
   children: React.ReactNode;
   defaultLanguage?: Language;
 }
 
+// Interface for the language context
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (key: string, params?: Record<string, string | number>) => string;
-  reload: () => void;
+  isRTL: boolean; // For future RTL language support
+  getSupportedLanguages: () => { code: Language; name: string; localName: string }[];
+  forceRefresh: () => void; // Added to force refresh components
 }
 
+// Create the language context
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+// Define supported languages with their display names
+const SUPPORTED_LANGUAGES = [
+  { code: "en" as Language, name: "English", localName: "English" },
+  { code: "fr" as Language, name: "French", localName: "Français" },
+  { code: "pidgin" as Language, name: "Pidgin English", localName: "Pidgin" }
+];
+
+// Set i18n configuration
+i18n.enableFallback = true;
+i18n.defaultLocale = "en";
+
+/**
+ * LanguageProvider component to handle app translations and language switching
+ */
 export function LanguageProvider({
   children,
   defaultLanguage = "en",
 }: LanguageProviderProps) {
-  // Check if stored language is valid and use default if not
-  const getInitialLanguage = (): Language => {
-    const storedLang = localStorage.getItem("zamo-language") as Language;
-    if (storedLang && (storedLang === "en" || storedLang === "fr" || storedLang === "pidgin")) {
-      return storedLang;
-    }
-    return defaultLanguage;
-  };
-
-  const [language, setLanguage] = useState<Language>(getInitialLanguage);
+  // State to hold the current language
+  const [language, setLanguageState] = useState<Language>(defaultLanguage);
+  const [isLoaded, setIsLoaded] = useState(false);
+  // Adding refresh counter to force re-renders when needed
+  const [refreshCounter, setRefreshCounter] = useState(0);
   
-  // Add a reload counter to force re-renders when needed
-  const [reloadCounter, setReloadCounter] = useState(0);
-
+  // Handle app state changes to ensure language consistency
   useEffect(() => {
-    localStorage.setItem("zamo-language", language);
-    document.documentElement.setAttribute("lang", language);
-    console.log("Language changed to:", language);
-  }, [language]);
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        // When app becomes active, check if language needs updating
+        loadStoredLanguage();
+      }
+    };
 
-  // Force a reload of translations
-  const reload = () => {
-    setReloadCounter(prev => prev + 1);
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
+  // Function to force reload of translations
+  const forceRefresh = () => {
+    setRefreshCounter(prev => prev + 1);
   };
-
-  const t = (key: string, params?: Record<string, string | number>): string => {
-    const keys = key.split(".");
-    let translation: any = translations[language];
-    let fallbackTranslation: any = translations["en"];
-    
-    // For debugging
-    console.log("Translating key:", key, "in language:", language);
-    
-    // If no translation found for this language, use English
-    if (!translation) {
-      console.log("No translation object found for language:", language);
-      translation = fallbackTranslation;
-    }
-    
-    // Try to get the translation from the selected language
-    let result: string | null = null;
-    if (translation) {
-      let currentTranslation = translation;
-      let allKeysFound = true;
+  
+  // Shared function to load language
+  const loadStoredLanguage = async () => {
+    try {
+      const storedLang = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
       
-      for (const k of keys) {
-        if (currentTranslation && typeof currentTranslation === 'object' && k in currentTranslation) {
-          currentTranslation = currentTranslation[k];
-        } else {
-          allKeysFound = false;
-          console.log(`Key part "${k}" not found in ${language} translation`);
-          break;
-        }
-      }
-      
-      if (allKeysFound && typeof currentTranslation === 'string') {
-        result = currentTranslation;
-      }
-    }
-    
-    // If translation not found in current language, try English
-    if (result === null && language !== 'en') {
-      let currentFallback = fallbackTranslation;
-      let allKeysFound = true;
-      
-      for (const k of keys) {
-        if (currentFallback && typeof currentFallback === 'object' && k in currentFallback) {
-          currentFallback = currentFallback[k];
-        } else {
-          allKeysFound = false;
-          console.log(`Key part "${k}" not found in fallback translation`);
-          break;
-        }
-      }
-      
-      if (allKeysFound && typeof currentFallback === 'string') {
-        result = currentFallback;
+      if (storedLang && isValidLanguage(storedLang)) {
+        setLanguageState(storedLang as Language);
+        // Set i18n locale
+        i18n.locale = storedLang;
+        console.log("Loaded language from storage:", storedLang);
       } else {
-        result = `[Missing: ${key}]`;
+        // If no valid language is stored, save the default language
+        await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, defaultLanguage);
+        // Set i18n locale to default
+        i18n.locale = defaultLanguage;
+        console.log("No valid language found, using default:", defaultLanguage);
       }
+    } catch (error) {
+      console.error("Failed to load language preference:", error);
+      // Set i18n locale to default on error
+      i18n.locale = defaultLanguage;
+    } finally {
+      setIsLoaded(true);
     }
+  };
+  
+  // Load the language preference on initial mount
+  useEffect(() => {
+    loadStoredLanguage();
+  }, [defaultLanguage]);
+
+  // Save language preference when it changes
+  useEffect(() => {
+    if (!isLoaded) return; // Skip initial render
     
-    // Apply parameter replacements if we have a translation
-    if (result !== null && params) {
-      return Object.entries(params).reduce((str, [paramKey, value]) => {
-        const regex = new RegExp(`{{${paramKey}}}`, 'g');
-        return str.replace(regex, String(value));
-      }, result);
-    }
+    const saveLanguage = async () => {
+      try {
+        await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+        // Update i18n locale when language changes
+        i18n.locale = language;
+        // Force refresh on language change
+        forceRefresh();
+        console.log("Language saved to storage:", language);
+      } catch (error) {
+        console.error("Failed to save language preference:", error);
+      }
+    };
     
-    return result || `[Missing: ${key}]`;
+    saveLanguage();
+  }, [language, isLoaded]);
+
+  // Verify if a language code is valid
+  const isValidLanguage = (lang: string): boolean => {
+    return SUPPORTED_LANGUAGES.some(l => l.code === lang);
   };
 
-  const value = {
+  // Set language with state update and storage persistence
+  const setLanguage = (newLanguage: Language) => {
+    if (isValidLanguage(newLanguage)) {
+      console.log("Setting language to:", newLanguage);
+      // Immediately update i18n locale for instant changes
+      i18n.locale = newLanguage;
+      setLanguageState(newLanguage);
+      // Force a refresh after changing language
+      setTimeout(forceRefresh, 0);
+    } else {
+      console.error(`Invalid language code: ${newLanguage}`);
+    }
+  };
+
+  /**
+   * Get a translated string by key using i18n-js
+   * 
+   * @param key The dot-notation key for the string (e.g., "common.next")
+   * @param params Optional parameters for string interpolation
+   * @returns The translated string
+   */
+  const t = (key: string, params?: Record<string, string | number>): string => {
+    return i18n.t(key, params || {}) || key;
+  };
+
+  // Check if the current language is RTL (for future support)
+  const isRTL = false; // Currently no RTL languages supported
+  
+  // Get list of supported languages for UI selection
+  const getSupportedLanguages = () => SUPPORTED_LANGUAGES;
+
+  // Create the context value - include refreshCounter to make consumers re-render
+  const contextValue: LanguageContextType = {
     language,
-    setLanguage: (newLang: Language) => {
-      setLanguage(newLang);
-      // Automatically reload after language change
-      setTimeout(reload, 0);
-    },
+    setLanguage,
     t,
-    reload,
+    isRTL,
+    getSupportedLanguages,
+    forceRefresh
   };
 
+  // The refresh counter in a comment makes React re-evaluate this component
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider value={contextValue}>
+      {/* Refresh counter: {refreshCounter} - this forces re-renders */}
       {children}
     </LanguageContext.Provider>
   );
 }
 
-export const useLanguage = () => {
+/**
+ * Custom hook to use the language context
+ * 
+ * @throws Error if used outside a LanguageProvider
+ * @returns The language context value
+ */
+export function useLanguage() {
   const context = useContext(LanguageContext);
   if (context === undefined) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
-};
+}

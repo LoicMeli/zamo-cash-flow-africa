@@ -1,4 +1,3 @@
-
 export const wallet = {
   title: "Money bag",
   send: "Send Money",
@@ -14,5 +13,16 @@ export const wallet = {
   generateQR: "Generate QR",
   shareQR: "Share QR Code",
   personalQR: "Your Personal QR",
-  qrDescription: "Show dis QR code make people fit send you money"
+  qrDescription: "Show dis QR code make people fit send you money",
+  
+  // Added new keys
+  moneyBag: "Money bag",
+  availableBalance: "Money wey dey",
+  localEquivalent: "≈ 24 litres of mbongo djama",
+  thisWeek: "this week",
+  pinEnabled: "PIN don set",
+  sendMoney: "Send Money",
+  collect: "Collect",
+  withdrawMoney: "Comot Money",
+  addMoney: "Add Money",
 };

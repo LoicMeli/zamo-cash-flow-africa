@@ -1,4 +1,3 @@
-
 import { common } from "./pidgin/common";
 import { dashboard } from "./pidgin/dashboard";
 import { language } from "./pidgin/language";
@@ -8,6 +7,7 @@ import { settings } from "./pidgin/settings";
 import { wallet } from "./pidgin/wallet";
 import { profile } from "./pidgin/profile";
 import { agents } from "./pidgin/agents";
+import { auth } from "./pidgin/auth";
 
 export const pidgin = {
   common,
@@ -19,4 +19,5 @@ export const pidgin = {
   wallet,
   profile,
   agents,
+  auth,
 };

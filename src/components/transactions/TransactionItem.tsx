@@ -1,81 +1,124 @@
-
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { formatCurrency, formatDate } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Transaction } from "./types";
-import { useLanguage } from "@/providers/LanguageProvider";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { COLORS } from '../../config/constants';
+import { Transaction } from '../../types';
+import { formatCurrency, formatDate } from '../../utils/formatters';
 
 interface TransactionItemProps {
   transaction: Transaction;
+  onPress?: () => void;
 }
 
-export const TransactionItem = ({ transaction: tx }: TransactionItemProps) => {
-  const { language } = useLanguage();
-  
-  // Get transaction details based on type
-  const getTransactionDetails = (type: Transaction['type']) => {
-    switch (type) {
-      case "send":
-      case "withdrawal":
-        return {
-          iconColor: "text-red-500",
-          bgColor: "bg-red-50 dark:bg-red-950/30",
-          textColor: "text-red-600 dark:text-red-400",
-          sign: "-",
-        };
-      case "receive":
-      case "deposit":
-        return {
-          iconColor: "text-green-500",
-          bgColor: "bg-green-50 dark:bg-green-950/30",
-          textColor: "text-green-600 dark:text-green-400",
-          sign: "+",
-        };
-      case "payment":
-        return {
-          iconColor: "text-blue-500",
-          bgColor: "bg-blue-50 dark:bg-blue-950/30",
-          textColor: "text-blue-600 dark:text-blue-400",
-          sign: "-",
-        };
+export const TransactionItem: React.FC<TransactionItemProps> = ({
+  transaction,
+  onPress,
+}) => {
+  const getTransactionIcon = () => {
+    switch (transaction.type) {
+      case 'SEND':
+        return 'arrow-up';
+      case 'RECEIVE':
+        return 'arrow-down';
+      case 'WITHDRAW':
+        return 'cash-outline';
+      case 'DEPOSIT':
+        return 'cash-outline';
+      default:
+        return 'swap-horizontal';
     }
   };
-  
-  const details = getTransactionDetails(tx.type);
-  const displayName = tx.name || (tx.user ? tx.user.name : 'Unknown');
-  
+
+  const getTransactionColor = () => {
+    switch (transaction.type) {
+      case 'SEND':
+        return COLORS.danger;
+      case 'RECEIVE':
+        return COLORS.success;
+      case 'WITHDRAW':
+        return COLORS.warning;
+      case 'DEPOSIT':
+        return COLORS.info;
+      default:
+        return COLORS.secondary;
+    }
+  };
+
+  const getTransactionPrefix = () => {
+    switch (transaction.type) {
+      case 'SEND':
+        return '-';
+      case 'RECEIVE':
+        return '+';
+      default:
+        return '';
+    }
+  };
+
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 }
-      }}
-      whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-      className="flex items-center p-4"
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      activeOpacity={0.7}
     >
-      <Avatar className="h-10 w-10 mr-3">
-        {tx.avatar ? (
-          <AvatarImage src={tx.avatar} alt={displayName} />
-        ) : (
-          <AvatarFallback className={cn(details?.bgColor, details?.textColor)}>
-            {displayName.substring(0, 1)}
-          </AvatarFallback>
-        )}
-      </Avatar>
-      
-      <div className="flex-1 min-w-0">
-        <p className="font-medium truncate">{displayName}</p>
-        <p className="text-xs text-muted-foreground">
-          {formatDate(tx.date, language === 'fr' ? 'fr-FR' : 'en-US')}
-        </p>
-      </div>
-      
-      <div className={cn("font-semibold", details?.textColor)}>
-        {details?.sign}{formatCurrency(tx.amount)} FCFA
-      </div>
-    </motion.div>
+      <View style={[styles.iconContainer, { backgroundColor: getTransactionColor() + '20' }]}>
+        <Ionicons name={getTransactionIcon()} size={20} color={getTransactionColor()} />
+      </View>
+      <View style={styles.details}>
+        <Text style={styles.description}>{transaction.description}</Text>
+        <Text style={styles.date}>{formatDate(transaction.createdAt)}</Text>
+      </View>
+      <View style={styles.amountContainer}>
+        <Text style={[styles.amount, { color: getTransactionColor() }]}>
+          {getTransactionPrefix()}{formatCurrency(transaction.amount)} FCFA
+        </Text>
+        <Text style={styles.status}>{transaction.status}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
-export default TransactionItem;
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: COLORS.background,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  details: {
+    flex: 1,
+  },
+  description: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: COLORS.text,
+    marginBottom: 4,
+  },
+  date: {
+    fontSize: 12,
+    color: COLORS.secondary,
+  },
+  amountContainer: {
+    alignItems: 'flex-end',
+  },
+  amount: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  status: {
+    fontSize: 12,
+    color: COLORS.secondary,
+    textTransform: 'capitalize',
+  },
+});

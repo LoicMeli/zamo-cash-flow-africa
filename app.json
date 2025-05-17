@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Zamo Cash Flow Africa",
+    "slug": "zamo-cash-flow-africa",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#3B5BFE"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zamo.cashflowafrica"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#3B5BFE"
+      },
+      "package": "com.zamo.cashflowafrica"
+    },
+    "web": {
+    },
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "L'application a besoin d'accéder à votre caméra pour scanner les codes QR."
+        }
+      ]
+    ]
+  }
+} 

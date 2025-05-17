@@ -1,4 +1,3 @@
-
 export const common = {
   send: "Send",
   receive: "Receive",
@@ -33,5 +32,11 @@ export const common = {
   change: "Change PIN",
   logout: "Logout",
   becomeAgent: "Become an Agent",
-  agentSpace: "Agent Space"
+  agentSpace: "Agent Space",
+  optional: "optional",
+  
+  // Greetings
+  morningGreeting: "Good Morning",
+  afternoonGreeting: "Good Afternoon",
+  eveningGreeting: "Good Evening",
 };

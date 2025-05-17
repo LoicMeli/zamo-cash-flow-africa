@@ -1,73 +1,84 @@
-# Welcome to your Lovable project
+# Zamo Cash Flow Africa
 
-## Project info
+Application mobile de transfert d'argent et de gestion de portefeuille pour l'Afrique.
 
-**URL**: https://lovable.dev/projects/dfcb47dc-ef1c-461e-9d1c-337ad7fb27c1
+## Fonctionnalités
 
-## How can I edit this code?
+- Transfert d'argent
+- Scan de code QR
+- Retrait d'argent
+- Portefeuille familial
+- Gestion des transactions
+- Paramètres de sécurité
+- Notifications
+- Support multilingue
 
-There are several ways of editing your application.
+## Technologies utilisées
 
-**Use Lovable**
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- Expo Vector Icons
+- Expo Barcode Scanner
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/dfcb47dc-ef1c-461e-9d1c-337ad7fb27c1) and start prompting.
+## Prérequis
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js (v14 ou supérieur)
+- npm ou yarn
+- Expo CLI
+- iOS Simulator (pour Mac) ou Android Studio (pour le développement Android)
 
-**Use your preferred IDE**
+## Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Cloner le dépôt :
+```bash
+git clone https://github.com/votre-username/zamo-cash-flow-africa.git
+cd zamo-cash-flow-africa
 ```
 
-**Edit a file directly in GitHub**
+2. Installer les dépendances :
+```bash
+npm install
+# ou
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Lancer l'application :
+```bash
+npm start
+# ou
+yarn start
+```
 
-**Use GitHub Codespaces**
+4. Utiliser l'application Expo Go sur votre appareil mobile ou un simulateur pour tester l'application.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Structure du projet
 
-## What technologies are used for this project?
+```
+src/
+  ├── components/     # Composants réutilisables
+  ├── config/        # Configuration (thème, constantes)
+  ├── features/      # Fonctionnalités de l'application
+  ├── navigation/    # Configuration de la navigation
+  ├── types/         # Types TypeScript
+  └── utils/         # Utilitaires (format, validation, stockage)
+```
 
-This project is built with:
+## Contribution
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Fork le projet
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
 
-## How can I deploy this project?
+## Licence
 
-Simply open [Lovable](https://lovable.dev/projects/dfcb47dc-ef1c-461e-9d1c-337ad7fb27c1) and click on Share -> Publish.
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## Can I connect a custom domain to my Lovable project?
+## Contact
 
-Yes, you can!
+Votre Nom - [@votre_twitter](https://twitter.com/votre_twitter)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Lien du projet : [https://github.com/votre-username/zamo-cash-flow-africa](https://github.com/votre-username/zamo-cash-flow-africa)
