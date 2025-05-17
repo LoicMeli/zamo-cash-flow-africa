@@ -1,137 +1,189 @@
 
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { en } from '../lib/translations/en';
-import { fr } from '../lib/translations/fr';
-import { pidgin } from '../lib/translations/pidgin';
 
-// Storage key - now exported
+export type Language = 'en' | 'fr' | 'camfran';
+
 export const LANGUAGE_STORAGE_KEY = 'zamo_language';
 
-// Define supported languages
-export type Language = 'en' | 'fr' | 'pidgin';
+// Define a translation function type
+type TranslateFunction = (key: string, params?: Record<string, any>) => string;
 
-// Type for language pack structure
-export type LanguagePack = typeof en;
-
-// Language context type definition
-export interface LanguageContextType {
+// Define context type
+type LanguageContextType = {
   language: Language;
-  t: (key: string) => string;
-  setLanguage: (lang: Language) => void;
-  getSupportedLanguages: () => {code: Language; name: string; localName: string}[];
-  forceRefresh: () => void;
-}
-
-const languageMap: Record<Language, LanguagePack> = {
-  en,
-  fr,
-  pidgin
+  t: TranslateFunction;
+  changeLanguage: (lang: Language) => Promise<void>;
+  getSupportedLanguages: () => { code: Language; name: string }[];
 };
 
-const initialLanguageContext: LanguageContextType = {
+// Create context
+const LanguageContext = createContext<LanguageContextType>({
   language: 'en',
   t: (key: string) => key,
-  setLanguage: () => {},
+  changeLanguage: async () => {},
   getSupportedLanguages: () => [],
-  forceRefresh: () => {}
+});
+
+// Mock translations
+const translations: Record<Language, Record<string, any>> = {
+  en: {
+    common: {
+      back: 'Back',
+      next: 'Next',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
+      continue: 'Continue',
+      morningGreeting: 'Good morning',
+      afternoonGreeting: 'Good afternoon',
+      eveningGreeting: 'Good evening',
+    },
+    dashboard: {
+      noTransactions: 'No transactions yet',
+      availableBalance: 'Available balance',
+    },
+    auth: {
+      welcome: 'Welcome to Zamo',
+      pinSetup: 'Create your PIN',
+      pinMustBeDigits: 'PIN must be 4 digits',
+      pinsDoNotMatch: 'PINs do not match',
+      createPinDescription: 'Create a secure 4-digit PIN',
+      confirmPinCode: 'Enter your PIN again',
+      confirmPin: 'Confirm PIN',
+      confirmation: 'Confirm PIN',
+    },
+  },
+  fr: {
+    common: {
+      back: 'Retour',
+      next: 'Suivant',
+      confirm: 'Confirmer',
+      cancel: 'Annuler',
+      continue: 'Continuer',
+      morningGreeting: 'Bonjour',
+      afternoonGreeting: 'Bon après-midi',
+      eveningGreeting: 'Bonsoir',
+    },
+    dashboard: {
+      noTransactions: 'Pas encore de transactions',
+      availableBalance: 'Solde disponible',
+    },
+    auth: {
+      welcome: 'Bienvenue à Zamo',
+      pinSetup: 'Créer votre PIN',
+      pinMustBeDigits: 'Le PIN doit être à 4 chiffres',
+      pinsDoNotMatch: 'Les PINs ne correspondent pas',
+      createPinDescription: 'Créez un code PIN sécurisé à 4 chiffres',
+      confirmPinCode: 'Entrez votre code PIN à nouveau',
+      confirmPin: 'Confirmer PIN',
+      confirmation: 'Confirmation du PIN',
+    },
+  },
+  camfran: {
+    common: {
+      back: 'Go back',
+      next: 'Next',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
+      continue: 'Continue',
+      morningGreeting: 'Good morning',
+      afternoonGreeting: 'Good afternoon',
+      eveningGreeting: 'Good evening',
+    },
+    dashboard: {
+      noTransactions: 'No money movement for now',
+      availableBalance: 'Money wey dey',
+    },
+    auth: {
+      welcome: 'Welcome for Zamo',
+      pinSetup: 'Create your PIN',
+      pinMustBeDigits: 'PIN must be 4 numbers',
+      pinsDoNotMatch: 'The PINs no match',
+      createPinDescription: 'Create secure 4-number PIN',
+      confirmPinCode: 'Enter PIN again',
+      confirmPin: 'Confirm PIN',
+      confirmation: 'Confirm PIN',
+    },
+  },
 };
 
-const LanguageContext = createContext<LanguageContextType>(initialLanguageContext);
+// Translation helper function
+const translate = (language: Language, key: string, params?: Record<string, any>): string => {
+  // Split the key by dot notation to access nested properties
+  const keys = key.split('.');
+  let translation: any = translations[language];
 
-export const useLanguage = () => useContext(LanguageContext);
+  // Navigate through the nested objects
+  for (const k of keys) {
+    if (!translation[k]) return key; // Return key if translation not found
+    translation = translation[k];
+  }
 
-interface LanguageProviderProps {
-  children: React.ReactNode;
-  defaultLanguage?: Language;
-}
+  // If it's not a string, return the key
+  if (typeof translation !== 'string') return key;
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ 
-  children, 
-  defaultLanguage = 'en' 
-}) => {
-  const [language, setLanguageState] = useState<Language>(defaultLanguage);
-  const [refreshCounter, setRefreshCounter] = useState(0);
+  // Replace parameters if they exist
+  if (params) {
+    return Object.entries(params).reduce((result, [paramKey, value]) => {
+      return result.replace(`{${paramKey}}`, value.toString());
+    }, translation);
+  }
 
-  // Load saved language preference
+  return translation;
+};
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('en');
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load saved language on mount
   useEffect(() => {
     const loadLanguage = async () => {
       try {
         const savedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
-        if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'fr' || savedLanguage === 'pidgin')) {
-          setLanguageState(savedLanguage as Language);
+        if (savedLanguage) {
+          setLanguage(savedLanguage as Language);
         }
       } catch (error) {
-        console.error('Failed to load language preference:', error);
+        console.error('Failed to load language:', error);
+      } finally {
+        setIsLoaded(true);
       }
     };
-    
+
     loadLanguage();
   }, []);
 
-  // Function to set language and save preference
-  const setLanguage = async (lang: Language) => {
-    setLanguageState(lang);
+  const changeLanguage = async (lang: Language) => {
+    setLanguage(lang);
     try {
       await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
     } catch (error) {
-      console.error('Failed to save language preference:', error);
+      console.error('Failed to save language:', error);
     }
   };
 
-  // Function to force UI refresh
-  const forceRefresh = () => {
-    setRefreshCounter(prev => prev + 1);
+  const t: TranslateFunction = (key, params) => {
+    return translate(language, key, params);
   };
 
-  // Translation function
-  const t = (key: string) => {
-    try {
-      // Split the key by dots to navigate through nested objects
-      const keys = key.split('.');
-      let value: any = languageMap[language];
-      
-      // Traverse the object using the keys
-      for (const k of keys) {
-        if (value[k] === undefined) {
-          console.warn(`Translation key not found: ${key}`);
-          return key; // Return the key itself if not found
-        }
-        value = value[k];
-      }
-      
-      // If the value is not a string at this point, it's a nested object
-      if (typeof value !== 'string') {
-        console.warn(`Translation key leads to an object, not a string: ${key}`);
-        return key;
-      }
-      
-      return value;
-    } catch (error) {
-      console.error('Translation error:', error);
-      return key; // Return the key itself in case of error
-    }
+  const getSupportedLanguages = () => {
+    return [
+      { code: 'en', name: 'English' },
+      { code: 'fr', name: 'Français' },
+      { code: 'camfran', name: 'Camfranglais' }
+    ];
   };
 
-  // Get list of supported languages
-  const getSupportedLanguages = () => [
-    { code: 'en' as Language, name: 'English', localName: 'English' },
-    { code: 'fr' as Language, name: 'French', localName: 'Français' },
-    { code: 'pidgin' as Language, name: 'Pidgin', localName: 'Pidgin' }
-  ];
-
-  // Context value with the refresh counter to trigger re-renders
-  const contextValue: LanguageContextType = {
-    language,
-    t,
-    setLanguage,
-    getSupportedLanguages,
-    forceRefresh
-  };
+  if (!isLoaded) {
+    return null; // Or return a loading indicator
+  }
 
   return (
-    <LanguageContext.Provider value={contextValue}>
+    <LanguageContext.Provider value={{ language, t, changeLanguage, getSupportedLanguages }}>
       {children}
     </LanguageContext.Provider>
   );
 };
+
+export const useLanguage = () => useContext(LanguageContext);

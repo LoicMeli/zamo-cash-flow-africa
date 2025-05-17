@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { COLORS } from '../../config/constants';
 import { formatCurrency } from '../../utils/formatters';
 
@@ -22,7 +23,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       <View style={styles.header}>
         <Text style={styles.title}>Solde disponible</Text>
         <TouchableOpacity onPress={onShowBalance} style={styles.eyeButton}>
-          <Ionicons
+          <Icon
             name={isBalanceHidden ? 'eye-off' : 'eye'}
             size={24}
             color={COLORS.secondary}
@@ -52,7 +53,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.white,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
@@ -104,4 +105,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-}); 
+});

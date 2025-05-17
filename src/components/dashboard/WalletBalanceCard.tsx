@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   View, 
@@ -5,12 +6,12 @@ import {
   Animated, 
   TouchableOpacity,
   useWindowDimensions,
-  TextStyle 
+  TextStyle,
+  Text 
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { useTheme, getCssVar } from '../../theme/ThemeContext';
-import { COLORS } from '../../theme/colors';
-import { ThemedText } from '../../components/common/ThemedView';
+import { COLORS } from '../../config/constants';
 
 // Utility functions to determine wallet tier and icon
 const getWalletTier = (balance: number): string => {
@@ -49,7 +50,7 @@ export const WalletBalanceCard: React.FC<WalletBalanceCardProps> = ({
   localEquivalent = "≈ 24 litres de mbongo djama"
 }) => {
   const { width: windowWidth } = useWindowDimensions();
-  const { cssVar } = useTheme();
+  const { colors } = useTheme();
   
   // Determine responsive breakpoints
   const isSmallScreen = windowWidth < 420;
@@ -63,79 +64,37 @@ export const WalletBalanceCard: React.FC<WalletBalanceCardProps> = ({
     return `${amount.toLocaleString()} FCFA`;
   };
   
-  // Create style objects that combine conditional styles properly
-  const balanceLabelStyle: TextStyle = {
-    ...styles.balanceLabel,
-    ...(isSmallScreen ? styles.textSmall : {}),
-    color: '#FFFFFF'
-  };
-  
-  const walletTierTextStyle: TextStyle = {
-    ...styles.walletTierText,
-    ...(isSmallScreen ? styles.textSmall : {}),
-    color: '#FFFFFF'
-  };
-  
-  const balanceAmountStyle: TextStyle = {
-    ...styles.balanceAmount,
-    ...(isSmallScreen ? styles.balanceAmountSmall : {}),
-    color: '#FFFFFF'
-  };
-  
-  const currencyTextStyle: TextStyle = {
-    ...styles.currencyText,
-    ...(isSmallScreen ? styles.currencyTextSmall : {}),
-    color: '#FFFFFF'
-  };
-  
-  const accountNumberStyle: TextStyle = {
-    ...styles.accountNumberText,
-    color: 'rgba(255, 255, 255, 0.7)'
-  };
-  
-  const equivalentTextStyle: TextStyle = {
-    ...styles.equivalentText,
-    ...(isSmallScreen ? styles.textSmall : {}),
-    color: '#E0E0E0'
-  };
-  
-  const balanceStatsTextStyle: TextStyle = {
-    ...styles.balanceStatsText,
-    ...(isSmallScreen ? styles.textSmall : {}),
-    color: cssVar['--success']
-  };
-  
   return (
     <View 
       style={[
         styles.balanceCard,
         isSmallScreen ? styles.balanceCardSmall : {},
-        { backgroundColor: cssVar['--primary'] }
+        { backgroundColor: COLORS.primary }
       ]}
     >
       {/* Title Row with Dynamic Tier Badge */}
       <View style={styles.balanceTitleRow}>
-        <ThemedText style={balanceLabelStyle}>
+        <Text style={styles.balanceLabel}>
           Montant disponible
-        </ThemedText>
+        </Text>
         <View style={styles.walletTierBadge}>
-          <ThemedText style={styles.walletTierIcon}>{tierIcon}</ThemedText>
-          <ThemedText style={walletTierTextStyle}>
+          <Text style={styles.walletTierIcon}>{tierIcon}</Text>
+          <Text style={styles.walletTierText}>
             {walletTier}
-          </ThemedText>
+          </Text>
         </View>
       </View>
       
       {/* Amount with hide/show toggle */}
       <View style={styles.balanceRow}>
-        <ThemedText style={balanceAmountStyle}>
+        <Text style={styles.balanceAmount}>
           {isBalanceHidden 
             ? '••••••' 
             : formatCurrency(balance).split(' ')[0]}
-          <ThemedText style={currencyTextStyle}> FCFA</ThemedText>
-        </ThemedText>
+          <Text style={styles.currencyText}> FCFA</Text>
+        </Text>
         <TouchableOpacity onPress={onToggleBalanceVisibility} style={styles.eyeButton}>
-          <Ionicons 
+          <Icon 
             name={isBalanceHidden ? "eye-outline" : "eye-off-outline"} 
             size={20} 
             color="#FFFFFF" 
@@ -144,21 +103,21 @@ export const WalletBalanceCard: React.FC<WalletBalanceCardProps> = ({
       </View>
       
       {/* Account Number */}
-      <ThemedText style={accountNumberStyle}>
+      <Text style={styles.accountNumberText}>
         Compte {accountNumber}
-      </ThemedText>
+      </Text>
       
       {/* Local Equivalent */}
-      <ThemedText style={equivalentTextStyle}>
+      <Text style={styles.equivalentText}>
         {localEquivalent}
-      </ThemedText>
+      </Text>
       
       {/* Weekly Stats */}
       <View style={styles.balanceStats}>
-        <Ionicons name="trending-up" size={isSmallScreen ? 14 : 16} color={cssVar['--success']} />
-        <ThemedText style={balanceStatsTextStyle}>
+        <Icon name="trending-up" size={isSmallScreen ? 14 : 16} color="#22C55E" />
+        <Text style={styles.balanceStatsText}>
           +{weeklyChange.toLocaleString()} FCFA cette semaine
-        </ThemedText>
+        </Text>
       </View>
     </View>
   );
@@ -189,6 +148,7 @@ const styles = StyleSheet.create({
   balanceLabel: {
     fontSize: 14,
     fontWeight: '600',
+    color: '#FFFFFF',
   },
   walletTierBadge: {
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
@@ -201,10 +161,12 @@ const styles = StyleSheet.create({
   },
   walletTierIcon: {
     fontSize: 12,
+    color: '#FFFFFF'
   },
   walletTierText: {
     fontSize: 12,
     fontWeight: '500',
+    color: '#FFFFFF'
   },
   balanceRow: {
     flexDirection: 'row',
@@ -215,16 +177,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  balanceAmountSmall: {
-    fontSize: 24,
+    color: '#FFFFFF'
   },
   currencyText: {
     fontSize: 22,
     fontWeight: '500',
-  },
-  currencyTextSmall: {
-    fontSize: 20,
+    color: '#FFFFFF'
   },
   eyeButton: {
     padding: 8,
@@ -232,11 +190,13 @@ const styles = StyleSheet.create({
   accountNumberText: {
     fontSize: 13,
     marginBottom: 8,
+    color: 'rgba(255, 255, 255, 0.7)'
   },
   equivalentText: {
     fontSize: 14,
     fontStyle: 'italic',
     marginBottom: 8,
+    color: '#E0E0E0'
   },
   balanceStats: {
     flexDirection: 'row',
@@ -246,8 +206,6 @@ const styles = StyleSheet.create({
   },
   balanceStatsText: {
     fontSize: 13,
-  },
-  textSmall: {
-    fontSize: 12,
-  },
-}); 
+    color: '#22C55E'
+  }
+});

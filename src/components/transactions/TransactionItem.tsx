@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { COLORS } from '../../config/constants';
 import { Transaction } from '../../types';
 import { formatCurrency, formatDate } from '../../utils/formatters';
@@ -62,7 +63,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
       activeOpacity={0.7}
     >
       <View style={[styles.iconContainer, { backgroundColor: getTransactionColor() + '20' }]}>
-        <Ionicons name={getTransactionIcon()} size={20} color={getTransactionColor()} />
+        <Icon name={getTransactionIcon()} size={20} color={getTransactionColor()} />
       </View>
       <View style={styles.details}>
         <Text style={styles.description}>{transaction.description}</Text>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: COLORS.background,
+    backgroundColor: COLORS.white,
     borderRadius: 12,
     marginBottom: 8,
   },

@@ -1,0 +1,11 @@
+
+IMPORTANT: You need to add the following scripts to your package.json file:
+
+"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "build:dev": "vite build --mode development",
+  "preview": "vite preview"
+}
+
+Since package.json files can't be modified directly by Lovable, you'll need to add these scripts manually.

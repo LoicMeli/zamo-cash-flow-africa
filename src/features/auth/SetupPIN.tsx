@@ -25,7 +25,7 @@ export const SetupPIN = () => {
 
   const handleContinue = () => {
     if (pin.length !== LIMITS.PIN_LENGTH) {
-      setError(t('auth.pinMustBeDigits', { count: LIMITS.PIN_LENGTH }));
+      setError(t('auth.pinMustBeDigits'));
       return;
     }
     
@@ -44,7 +44,7 @@ export const SetupPIN = () => {
 
   const handleSetupPIN = () => {
     if (pin.length !== LIMITS.PIN_LENGTH) {
-      setError(t('auth.pinMustBeDigits', { count: LIMITS.PIN_LENGTH }));
+      setError(t('auth.pinMustBeDigits'));
       return;
     }
 
@@ -79,7 +79,7 @@ export const SetupPIN = () => {
         <ThemedText style={styles.subtitle} secondary>
           {isConfirmStep 
             ? t('auth.confirmPinCode') 
-            : t('auth.createPinDescription', { count: LIMITS.PIN_LENGTH })
+            : t('auth.createPinDescription')
           }
         </ThemedText>
 
@@ -254,4 +254,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-}); 
+});
