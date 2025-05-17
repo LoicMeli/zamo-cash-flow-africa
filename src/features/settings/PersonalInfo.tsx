@@ -7,14 +7,11 @@ import { Icon } from '../../components/common/Icon';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
 import { ThemedButton, ThemedInput } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
-import { useTheme } from '../../theme/ThemeContext';
-import { COLORS } from '../../theme/colors';
 
 type PersonalScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const PersonalScreen: React.FC = () => {
   const navigation = useNavigation<PersonalScreenNavigationProp>();
-  const { colors } = useTheme();
   
   const [userInfo, setUserInfo] = useState({
     name: 'John Doe',
@@ -41,8 +38,8 @@ export const PersonalScreen: React.FC = () => {
         <ThemedText style={styles.title}>Informations personnelles</ThemedText>
         
         <View style={styles.avatar}>
-          <View style={[styles.avatarPlaceholder, { backgroundColor: colors.card }]}>
-            <Icon name="person" size={40} color={COLORS.primary} />
+          <View style={styles.avatarPlaceholder}>
+            <Icon name="person" size={40} color="#3B5BFE" />
           </View>
           <ThemedButton 
             title="Changer la photo" 
@@ -116,6 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
+    backgroundColor: '#F3F4F6',
   },
   avatarButton: {
     width: 'auto',

@@ -2,6 +2,14 @@
 export type RootStackParamList = {
   Main: undefined;
   SendMoney: undefined;
+  SendMoneyAmount: {
+    recipient?: {
+      name: string;
+      phone: string;
+    };
+  };
+  SendMoneyConfirm: undefined;
+  SendMoneySuccess: undefined;
   ScanQR: undefined;
   Withdraw: undefined;
   FindAgent: undefined;

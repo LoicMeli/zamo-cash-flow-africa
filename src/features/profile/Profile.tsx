@@ -68,7 +68,6 @@ export const Profile = () => {
 
   // Correctly typed navigation handler
   const navigateToScreen = (screen: keyof RootStackParamList) => {
-    // Using the correct navigation approach - passing the screen as a parameter object
     navigation.navigate(screen);
   };
 
@@ -108,7 +107,7 @@ export const Profile = () => {
         <View style={styles.logoutContainer}>
           <ThemedButton
             title="Déconnexion"
-            variant="danger"
+            variant="primary"
             onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
           />
         </View>

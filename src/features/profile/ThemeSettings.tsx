@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -23,8 +24,8 @@ export const ThemeSettings: React.FC = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.title, { color: colors.text }]}>Thème</Text>
+    <View style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
+      <Text style={[styles.title, { color: '#1A1A1A' }]}>Thème</Text>
       
       <View style={styles.optionsContainer}>
         {options.map((option) => (
@@ -32,8 +33,8 @@ export const ThemeSettings: React.FC = () => {
             key={option.value}
             style={[
               styles.option,
-              themeMode === option.value && [styles.selectedOption, { borderColor: colors.primary }],
-              { backgroundColor: colors.card, borderColor: colors.border }
+              themeMode === option.value && [styles.selectedOption, { borderColor: '#3B5BFE' }],
+              { backgroundColor: '#F9FAFB', borderColor: '#E5E7EB' }
             ]}
             onPress={() => setThemeMode(option.value)}
           >
@@ -41,13 +42,13 @@ export const ThemeSettings: React.FC = () => {
             <Text
               style={[
                 styles.optionLabel,
-                { color: themeMode === option.value ? colors.primary : colors.text }
+                { color: themeMode === option.value ? '#3B5BFE' : '#1A1A1A' }
               ]}
             >
               {option.label}
             </Text>
             {themeMode === option.value && (
-              <Text style={[styles.checkIcon, { color: colors.primary }]}>✓</Text>
+              <Text style={[styles.checkIcon, { color: '#3B5BFE' }]}>✓</Text>
             )}
           </TouchableOpacity>
         ))}

@@ -5,10 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Icon } from '../../components/common/Icon';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
-import { ThemedButton, ThemedDivider, ThemedInput } from '../../components/common/ThemedComponents';
+import { ThemedButton, ThemedDivider } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
-import { useTheme } from '../../theme/ThemeContext';
-import { COLORS } from '../../theme/colors';
 
 type SecurityScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -16,7 +14,6 @@ export const SecurityScreen: React.FC = () => {
   const navigation = useNavigation<SecurityScreenNavigationProp>();
   const [pinEnabled, setPinEnabled] = useState(true);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
-  const { colors } = useTheme();
   
   return (
     <ThemedView style={styles.container}>
@@ -31,7 +28,7 @@ export const SecurityScreen: React.FC = () => {
         <View style={styles.section}>
           <ThemedText style={styles.sectionTitle}>Authentication</ThemedText>
           
-          <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+          <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <ThemedText style={styles.settingTitle}>Utiliser le code PIN pour les transactions</ThemedText>
               <ThemedText secondary style={styles.settingDescription}>
@@ -41,12 +38,12 @@ export const SecurityScreen: React.FC = () => {
             <Switch
               value={pinEnabled}
               onValueChange={setPinEnabled}
-              trackColor={{ false: '#767577', true: COLORS.primary }}
+              trackColor={{ false: '#767577', true: '#3B5BFE' }}
               thumbColor={'#f4f3f4'}
             />
           </View>
           
-          <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+          <View style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <ThemedText style={styles.settingTitle}>Authentication biométrique</ThemedText>
               <ThemedText secondary style={styles.settingDescription}>
@@ -56,43 +53,43 @@ export const SecurityScreen: React.FC = () => {
             <Switch
               value={biometricEnabled}
               onValueChange={setBiometricEnabled}
-              trackColor={{ false: '#767577', true: COLORS.primary }}
+              trackColor={{ false: '#767577', true: '#3B5BFE' }}
               thumbColor={'#f4f3f4'}
             />
           </View>
           
-          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+          <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <ThemedText style={styles.settingTitle}>Changer le code PIN</ThemedText>
               <ThemedText secondary style={styles.settingDescription}>
                 Modifier votre code PIN actuel
               </ThemedText>
             </View>
-            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+            <Icon name="chevron-forward-outline" size={24} color={'#888888'} />
           </TouchableOpacity>
         </View>
         
         <View style={styles.section}>
           <ThemedText style={styles.sectionTitle}>Appareil et Connexion</ThemedText>
           
-          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+          <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <ThemedText style={styles.settingTitle}>Appareils connectés</ThemedText>
               <ThemedText secondary style={styles.settingDescription}>
                 Gérer les appareils connectés à votre compte
               </ThemedText>
             </View>
-            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+            <Icon name="chevron-forward-outline" size={24} color={'#888888'} />
           </TouchableOpacity>
           
-          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+          <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingInfo}>
               <ThemedText style={styles.settingTitle}>Historique de connexion</ThemedText>
               <ThemedText secondary style={styles.settingDescription}>
                 Voir toutes les connexions récentes
               </ThemedText>
             </View>
-            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+            <Icon name="chevron-forward-outline" size={24} color={'#888888'} />
           </TouchableOpacity>
         </View>
         
@@ -136,6 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
     borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
   },
   settingInfo: {
     flex: 1,

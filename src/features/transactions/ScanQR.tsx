@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { Button } from '../../components/common/Button';
 import { RootStackParamList } from '../../types/navigation';
 
@@ -98,8 +98,7 @@ export const ScanQR = () => {
     
     // After a brief delay, pretend we've scanned a code and navigate
     setTimeout(() => {
-      // TODO: Navigate to appropriate screen after "scanning"
-      // For now, just navigate to SendMoney
+      // Navigate to SendMoney
       navigation.navigate('SendMoney');
     }, 800);
   };
@@ -111,7 +110,7 @@ export const ScanQR = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Icon name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Scan QR Code</Text>
       </View>
@@ -151,7 +150,7 @@ export const ScanQR = () => {
             activeOpacity={0.8}
             style={styles.qrIconContainer}
           >
-            <Ionicons name="qr-code" size={QR_BOX_SIZE * 0.4} color="#3B5BFE" />
+            <Icon name="qr-code" size={QR_BOX_SIZE * 0.4} color="#3B5BFE" />
           </TouchableOpacity>
         </Animated.View>
         
@@ -176,7 +175,7 @@ export const ScanQR = () => {
       </View>
       
       <View style={styles.infoContainer}>
-        <Ionicons name="information-circle" size={24} color="#3B5BFE" />
+        <Icon name="information-circle" size={24} color="#3B5BFE" />
         <Text style={styles.infoText}>
           Scan any Zamo user's QR code to send money instantly and securely.
         </Text>
@@ -267,4 +266,4 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
   },
-}); 
+});

@@ -1,11 +1,11 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Icon } from '../../components/common/Icon';
 import { Button } from '../../components/common/Button';
-import { theme } from '../../config/theme';
-import { ROUTES } from '../../config/constants';
+import { useTheme } from '../../theme/ThemeContext';
 import { RootStackParamList } from '../../types/navigation';
 
 type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -82,17 +82,18 @@ const settingsSections = [
 export const Settings = () => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
   const [biometricEnabled, setBiometricEnabled] = React.useState(false);
+  const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
-          <Text style={styles.title}>Paramètres</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Paramètres</Text>
         </View>
 
         {settingsSections.map((section) => (
           <View key={section.id} style={styles.section}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>{section.title}</Text>
             {section.items.map((item) => (
               <TouchableOpacity
                 key={item.id}
@@ -100,27 +101,27 @@ export const Settings = () => {
                 onPress={() => navigation.navigate(item.route)}
               >
                 <View style={styles.settingItemLeft}>
-                  <Icon name={item.icon} size={24} color={theme.colors.primary} />
-                  <Text style={styles.settingItemText}>{item.title}</Text>
+                  <Icon name={item.icon} size={24} color="#3B5BFE" />
+                  <Text style={[styles.settingItemText, { color: colors.text }]}>{item.title}</Text>
                 </View>
-                <Icon name="chevron-forward" size={24} color={theme.colors.secondary} />
+                <Icon name="chevron-forward" size={24} color="#888" />
               </TouchableOpacity>
             ))}
           </View>
         ))}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Sécurité</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Sécurité</Text>
           <View style={styles.settingItem}>
             <View style={styles.settingItemLeft}>
-              <Icon name="finger-print" size={24} color={theme.colors.primary} />
-              <Text style={styles.settingItemText}>Authentification biométrique</Text>
+              <Icon name="finger-print" size={24} color="#3B5BFE" />
+              <Text style={[styles.settingItemText, { color: colors.text }]}>Authentification biométrique</Text>
             </View>
             <Switch
               value={biometricEnabled}
               onValueChange={setBiometricEnabled}
-              trackColor={{ false: "#767577", true: theme.colors.primary }}
-              thumbColor={"#fff"}
+              trackColor={{ false: "#767577", true: "#3B5BFE" }}
+              thumbColor="#FFFFFF"
             />
           </View>
         </View>
@@ -129,7 +130,7 @@ export const Settings = () => {
           <Button
             title="Déconnexion"
             onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
-            variant="danger"
+            variant="primary"
           />
         </View>
       </ScrollView>
@@ -140,47 +141,45 @@ export const Settings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    padding: theme.spacing.lg,
+    padding: 16,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   section: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: 16,
   },
   sectionTitle: {
-    ...theme.typography.h2,
-    color: theme.colors.text,
-    padding: theme.spacing.lg,
+    fontSize: 18,
+    fontWeight: '600',
+    padding: 16,
   },
   settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    marginHorizontal: theme.spacing.lg,
-    marginBottom: theme.spacing.sm,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 12,
   },
   settingItemLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   settingItemText: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    marginLeft: theme.spacing.md,
+    fontSize: 16,
+    marginLeft: 16,
   },
   logoutContainer: {
-    padding: theme.spacing.lg,
-    marginTop: theme.spacing.lg,
+    padding: 16,
+    marginTop: 16,
   },
 });

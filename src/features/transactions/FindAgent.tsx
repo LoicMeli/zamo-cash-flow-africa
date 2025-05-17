@@ -1,12 +1,15 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { theme } from '../../config/theme';
+import { useTheme } from '../../theme/ThemeContext';
 
 export const FindAgent = () => {
+  const { colors } = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
       <View style={styles.header}>
-        <Text style={styles.title}>Trouver un Agent</Text>
+        <Text style={[styles.title, { color: '#1A1A1A' }]}>Trouver un Agent</Text>
       </View>
     </SafeAreaView>
   );
@@ -15,16 +18,14 @@ export const FindAgent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   header: {
-    padding: theme.spacing.lg,
+    padding: 24,
   },
   title: {
-    fontSize: theme.typography.h1.fontSize,
-    lineHeight: theme.typography.h1.lineHeight,
-    fontFamily: theme.typography.h1.fontFamily,
+    fontSize: 24,
+    lineHeight: 32,
+    fontFamily: 'System',
     fontWeight: '700',
-    color: theme.colors.text,
   },
 }); 
