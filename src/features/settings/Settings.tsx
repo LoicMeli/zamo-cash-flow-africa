@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { Button } from '../../components/common/Button';
 import { theme } from '../../config/theme';
 import { ROUTES } from '../../config/constants';
@@ -19,19 +19,19 @@ const settingsSections = [
         id: 'personal',
         title: 'Informations personnelles',
         icon: 'person-outline',
-        route: ROUTES.PROFILE.PERSONAL,
+        route: 'PersonalScreen',
       },
       {
         id: 'security',
         title: 'Sécurité',
         icon: 'shield-checkmark-outline',
-        route: ROUTES.PROFILE.SECURITY,
+        route: 'SecurityScreen',
       },
       {
         id: 'notifications',
         title: 'Notifications',
         icon: 'notifications-outline',
-        route: ROUTES.PROFILE.NOTIFICATIONS,
+        route: 'Notifications',
       },
     ],
   },
@@ -43,19 +43,19 @@ const settingsSections = [
         id: 'language',
         title: 'Langue',
         icon: 'language-outline',
-        route: ROUTES.PROFILE.LANGUAGE,
+        route: 'Settings',
       },
       {
         id: 'currency',
         title: 'Devise',
         icon: 'cash-outline',
-        route: ROUTES.PROFILE.CURRENCY,
+        route: 'Settings',
       },
       {
         id: 'theme',
         title: 'Thème',
         icon: 'color-palette-outline',
-        route: ROUTES.PROFILE.THEME,
+        route: 'ThemeSettings',
       },
     ],
   },
@@ -67,13 +67,13 @@ const settingsSections = [
         id: 'help',
         title: 'Aide et support',
         icon: 'help-circle-outline',
-        route: ROUTES.PROFILE.HELP,
+        route: 'Settings',
       },
       {
         id: 'about',
         title: 'À propos',
         icon: 'information-circle-outline',
-        route: ROUTES.PROFILE.ABOUT,
+        route: 'Settings',
       },
     ],
   },
@@ -100,10 +100,10 @@ export const Settings = () => {
                 onPress={() => navigation.navigate(item.route)}
               >
                 <View style={styles.settingItemLeft}>
-                  <Ionicons name={item.icon} size={24} color={theme.colors.text} />
+                  <Icon name={item.icon} size={24} color={theme.colors.primary} />
                   <Text style={styles.settingItemText}>{item.title}</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={24} color={theme.colors.secondary} />
+                <Icon name="chevron-forward" size={24} color={theme.colors.secondary} />
               </TouchableOpacity>
             ))}
           </View>
@@ -113,14 +113,14 @@ export const Settings = () => {
           <Text style={styles.sectionTitle}>Sécurité</Text>
           <View style={styles.settingItem}>
             <View style={styles.settingItemLeft}>
-              <Ionicons name="finger-print" size={24} color={theme.colors.text} />
+              <Icon name="finger-print" size={24} color={theme.colors.primary} />
               <Text style={styles.settingItemText}>Authentification biométrique</Text>
             </View>
             <Switch
               value={biometricEnabled}
               onValueChange={setBiometricEnabled}
-              trackColor={{ false: theme.colors.light, true: theme.colors.primary }}
-              thumbColor={theme.colors.white}
+              trackColor={{ false: "#767577", true: theme.colors.primary }}
+              thumbColor={"#fff"}
             />
           </View>
         </View>
@@ -128,7 +128,7 @@ export const Settings = () => {
         <View style={styles.logoutContainer}>
           <Button
             title="Déconnexion"
-            onPress={() => navigation.navigate(ROUTES.AUTH.LOGIN)}
+            onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
             variant="danger"
           />
         </View>
@@ -183,4 +183,4 @@ const styles = StyleSheet.create({
     padding: theme.spacing.lg,
     marginTop: theme.spacing.lg,
   },
-}); 
+});

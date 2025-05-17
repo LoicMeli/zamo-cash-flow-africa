@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// Replace @expo/vector-icons import with our custom Icon
 import { Icon } from '../../components/common/Icon';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
 import { ThemedButton, ThemedDivider } from '../../components/common/ThemedComponents';
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold' as 'bold',
+    fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
   },
   toggleAllText: {
     fontSize: 16,
-    fontWeight: '500' as any,
+    fontWeight: '500',
   },
   settingItem: {
     flexDirection: 'row',
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   },
   settingTitle: {
     fontSize: 16,
-    fontWeight: '500' as any,
+    fontWeight: '500',
     marginBottom: 4,
   },
   settingDescription: {

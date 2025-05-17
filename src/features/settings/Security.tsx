@@ -1,199 +1,156 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
+
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+import { Icon } from '../../components/common/Icon';
+import { ThemedView, ThemedText } from '../../components/common/ThemedView';
+import { ThemedButton, ThemedDivider, ThemedInput } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
+import { useTheme } from '../../theme/ThemeContext';
+import { COLORS } from '../../theme/colors';
 
-type SecurityScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
+type SecurityScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-export const Security = () => {
+export const SecurityScreen: React.FC = () => {
   const navigation = useNavigation<SecurityScreenNavigationProp>();
-  const [biometricEnabled, setBiometricEnabled] = React.useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
-
-  const securityOptions = [
-    {
-      id: '1',
-      title: 'Changer le mot de passe',
-      icon: 'lock-closed-outline',
-      onPress: () => {
-        // TODO: Implement password change
-      },
-    },
-    {
-      id: '2',
-      title: 'Authentification à deux facteurs',
-      icon: 'shield-checkmark-outline',
-      onPress: () => {
-        // TODO: Implement 2FA
-      },
-    },
-    {
-      id: '3',
-      title: 'Historique des connexions',
-      icon: 'time-outline',
-      onPress: () => {
-        // TODO: Show login history
-      },
-    },
-    {
-      id: '4',
-      title: 'Appareils connectés',
-      icon: 'phone-portrait-outline',
-      onPress: () => {
-        // TODO: Show connected devices
-      },
-    },
-  ];
-
+  const [pinEnabled, setPinEnabled] = useState(true);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const { colors } = useTheme();
+  
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Sécurité</Text>
-      </View>
-
-      <ScrollView style={styles.content}>
+    <ThemedView style={styles.container}>
+      <ScrollView>
+        <View style={styles.header}>
+          <ThemedText style={styles.title}>Sécurité</ThemedText>
+          <ThemedText secondary style={styles.subtitle}>
+            Gérez vos paramètres de sécurité et protégez votre compte
+          </ThemedText>
+        </View>
+        
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Authentification</Text>
-          <View style={styles.option}>
-            <View style={styles.optionInfo}>
-              <Ionicons
-                name="finger-print-outline"
-                size={24}
-                color={theme.colors.primary}
-                style={styles.optionIcon}
-              />
-              <View>
-                <Text style={styles.optionTitle}>Authentification biométrique</Text>
-                <Text style={styles.optionDescription}>
-                  Utilisez votre empreinte digitale ou Face ID pour vous connecter
-                </Text>
-              </View>
+          <ThemedText style={styles.sectionTitle}>Authentication</ThemedText>
+          
+          <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>Utiliser le code PIN pour les transactions</ThemedText>
+              <ThemedText secondary style={styles.settingDescription}>
+                Demander le code PIN pour chaque transaction
+              </ThemedText>
+            </View>
+            <Switch
+              value={pinEnabled}
+              onValueChange={setPinEnabled}
+              trackColor={{ false: '#767577', true: COLORS.primary }}
+              thumbColor={'#f4f3f4'}
+            />
+          </View>
+          
+          <View style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>Authentication biométrique</ThemedText>
+              <ThemedText secondary style={styles.settingDescription}>
+                Utiliser votre empreinte digitale ou Face ID
+              </ThemedText>
             </View>
             <Switch
               value={biometricEnabled}
               onValueChange={setBiometricEnabled}
-              trackColor={{ false: theme.colors.light, true: theme.colors.primary }}
+              trackColor={{ false: '#767577', true: COLORS.primary }}
+              thumbColor={'#f4f3f4'}
             />
           </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Options de sécurité</Text>
-          {securityOptions.map((option) => (
-            <TouchableOpacity
-              key={option.id}
-              style={styles.option}
-              onPress={option.onPress}
-            >
-              <View style={styles.optionInfo}>
-                <Ionicons
-                  name={option.icon as any}
-                  size={24}
-                  color={theme.colors.primary}
-                  style={styles.optionIcon}
-                />
-                <Text style={styles.optionTitle}>{option.title}</Text>
-              </View>
-              <Ionicons
-                name="chevron-forward"
-                size={24}
-                color={theme.colors.secondary}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notifications</Text>
-          <View style={styles.option}>
-            <View style={styles.optionInfo}>
-              <Ionicons
-                name="notifications-outline"
-                size={24}
-                color={theme.colors.primary}
-                style={styles.optionIcon}
-              />
-              <View>
-                <Text style={styles.optionTitle}>Alertes de sécurité</Text>
-                <Text style={styles.optionDescription}>
-                  Recevez des notifications pour les activités suspectes
-                </Text>
-              </View>
+          
+          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>Changer le code PIN</ThemedText>
+              <ThemedText secondary style={styles.settingDescription}>
+                Modifier votre code PIN actuel
+              </ThemedText>
             </View>
-            <Switch
-              value={notificationsEnabled}
-              onValueChange={setNotificationsEnabled}
-              trackColor={{ false: theme.colors.light, true: theme.colors.primary }}
-            />
-          </View>
+            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+          </TouchableOpacity>
         </View>
+        
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Appareil et Connexion</ThemedText>
+          
+          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>Appareils connectés</ThemedText>
+              <ThemedText secondary style={styles.settingDescription}>
+                Gérer les appareils connectés à votre compte
+              </ThemedText>
+            </View>
+            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={[styles.settingItem, { borderBottomColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <ThemedText style={styles.settingTitle}>Historique de connexion</ThemedText>
+              <ThemedText secondary style={styles.settingDescription}>
+                Voir toutes les connexions récentes
+              </ThemedText>
+            </View>
+            <Icon name="chevron-forward-outline" size={24} color={colors.textSecondary} />
+          </TouchableOpacity>
+        </View>
+        
+        <ThemedButton
+          title="Sauvegarder"
+          containerStyle={styles.button}
+          onPress={() => navigation.goBack()}
+        />
       </ScrollView>
-    </SafeAreaView>
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: theme.spacing.lg,
-  },
-  backButton: {
-    marginRight: theme.spacing.md,
+    marginBottom: 24,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
-  content: {
-    padding: theme.spacing.lg,
+  subtitle: {
+    fontSize: 16,
   },
   section: {
-    marginBottom: theme.spacing.xl,
+    marginBottom: 24,
   },
   sectionTitle: {
-    ...theme.typography.h2,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
   },
-  option: {
+  settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
   },
-  optionInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  settingInfo: {
     flex: 1,
   },
-  optionIcon: {
-    marginRight: theme.spacing.md,
+  settingTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 4,
   },
-  optionTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    fontWeight: 'bold',
+  settingDescription: {
+    fontSize: 14,
   },
-  optionDescription: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
-    marginTop: theme.spacing.xs,
-  },
-}); 
+  button: {
+    marginVertical: 24,
+  }
+});
+
+export default SecurityScreen;

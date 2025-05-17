@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-// This provides a fallback component for Ionicons
+// This provides a fallback component for Ionicons and other icon sets
 export interface IconProps {
   name: string;
   size?: number;
@@ -25,7 +25,7 @@ export const Icon: React.FC<IconProps> = ({
   );
 };
 
-// Mock for specific icon sets
+// Mock for specific icon sets - these are similar to what @expo/vector-icons would provide
 export const Ionicons = {
   name: (name: string, size: number, options: { color: string }) => (
     <Icon name={name} size={size} color={options.color} />
@@ -33,9 +33,19 @@ export const Ionicons = {
 };
 
 // For compatibility with @expo/vector-icons imports
-export default {
-  Ionicons
-};
+const ExpoVectorIcons = {
+  Ionicons,
+  // Add other icon sets as needed
+  MaterialIcons: Ionicons,
+  FontAwesome: Ionicons,
+  Feather: Ionicons,
+  MaterialCommunityIcons: Ionicons,
+  SimpleLineIcons: Ionicons,
+  AntDesign: Ionicons,
+  Entypo: Ionicons,
+}
+
+export default ExpoVectorIcons;
 
 const styles = StyleSheet.create({
   iconContainer: {

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   View,
@@ -7,7 +6,6 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-// Replace Ionicons with our custom Icon component
 import { Icon } from '../../components/common/Icon';
 import { useTheme, ThemeMode } from '../../theme/ThemeContext';
 

@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// Replace @expo/vector-icons import with our custom Icon
 import { Icon } from '../../components/common/Icon';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
-import { ThemedButton, ThemedCard } from '../../components/common/ThemedComponents';
+import { ThemedButton } from '../../components/common/ThemedComponents';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
 import { COLORS } from '../../theme/colors';
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold' as 'bold',
+    fontWeight: 'bold',
     marginBottom: 24,
     textAlign: 'center',
   },
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
   },
   optionLabel: {
     fontSize: 16,
-    fontWeight: '500' as any,
+    fontWeight: '500' as "500",
   },
   saveButton: {
     marginTop: 16,
