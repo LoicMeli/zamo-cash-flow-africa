@@ -3,130 +3,135 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { en } from '../lib/translations/en';
 import { fr } from '../lib/translations/fr';
+import { pidgin } from '../lib/translations/pidgin';
 
-// Available languages
-export type Language = 'en' | 'fr';
+// Export this constant so it can be used in other files
+export const LANGUAGE_STORAGE_KEY = 'zamo_language';
 
-interface SupportedLanguage {
-  code: Language;
-  name: string;
-  localName: string;
-}
+// Define supported languages
+export type Language = 'en' | 'fr' | 'pidgin';
 
-interface LanguageContextType {
+// Type for language pack structure
+export type LanguagePack = typeof en;
+
+// Language context type definition
+export interface LanguageContextType {
   language: Language;
-  setLanguage: (language: Language) => void;
   t: (key: string) => string;
-  getSupportedLanguages: () => SupportedLanguage[];
+  setLanguage: (lang: Language) => void;
+  getSupportedLanguages: () => {code: Language; name: string; localName: string}[];
+  forceRefresh: () => void;
 }
 
-const translations = {
+const languageMap: Record<Language, LanguagePack> = {
   en,
-  fr
+  fr,
+  pidgin
 };
 
-const LanguageContext = createContext<LanguageContextType>({
+const initialLanguageContext: LanguageContextType = {
   language: 'en',
+  t: (key: string) => key,
   setLanguage: () => {},
-  t: () => '',
   getSupportedLanguages: () => [],
-});
+  forceRefresh: () => {}
+};
 
-const LANGUAGE_STORAGE_KEY = 'zamo_language';
+const LanguageContext = createContext<LanguageContextType>(initialLanguageContext);
 
-export const LanguageProvider: React.FC<{ 
+export const useLanguage = () => useContext(LanguageContext);
+
+interface LanguageProviderProps {
   children: React.ReactNode;
   defaultLanguage?: Language;
-}> = ({ children, defaultLanguage = 'en' }) => {
-  const [language, setLanguageState] = useState<Language>(defaultLanguage);
+}
 
-  // Load saved language from storage
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ 
+  children, 
+  defaultLanguage = 'en' 
+}) => {
+  const [language, setLanguageState] = useState<Language>(defaultLanguage);
+  const [refreshCounter, setRefreshCounter] = useState(0);
+
+  // Load saved language preference
   useEffect(() => {
     const loadLanguage = async () => {
       try {
         const savedLanguage = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
-        if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'fr')) {
-          setLanguageState(savedLanguage);
+        if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'fr' || savedLanguage === 'pidgin')) {
+          setLanguageState(savedLanguage as Language);
         }
       } catch (error) {
-        console.error('Failed to load language setting:', error);
+        console.error('Failed to load language preference:', error);
       }
     };
     
     loadLanguage();
   }, []);
 
-  // Save language setting
-  const setLanguage = async (newLanguage: Language) => {
-    setLanguageState(newLanguage);
+  // Function to set language and save preference
+  const setLanguage = async (lang: Language) => {
+    setLanguageState(lang);
     try {
-      await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+      await AsyncStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
     } catch (error) {
-      console.error('Failed to save language setting:', error);
+      console.error('Failed to save language preference:', error);
     }
+  };
+
+  // Function to force UI refresh
+  const forceRefresh = () => {
+    setRefreshCounter(prev => prev + 1);
   };
 
   // Translation function
-  const t = (key: string): string => {
-    const keys = key.split('.');
-    let result: any = translations[language];
-    
-    for (const k of keys) {
-      if (result && result[k]) {
-        result = result[k];
-      } else {
-        // Fallback to English if key doesn't exist in current language
-        result = getFromPath(translations.en, keys);
-        break;
+  const t = (key: string) => {
+    try {
+      // Split the key by dots to navigate through nested objects
+      const keys = key.split('.');
+      let value: any = languageMap[language];
+      
+      // Traverse the object using the keys
+      for (const k of keys) {
+        if (value[k] === undefined) {
+          console.warn(`Translation key not found: ${key}`);
+          return key; // Return the key itself if not found
+        }
+        value = value[k];
       }
+      
+      // If the value is not a string at this point, it's a nested object
+      if (typeof value !== 'string') {
+        console.warn(`Translation key leads to an object, not a string: ${key}`);
+        return key;
+      }
+      
+      return value;
+    } catch (error) {
+      console.error('Translation error:', error);
+      return key; // Return the key itself in case of error
     }
-    
-    return typeof result === 'string' ? result : key;
   };
 
   // Get list of supported languages
-  const getSupportedLanguages = (): SupportedLanguage[] => {
-    return [
-      {
-        code: 'en',
-        name: 'English',
-        localName: 'English'
-      },
-      {
-        code: 'fr',
-        name: 'French',
-        localName: 'Français'
-      }
-    ];
-  };
+  const getSupportedLanguages = () => [
+    { code: 'en', name: 'English', localName: 'English' },
+    { code: 'fr', name: 'French', localName: 'Français' },
+    { code: 'pidgin', name: 'Pidgin', localName: 'Pidgin' }
+  ];
 
-  const getFromPath = (obj: any, path: string[]): string => {
-    let current = obj;
-    
-    for (const key of path) {
-      if (current && current[key] !== undefined) {
-        current = current[key];
-      } else {
-        return path.join('.');
-      }
-    }
-    
-    return typeof current === 'string' ? current : path.join('.');
+  // Context value with the refresh counter to trigger re-renders
+  const contextValue: LanguageContextType = {
+    language,
+    t,
+    setLanguage,
+    getSupportedLanguages,
+    forceRefresh
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, getSupportedLanguages }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  
-  if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  
-  return context;
 };

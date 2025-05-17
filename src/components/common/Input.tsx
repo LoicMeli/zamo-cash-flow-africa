@@ -19,14 +19,15 @@ export const Input: React.FC<InputProps> = ({ label, error, style, ...props }) =
           styles.input,
           { 
             borderColor: error ? '#FF3B30' : colors.border, 
-            color: colors.text 
+            color: colors.text,
+            backgroundColor: colors.input
           },
-          style as any,
+          style,
         ]}
         placeholderTextColor={colors.textSecondary}
         {...props}
       />
-      {error && <Text style={[styles.errorText, { color: '#FF3B30' }]}>{error}</Text>}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
@@ -50,5 +51,6 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     marginTop: 4,
+    color: '#FF3B30',
   },
 });
