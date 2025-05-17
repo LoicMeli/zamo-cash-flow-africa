@@ -7,10 +7,17 @@ import { fr } from '../lib/translations/fr';
 // Available languages
 export type Language = 'en' | 'fr';
 
+interface SupportedLanguage {
+  code: Language;
+  name: string;
+  localName: string;
+}
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (key: string) => string;
+  getSupportedLanguages: () => SupportedLanguage[];
 }
 
 const translations = {
@@ -22,6 +29,7 @@ const LanguageContext = createContext<LanguageContextType>({
   language: 'en',
   setLanguage: () => {},
   t: () => '',
+  getSupportedLanguages: () => [],
 });
 
 const LANGUAGE_STORAGE_KEY = 'zamo_language';
@@ -76,6 +84,22 @@ export const LanguageProvider: React.FC<{
     return typeof result === 'string' ? result : key;
   };
 
+  // Get list of supported languages
+  const getSupportedLanguages = (): SupportedLanguage[] => {
+    return [
+      {
+        code: 'en',
+        name: 'English',
+        localName: 'English'
+      },
+      {
+        code: 'fr',
+        name: 'French',
+        localName: 'Français'
+      }
+    ];
+  };
+
   const getFromPath = (obj: any, path: string[]): string => {
     let current = obj;
     
@@ -91,7 +115,7 @@ export const LanguageProvider: React.FC<{
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, getSupportedLanguages }}>
       {children}
     </LanguageContext.Provider>
   );

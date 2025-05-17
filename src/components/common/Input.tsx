@@ -17,9 +17,11 @@ export const Input: React.FC<InputProps> = ({ label, error, style, ...props }) =
       <TextInput
         style={[
           styles.input,
-          { borderColor: colors.border, color: colors.text },
-          error && { borderColor: '#FF3B30' },
-          style,
+          { 
+            borderColor: error ? '#FF3B30' : colors.border, 
+            color: colors.text 
+          },
+          style as any,
         ]}
         placeholderTextColor={colors.textSecondary}
         {...props}

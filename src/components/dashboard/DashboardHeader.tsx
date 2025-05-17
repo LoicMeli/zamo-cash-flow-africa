@@ -1,10 +1,7 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../../config/constants';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../types/navigation';
 import { useLanguage } from '../../providers/LanguageProvider';
 
 interface DashboardHeaderProps {
@@ -12,13 +9,10 @@ interface DashboardHeaderProps {
   onProfilePress?: () => void;
 }
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   userName,
   onProfilePress,
 }) => {
-  const navigation = useNavigation<NavigationProp>();
   const { t } = useLanguage();
 
   const getGreeting = () => {
@@ -37,15 +31,15 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <View style={styles.actions}>
         <TouchableOpacity
           style={styles.notificationButton}
-          onPress={() => navigation.navigate('Notifications')}
+          onPress={() => {}}
         >
-          <Ionicons name="notifications-outline" size={24} color={COLORS.text} />
+          <Text style={{ fontSize: 24 }}>🔔</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.profileButton}
           onPress={onProfilePress}
         >
-          <Ionicons name="person-circle-outline" size={32} color={COLORS.text} />
+          <Text style={{ fontSize: 28 }}>👤</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -83,4 +77,4 @@ const styles = StyleSheet.create({
   profileButton: {
     padding: 4,
   },
-}); 
+});

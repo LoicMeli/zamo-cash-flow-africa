@@ -1,36 +1,33 @@
+
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { QuickActionButton } from '../common/QuickActionButton';
 import { COLORS } from '../../config/constants';
-import { ROUTES } from '../../config/constants';
-import { useNavigation } from '@react-navigation/native';
 
 export const QuickActions: React.FC = () => {
-  const navigation = useNavigation();
-
   const actions = [
     {
-      icon: 'send',
+      icon: '💸',
       label: 'Envoyer',
-      onPress: () => navigation.navigate(ROUTES.TRANSACTIONS.SEND_MONEY),
+      onPress: () => {},
       color: COLORS.primary,
     },
     {
-      icon: 'qr-code',
+      icon: '📷',
       label: 'Scanner',
-      onPress: () => navigation.navigate(ROUTES.TRANSACTIONS.SCAN_QR),
+      onPress: () => {},
       color: COLORS.success,
     },
     {
-      icon: 'cash-outline',
+      icon: '💰',
       label: 'Retirer',
-      onPress: () => navigation.navigate(ROUTES.TRANSACTIONS.WITHDRAW),
+      onPress: () => {},
       color: COLORS.warning,
     },
     {
-      icon: 'location',
+      icon: '🏪',
       label: 'Agents',
-      onPress: () => navigation.navigate(ROUTES.TRANSACTIONS.FIND_AGENT),
+      onPress: () => {},
       color: COLORS.info,
     },
   ];
@@ -63,4 +60,4 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 4,
   },
-}); 
+});

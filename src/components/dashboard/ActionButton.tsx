@@ -1,10 +1,10 @@
+
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+import { TouchableOpacity, Text, StyleSheet, View, ViewStyle } from 'react-native';
+import { COLORS } from '../../config/constants';
 
 interface ActionButtonProps {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string;
   label: string;
   onPress: () => void;
   style?: ViewStyle;
@@ -19,7 +19,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   return (
     <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       <View style={styles.iconContainer}>
-        <Ionicons name={icon} size={24} color={theme.colors.primary} />
+        <Text style={{ fontSize: 22, color: COLORS.primary }}>{icon}</Text>
       </View>
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
   iconContainer: {
     width: 48,
     height: 48,
-    borderRadius: theme.borderRadius.md,
-    backgroundColor: theme.colors.light,
+    borderRadius: 12,
+    backgroundColor: '#F3F4F6',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: theme.spacing.xs,
+    marginBottom: 4,
   },
   label: {
-    fontSize: theme.typography.caption.fontSize,
-    color: theme.colors.text,
+    fontSize: 12,
+    color: '#1A1A1A',
     textAlign: 'center',
   },
-}); 
+});

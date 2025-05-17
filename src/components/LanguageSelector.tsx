@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useLanguage, Language } from '../providers/LanguageProvider';
@@ -27,7 +28,6 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     switch (langCode) {
       case 'en': return '🇬🇧';
       case 'fr': return '🇫🇷';
-      case 'pidgin': return '🇨🇲';
       default: return '🌐';
     }
   };
@@ -39,7 +39,6 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       switch (langCode) {
         case 'en': return 'EN';
         case 'fr': return 'FR';
-        case 'pidgin': return 'PG';
         default: return 'XX'; // Fallback for unknown languages
       }
     }
@@ -135,4 +134,4 @@ const styles = StyleSheet.create({
   langTextActiveLight: {
     color: '#FFFFFF',
   },
-}); 
+});

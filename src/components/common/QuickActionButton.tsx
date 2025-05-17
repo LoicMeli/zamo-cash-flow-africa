@@ -1,10 +1,10 @@
+
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../../config/constants';
 
 interface QuickActionButtonProps {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string;
   label: string;
   onPress: () => void;
   color?: string;
@@ -19,7 +19,7 @@ export const QuickActionButton: React.FC<QuickActionButtonProps> = ({
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
-        <Ionicons name={icon} size={24} color={color} />
+        <Text style={{ fontSize: 22, color }}>{icon}</Text>
       </View>
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     textAlign: 'center',
   },
-}); 
+});

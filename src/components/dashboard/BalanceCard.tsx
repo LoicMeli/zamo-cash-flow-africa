@@ -1,7 +1,7 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+import { COLORS } from '../../config/constants';
 
 interface BalanceCardProps {
   balance: number;
@@ -15,16 +15,16 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance, onPress }) =>
         <Text style={styles.label}>Solde disponible</Text>
         <Text style={styles.balance}>{balance.toLocaleString()} FCFA</Text>
       </View>
-      <Ionicons name="eye-outline" size={24} color={theme.colors.text} />
+      <Text style={{ fontSize: 24, color: '#FFFFFF' }}>👁️</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing.lg,
+    backgroundColor: COLORS.primary,
+    borderRadius: 16,
+    padding: 24,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -33,13 +33,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: theme.colors.light,
-    fontSize: theme.typography.body.fontSize,
-    marginBottom: theme.spacing.xs,
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginBottom: 4,
   },
   balance: {
-    color: theme.colors.light,
+    color: '#FFFFFF',
     fontSize: 32,
     fontWeight: 'bold',
   },
-}); 
+});

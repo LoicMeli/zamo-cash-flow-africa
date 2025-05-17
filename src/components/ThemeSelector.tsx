@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+// Replace Ionicons with a simpler approach for now
 import { useTheme, ThemeMode } from '../theme/ThemeContext';
 
 interface ThemeSelectorProps {
@@ -17,9 +18,9 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ containerStyle }) 
   const { themeMode, setThemeMode, colors } = useTheme();
 
   const options: { value: ThemeMode; label: string; icon: string }[] = [
-    { value: 'system', label: 'Système', icon: 'phone-portrait-outline' },
-    { value: 'light', label: 'Clair', icon: 'sunny-outline' },
-    { value: 'dark', label: 'Sombre', icon: 'moon-outline' },
+    { value: 'system', label: 'Système', icon: '📱' },
+    { value: 'light', label: 'Clair', icon: '☀️' },
+    { value: 'dark', label: 'Sombre', icon: '🌙' },
   ];
 
   return (
@@ -32,27 +33,22 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ containerStyle }) 
             key={option.value}
             style={[
               styles.option,
-              themeMode === option.value && [styles.selectedOption, { borderColor: COLORS.primary }],
+              themeMode === option.value && [styles.selectedOption, { borderColor: colors.primary }],
               { backgroundColor: colors.card, borderColor: colors.border }
             ]}
             onPress={() => setThemeMode(option.value)}
           >
-            <Ionicons
-              name={option.icon as any}
-              size={24}
-              color={themeMode === option.value ? COLORS.primary : colors.icon}
-              style={styles.optionIcon}
-            />
+            <Text style={styles.optionIcon}>{option.icon}</Text>
             <Text
               style={[
                 styles.optionLabel,
-                { color: themeMode === option.value ? COLORS.primary : colors.text }
+                { color: themeMode === option.value ? colors.primary : colors.text }
               ]}
             >
               {option.label}
             </Text>
             {themeMode === option.value && (
-              <Ionicons name="checkmark-circle" size={18} color={COLORS.primary} style={styles.checkIcon} />
+              <Text style={[styles.checkIcon, { color: colors.primary }]}>✓</Text>
             )}
           </TouchableOpacity>
         ))}
@@ -60,9 +56,6 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ containerStyle }) 
     </View>
   );
 };
-
-// Import primary color
-import { COLORS } from '../theme/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -90,6 +83,7 @@ const styles = StyleSheet.create({
   },
   optionIcon: {
     marginRight: 12,
+    fontSize: 22,
   },
   optionLabel: {
     fontSize: 15,
@@ -98,5 +92,6 @@ const styles = StyleSheet.create({
   },
   checkIcon: {
     marginLeft: 8,
+    fontSize: 18,
   },
-}); 
+});
