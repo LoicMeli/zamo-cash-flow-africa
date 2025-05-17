@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { Icon } from '../../utils/IconComponent';
+import { Icon } from '../../utils/IconsWrapper';
 import { COLORS } from '../../config/constants';
 
 interface QRCodeModalProps {

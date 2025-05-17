@@ -2,13 +2,17 @@
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { COLORS } from '../../config/constants';
 import { ROUTES } from '../../config/constants';
 import { DashboardHeader } from '../../components/dashboard/DashboardHeader';
 import { BalanceCard } from '../../components/wallet/BalanceCard';
 import { QuickActions } from '../../components/dashboard/QuickActions';
 import { TransactionList } from '../../components/transactions/TransactionList';
+import { RootStackParamList } from '../../types/navigation';
 import { Transaction } from '../../types';
+
+type DashboardScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // Données de test
 const MOCK_USER = {
@@ -45,7 +49,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
 ];
 
 export const Dashboard: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DashboardScreenNavigationProp>();
   const [refreshing, setRefreshing] = useState(false);
   const [isBalanceHidden, setIsBalanceHidden] = useState(false);
 
@@ -63,7 +67,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    navigation.navigate(ROUTES.MAIN.PROFILE as any);
+    navigation.navigate('Profile');
   };
 
   return (

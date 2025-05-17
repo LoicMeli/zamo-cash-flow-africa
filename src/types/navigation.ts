@@ -30,11 +30,15 @@ export type RootStackParamList = {
   Profile: undefined;
   NotFound: undefined;
   Dashboard: undefined;
+  Auth: {
+    screen: string;
+    params?: any;
+  };
 };
 
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
   VerifyOTP: { phoneNumber: string };
-  SetupPIN: undefined;
+  SetupPIN: { phoneNumber: string; otp?: string };
 };

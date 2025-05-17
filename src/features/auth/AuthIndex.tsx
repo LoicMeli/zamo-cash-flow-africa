@@ -1,167 +1,90 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/navigation';
-import { COLORS } from '../../config/constants';
-import { ROUTES } from '../../config/constants';
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type AuthIndexScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const AuthIndex: React.FC = () => {
-  const navigation = useNavigation<NavigationProp>();
+  const [selectedTab, setSelectedTab] = useState<'login' | 'register'>('login');
+  const navigation = useNavigation<AuthIndexScreenNavigationProp>();
+
+  const handleContinuePress = () => {
+    // Navigate to the main app dashboard after successful authentication
+    navigation.navigate('Dashboard');
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.logoContainer}>
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>ZAMO</Text>
-          </View>
-        </View>
-
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>Bienvenue sur Zamo</Text>
-          <Text style={styles.subtitle}>
-            La solution de paiement mobile simple et sécurisée pour l'Afrique
+    <View style={styles.container}>
+      <View style={styles.tabs}>
+        <TouchableOpacity 
+          style={[styles.tab, selectedTab === 'login' && styles.activeTab]} 
+          onPress={() => setSelectedTab('login')}
+        >
+          <Text style={[styles.tabText, selectedTab === 'login' && styles.activeTabText]}>
+            Connexion
           </Text>
-        </View>
-
-        <View style={styles.features}>
-          <View style={styles.featureItem}>
-            <View style={[styles.featureIcon, { backgroundColor: COLORS.primary + '20' }]}>
-              <Text style={styles.featureIconText}>💸</Text>
-            </View>
-            <Text style={styles.featureTitle}>Transferts gratuits</Text>
-            <Text style={styles.featureText}>
-              Envoyez de l'argent gratuitement à vos proches
-            </Text>
-          </View>
-
-          <View style={styles.featureItem}>
-            <View style={[styles.featureIcon, { backgroundColor: COLORS.success + '20' }]}>
-              <Text style={styles.featureIconText}>💰</Text>
-            </View>
-            <Text style={styles.featureTitle}>Épargne familiale</Text>
-            <Text style={styles.featureText}>
-              Gérez votre épargne en famille en toute simplicité
-            </Text>
-          </View>
-
-          <View style={styles.featureItem}>
-            <View style={[styles.featureIcon, { backgroundColor: COLORS.warning + '20' }]}>
-              <Text style={styles.featureIconText}>🔒</Text>
-            </View>
-            <Text style={styles.featureTitle}>100% sécurisé</Text>
-            <Text style={styles.featureText}>
-              Vos transactions sont protégées et sécurisées
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.buttons}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
-          >
-            <Text style={styles.buttonText}>Commencer</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, selectedTab === 'register' && styles.activeTab]} 
+          onPress={() => setSelectedTab('register')}
+        >
+          <Text style={[styles.tabText, selectedTab === 'register' && styles.activeTabText]}>
+            Inscription
+          </Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleContinuePress}
+      >
+        <Text style={styles.buttonText}>Continuer</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  content: {
-    flex: 1,
-    padding: 24,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: 48,
-    marginBottom: 48,
-  },
-  logoPlaceholder: {
-    width: 120,
-    height: 120,
-    backgroundColor: COLORS.primary,
-    borderRadius: 60,
-    alignItems: 'center',
+    padding: 20,
     justifyContent: 'center',
   },
-  logoText: {
-    color: COLORS.background,
-    fontSize: 32,
+  tabs: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  tab: {
+    flex: 1,
+    padding: 15,
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: '#e0e0e0',
+  },
+  activeTab: {
+    borderBottomColor: '#3B5BFE',
+  },
+  tabText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  activeTabText: {
+    color: '#3B5BFE',
     fontWeight: 'bold',
   },
-  textContainer: {
-    alignItems: 'center',
-    marginBottom: 48,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: COLORS.text,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.secondary,
-    textAlign: 'center',
-    paddingHorizontal: 32,
-  },
-  features: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  featureItem: {
-    marginBottom: 32,
-  },
-  featureIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  featureIconText: {
-    fontSize: 24,
-  },
-  featureTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.text,
-    marginBottom: 8,
-  },
-  featureText: {
-    fontSize: 14,
-    color: COLORS.secondary,
-  },
-  buttons: {
-    marginTop: 'auto',
-  },
   button: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: '#3B5BFE',
+    padding: 15,
+    borderRadius: 10,
     alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
-    color: COLORS.background,
+    color: 'white',
     fontSize: 16,
-    fontWeight: '600',
-  },
-}); 
+    fontWeight: 'bold',
+  }
+});

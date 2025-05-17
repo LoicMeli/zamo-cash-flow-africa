@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+import { Icon } from '../../utils/IconsWrapper';
+import { COLORS } from '../../config/constants';
 import { RootStackParamList } from '../../types/navigation';
 
 type HelpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -50,7 +51,7 @@ export const Help = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+          <Icon name="arrow-back" size={24} color={COLORS.text} />
         </TouchableOpacity>
         <Text style={styles.title}>Aide</Text>
       </View>
@@ -64,18 +65,18 @@ export const Help = () => {
           >
             <View style={styles.sectionHeader}>
               <View style={styles.sectionTitleContainer}>
-                <Ionicons
-                  name={section.icon as any}
+                <Icon
+                  name={section.icon}
                   size={24}
-                  color={theme.colors.primary}
+                  color={COLORS.primary}
                   style={styles.sectionIcon}
                 />
                 <Text style={styles.sectionTitle}>{section.title}</Text>
               </View>
-              <Ionicons
+              <Icon
                 name={expandedSection === section.id ? 'chevron-up' : 'chevron-down'}
                 size={24}
-                color={theme.colors.secondary}
+                color={COLORS.secondary}
               />
             </View>
             {expandedSection === section.id && (
@@ -87,7 +88,7 @@ export const Help = () => {
         <View style={styles.contactSection}>
           <Text style={styles.contactTitle}>Besoin d'aide supplémentaire ?</Text>
           <TouchableOpacity style={styles.contactButton}>
-            <Ionicons name="chatbubble-outline" size={24} color={theme.colors.white} />
+            <Icon name="chatbubble-outline" size={24} color={COLORS.white} />
             <Text style={styles.contactButtonText}>Contacter le support</Text>
           </TouchableOpacity>
         </View>
@@ -99,34 +100,36 @@ export const Help = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: COLORS.background,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: theme.spacing.lg,
+    padding: 24,
   },
   backButton: {
-    marginRight: theme.spacing.md,
+    marginRight: 16,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: 'bold',
+    color: COLORS.text,
   },
   content: {
-    padding: theme.spacing.lg,
+    padding: 24,
   },
   section: {
-    backgroundColor: theme.colors.light,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    marginBottom: 16,
     overflow: 'hidden',
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: theme.spacing.md,
+    padding: 16,
   },
   sectionTitleContainer: {
     flexDirection: 'row',
@@ -134,39 +137,44 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionIcon: {
-    marginRight: theme.spacing.md,
+    marginRight: 16,
   },
   sectionTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
+    fontSize: 16,
+    lineHeight: 24,
     fontWeight: 'bold',
+    color: COLORS.text,
     flex: 1,
   },
   sectionContent: {
-    ...theme.typography.body,
-    color: theme.colors.secondary,
-    padding: theme.spacing.md,
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.secondary,
+    padding: 16,
     paddingTop: 0,
   },
   contactSection: {
-    marginTop: theme.spacing.xl,
+    marginTop: 32,
     alignItems: 'center',
   },
   contactTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.text,
+    marginBottom: 16,
   },
   contactButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.primary,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: COLORS.primary,
+    padding: 16,
+    borderRadius: 12,
   },
   contactButtonText: {
-    ...theme.typography.body,
-    color: theme.colors.white,
-    marginLeft: theme.spacing.sm,
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLORS.white,
+    marginLeft: 8,
+    fontWeight: '600',
   },
-}); 
+});

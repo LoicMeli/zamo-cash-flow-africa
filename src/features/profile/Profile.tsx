@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconsWrapper';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
 import { ThemedButton, ThemedCard, ThemedDivider } from '../../components/common/ThemedComponents';
 import { ROUTES } from '../../config/constants';
@@ -13,12 +14,12 @@ import { COLORS } from '../../theme/colors';
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // Define type for icon names to avoid type errors
-type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+type IconName = string;
 
 interface MenuItem {
   id: string;
   title: string;
-  icon: IoniconsName;
+  icon: IconName;
   route: keyof RootStackParamList;
 }
 
@@ -76,7 +77,7 @@ export const Profile = () => {
         <ThemedCard style={styles.header}>
           <View style={styles.profileInfo}>
             <View style={[styles.avatarContainer, { backgroundColor: colors.card }]}>
-              <Ionicons name="person" size={40} color={COLORS.primary} />
+              <Icon name="person" size={40} color={COLORS.primary} />
             </View>
             <View style={styles.userInfo}>
               <ThemedText style={styles.userName}>John Doe</ThemedText>
@@ -93,10 +94,10 @@ export const Profile = () => {
               onPress={() => navigateToScreen(item.route)}
             >
               <View style={styles.menuItemLeft}>
-                <Ionicons name={item.icon} size={24} color={colors.text} />
+                <Icon name={item.icon} size={24} color={colors.text} />
                 <ThemedText style={styles.menuItemText}>{item.title}</ThemedText>
               </View>
-              <Ionicons name="chevron-forward" size={24} color={colors.textSecondary} />
+              <Icon name="chevron-forward" size={24} color={colors.textSecondary} />
             </TouchableOpacity>
           ))}
         </View>
@@ -107,7 +108,7 @@ export const Profile = () => {
           <ThemedButton
             title="Déconnexion"
             variant="danger"
-            onPress={() => navigateToScreen('Auth')}
+            onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
           />
         </View>
       </ScrollView>
@@ -168,4 +169,4 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 16,
   },
-}); 
+});

@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../../config/theme';
+import { Icon } from '../../utils/IconsWrapper';
+import { COLORS } from '../../config/constants';
 import { RootStackParamList } from '../../types/navigation';
 
 type NotificationsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -51,13 +52,13 @@ const getNotificationIcon = (type: string) => {
 const getNotificationColor = (type: string) => {
   switch (type) {
     case 'transaction':
-      return theme.colors.success;
+      return COLORS.success;
     case 'security':
-      return theme.colors.warning;
+      return COLORS.warning;
     case 'promo':
-      return theme.colors.primary;
+      return COLORS.primary;
     default:
-      return theme.colors.secondary;
+      return COLORS.secondary;
   }
 };
 
@@ -72,7 +73,7 @@ export const Notifications = () => {
       ]}
     >
       <View style={styles.notificationIcon}>
-        <Ionicons
+        <Icon
           name={getNotificationIcon(item.type)}
           size={24}
           color={getNotificationColor(item.type)}
@@ -107,36 +108,38 @@ export const Notifications = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: COLORS.background,
   },
   header: {
-    padding: theme.spacing.lg,
+    padding: 24,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: 'bold',
+    color: COLORS.text,
   },
   listContainer: {
-    padding: theme.spacing.lg,
+    padding: 24,
   },
   notificationItem: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    backgroundColor: COLORS.white,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
   },
   unreadNotification: {
-    backgroundColor: theme.colors.primary + '10',
+    backgroundColor: COLORS.primary + '10',
   },
   notificationIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.light,
+    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: theme.spacing.md,
+    marginRight: 16,
   },
   notificationContent: {
     flex: 1,
@@ -145,19 +148,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: theme.spacing.xs,
+    marginBottom: 4,
   },
   notificationTitle: {
-    ...theme.typography.body,
-    color: theme.colors.text,
+    fontSize: 16,
+    lineHeight: 24,
     fontWeight: 'bold',
+    color: COLORS.text,
   },
   notificationTime: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
+    fontSize: 12,
+    lineHeight: 16,
+    color: COLORS.secondary,
   },
   notificationMessage: {
-    ...theme.typography.body,
-    color: theme.colors.secondary,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS.secondary,
   },
-}); 
+});

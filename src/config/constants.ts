@@ -151,6 +151,7 @@ export const ROUTES = {
     FAMILY: 'FamilyWallet',
     SAVINGS: 'Savings',
     SETTINGS: 'Settings',
+    DASHBOARD: 'Dashboard',
   },
   AUTH: {
     LOGIN: 'Login',

@@ -1,251 +1,129 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-  Keyboard,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useLanguage } from '../../providers/LanguageProvider';
-import { COLORS, LIMITS } from '../../config/constants';
 
-export const SetupPIN = () => {
-  const { t } = useLanguage();
-  const navigation = useNavigation();
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
+
+type SetupPINScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export const SetupPIN: React.FC = () => {
+  const [pin, setPin] = useState<string>('');
+  const [confirmPin, setConfirmPin] = useState<string>('');
+  const [step, setStep] = useState<'create' | 'confirm'>('create');
   
-  const [pin, setPin] = useState('');
-  const [confirmPin, setConfirmPin] = useState('');
-  const [pinError, setPinError] = useState('');
-  const [isConfirming, setIsConfirming] = useState(false);
-  
-  const pinInputRef = useRef<TextInput>(null);
-  const confirmPinInputRef = useRef<TextInput>(null);
-  
-  useEffect(() => {
-    // Focus PIN input on mount
-    setTimeout(() => pinInputRef.current?.focus(), 300);
-  }, []);
-  
-  const validatePin = (value: string): boolean => {
-    // Only allow digits and ensure length is 4
-    if (!/^\d+$/.test(value) && value.length > 0) {
-      setPinError(t('auth.pinMustBeDigits'));
-      return false;
-    }
-    
-    setPinError('');
-    return true;
-  };
-  
-  const handlePinChange = (value: string) => {
-    if (validatePin(value)) {
-      setPin(value);
-      
-      // Auto-proceed to confirm when PIN is complete
-      if (value.length === LIMITS.PIN_LENGTH) {
-        setPinError('');
-        setIsConfirming(true);
-        setTimeout(() => confirmPinInputRef.current?.focus(), 100);
+  const navigation = useNavigation<SetupPINScreenNavigationProp>();
+
+  const handlePinInput = (digit: string) => {
+    if (step === 'create' && pin.length < 4) {
+      setPin(pin + digit);
+      if (pin.length === 3) {
+        setTimeout(() => {
+          setStep('confirm');
+        }, 500);
+      }
+    } else if (step === 'confirm' && confirmPin.length < 4) {
+      setConfirmPin(confirmPin + digit);
+      if (confirmPin.length === 3) {
+        setTimeout(() => {
+          // In a real app, we would validate the PIN here
+          navigation.navigate('Dashboard');
+        }, 500);
       }
     }
   };
-  
-  const handleConfirmPinChange = (value: string) => {
-    if (validatePin(value)) {
-      setConfirmPin(value);
-      
-      // Auto-submit when confirm PIN is complete
-      if (value.length === LIMITS.PIN_LENGTH) {
-        handleSubmit(value);
-      }
+
+  const handleDeletePin = () => {
+    if (step === 'create' && pin.length > 0) {
+      setPin(pin.slice(0, -1));
+    } else if (step === 'confirm' && confirmPin.length > 0) {
+      setConfirmPin(confirmPin.slice(0, -1));
     }
-  };
-  
-  const handleBackPress = () => {
-    if (isConfirming) {
-      setIsConfirming(false);
-      setConfirmPin('');
-      setTimeout(() => pinInputRef.current?.focus(), 100);
-    } else {
-      navigation.goBack();
-    }
-  };
-  
-  const handleSubmit = (confirmedPin: string) => {
-    // Hide keyboard first
-    Keyboard.dismiss();
-    
-    // Verify PIN matches
-    if (pin !== confirmedPin) {
-      setPinError(t('auth.pinsDoNotMatch'));
-      setConfirmPin('');
-      return;
-    }
-    
-    // PIN setup success
-    // In a real app, would save the PIN securely
-    Alert.alert(
-      "PIN Setup Complete",
-      "Your PIN has been set up successfully.",
-      [
-        { 
-          text: "Continue", 
-          onPress: () => {
-            // Navigate to dashboard or next onboarding step
-            navigation.navigate('Dashboard');
-          }
-        }
-      ]
-    );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={handleBackPress}
-        >
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-        
-        <Text style={styles.title}>
-          {isConfirming ? t('auth.confirmPin') : t('auth.pinSetup')}
-        </Text>
-        
-        <Text style={styles.description}>
-          {isConfirming ? 
-            t('auth.confirmPinCode') : 
-            t('auth.createPinDescription')
-          }
-        </Text>
-        
-        <View style={styles.pinContainer}>
-          {isConfirming ? (
-            <>
-              <View style={styles.pinIndicators}>
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <View 
-                    key={`confirm-${index}`}
-                    style={[
-                      styles.pinDot,
-                      index < confirmPin.length ? styles.pinDotFilled : {}
-                    ]}
-                  />
-                ))}
-              </View>
-              
-              <TextInput
-                ref={confirmPinInputRef}
-                style={styles.hiddenInput}
-                value={confirmPin}
-                onChangeText={handleConfirmPinChange}
-                keyboardType="number-pad"
-                maxLength={4}
-                secureTextEntry
-                autoFocus
-              />
-            </>
-          ) : (
-            <>
-              <View style={styles.pinIndicators}>
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <View 
-                    key={`pin-${index}`}
-                    style={[
-                      styles.pinDot,
-                      index < pin.length ? styles.pinDotFilled : {}
-                    ]}
-                  />
-                ))}
-              </View>
-              
-              <TextInput
-                ref={pinInputRef}
-                style={styles.hiddenInput}
-                value={pin}
-                onChangeText={handlePinChange}
-                keyboardType="number-pad"
-                maxLength={4}
-                secureTextEntry
-              />
-            </>
-          )}
-        </View>
-        
-        {pinError ? (
-          <Text style={styles.errorMessage}>{pinError}</Text>
-        ) : null}
+    <View style={styles.container}>
+      <Text style={styles.title}>
+        {step === 'create' ? 'Créer un code PIN' : 'Confirmer votre code PIN'}
+      </Text>
+      
+      <View style={styles.pinDisplay}>
+        <View style={[styles.pinDot, pin.length >= 1 && styles.pinDotFilled]} />
+        <View style={[styles.pinDot, pin.length >= 2 && styles.pinDotFilled]} />
+        <View style={[styles.pinDot, pin.length >= 3 && styles.pinDotFilled]} />
+        <View style={[styles.pinDot, pin.length >= 4 && styles.pinDotFilled]} />
       </View>
-    </SafeAreaView>
+      
+      <View style={styles.keypad}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+          <TouchableOpacity
+            key={number}
+            style={styles.keypadButton}
+            onPress={() => handlePinInput(number.toString())}
+          >
+            <Text style={styles.keypadButtonText}>{number}</Text>
+          </TouchableOpacity>
+        ))}
+        <View style={styles.keypadButton} />
+        <TouchableOpacity
+          style={styles.keypadButton}
+          onPress={() => handlePinInput('0')}
+        >
+          <Text style={styles.keypadButtonText}>0</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.keypadButton}
+          onPress={handleDeletePin}
+        >
+          <Text style={styles.keypadButtonText}>←</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
-  contentContainer: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 1,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#007BFF',
+    justifyContent: 'center',
+    padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  description: {
-    fontSize: 16,
-    color: '#666',
+    marginBottom: 40,
     textAlign: 'center',
-    marginBottom: 30,
   },
-  pinContainer: {
+  pinDisplay: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 30,
-  },
-  pinIndicators: {
-    flexDirection: 'row',
+    marginBottom: 50,
   },
   pinDot: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#007BFF',
-    marginHorizontal: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#e0e0e0',
+    marginHorizontal: 10,
   },
   pinDotFilled: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#3B5BFE',
   },
-  hiddenInput: {
-    position: 'absolute',
-    width: 1,
-    height: 1,
-    opacity: 0,
+  keypad: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    width: '80%',
   },
-  errorMessage: {
-    color: '#E53935',
-    fontSize: 14,
-    marginTop: 10,
+  keypadButton: {
+    width: '30%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  keypadButtonText: {
+    fontSize: 28,
+    fontWeight: '500',
   },
 });
