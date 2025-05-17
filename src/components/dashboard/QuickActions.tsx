@@ -8,26 +8,26 @@ export const QuickActions: React.FC = () => {
   const actions = [
     {
       icon: '💸',
-      label: 'Envoyer',
-      onPress: () => {},
+      label: 'Send',
+      onPress: () => console.log('Send pressed'),
       color: COLORS.primary,
     },
     {
       icon: '📷',
-      label: 'Scanner',
-      onPress: () => {},
+      label: 'Scan',
+      onPress: () => console.log('Scan pressed'),
       color: COLORS.success,
     },
     {
       icon: '💰',
-      label: 'Retirer',
-      onPress: () => {},
+      label: 'Withdraw',
+      onPress: () => console.log('Withdraw pressed'),
       color: COLORS.warning,
     },
     {
       icon: '🏪',
       label: 'Agents',
-      onPress: () => {},
+      onPress: () => console.log('Agents pressed'),
       color: COLORS.info,
     },
   ];

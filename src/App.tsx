@@ -2,9 +2,9 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AppNavigator } from './src/navigation/AppNavigator';
-import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
-import { LanguageProvider } from './src/providers/LanguageProvider';
+import { AppNavigator } from './navigation/AppNavigator';
+import { ThemeProvider, useTheme } from './theme/ThemeContext';
+import { LanguageProvider } from './providers/LanguageProvider';
 
 // Wrapper component to apply theme to StatusBar
 const ThemedApp = () => {

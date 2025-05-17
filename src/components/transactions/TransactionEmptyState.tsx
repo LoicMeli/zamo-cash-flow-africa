@@ -1,15 +1,31 @@
 
-import { useLanguage } from "@/providers/LanguageProvider";
-import { CardContent } from "@/components/ui/card";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useLanguage } from "../../providers/LanguageProvider";
 
 const TransactionEmptyState = () => {
   const { t } = useLanguage();
   
   return (
-    <CardContent className="text-center py-8 text-muted-foreground">
-      {t('dashboard.noTransactions')}
-    </CardContent>
+    <View style={styles.container}>
+      <Text style={styles.text}>
+        {t('dashboard.noTransactions')}
+      </Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: 14,
+    color: '#8E9196',
+    textAlign: 'center',
+  }
+});
 
 export default TransactionEmptyState;

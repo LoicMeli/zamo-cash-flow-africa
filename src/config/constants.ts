@@ -9,6 +9,10 @@ export const COLORS = {
   danger: '#FF3B30',
   info: '#007AFF',
   text: '#1A1A1A',
+  background: '#FFFFFF',
+  border: '#E5E5E5',
+  dark: '#121212',
+  white: '#FFFFFF',
   
   // Routes
   ROUTES: {
@@ -20,7 +24,7 @@ export const COLORS = {
     },
     SEND: 'SendMoney',
     RECEIVE: 'ReceiveMoney',
-    SCAN: 'ScanQR',
+    SCAN_QR: 'ScanQR',
     WITHDRAW: 'Withdraw',
     FIND_AGENT: 'FindAgent'
   }
@@ -49,6 +53,11 @@ export const ROUTES = {
     AMOUNT: 'SendMoneyAmount',
     CONFIRM: 'SendMoneyConfirm',
     SUCCESS: 'SendMoneySuccess'
+  },
+  FAMILY: {
+    MEMBERS: 'FamilyMembers',
+    ADD_MEMBER: 'AddFamilyMember',
+    SETTINGS: 'FamilySettings'
   }
 };
 
@@ -60,4 +69,12 @@ export const APP_CONSTANTS = {
   MIN_TRANSACTION_AMOUNT: 100,
   TRANSACTION_FEE_PERCENT: 1,
   API_BASE_URL: 'https://api.zamoapp.com/v1'
+};
+
+// App Limits
+export const LIMITS = {
+  PIN_LENGTH: 4,
+  OTP_LENGTH: 6,
+  MAX_PIN_ATTEMPTS: 3,
+  PASSWORD_MIN_LENGTH: 8
 };

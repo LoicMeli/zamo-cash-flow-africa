@@ -5,7 +5,7 @@ import { en } from '../lib/translations/en';
 import { fr } from '../lib/translations/fr';
 import { pidgin } from '../lib/translations/pidgin';
 
-// Export this constant so it can be used in other files
+// Storage key - now exported
 export const LANGUAGE_STORAGE_KEY = 'zamo_language';
 
 // Define supported languages
@@ -115,9 +115,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 
   // Get list of supported languages
   const getSupportedLanguages = () => [
-    { code: 'en', name: 'English', localName: 'English' },
-    { code: 'fr', name: 'French', localName: 'Français' },
-    { code: 'pidgin', name: 'Pidgin', localName: 'Pidgin' }
+    { code: 'en' as Language, name: 'English', localName: 'English' },
+    { code: 'fr' as Language, name: 'French', localName: 'Français' },
+    { code: 'pidgin' as Language, name: 'Pidgin', localName: 'Pidgin' }
   ];
 
   // Context value with the refresh counter to trigger re-renders

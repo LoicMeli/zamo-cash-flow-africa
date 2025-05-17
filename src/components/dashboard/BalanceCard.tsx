@@ -5,17 +5,28 @@ import { COLORS } from '../../config/constants';
 
 interface BalanceCardProps {
   balance: number;
+  onShowBalance?: () => void;
+  isBalanceHidden?: boolean;
   onPress?: () => void;
 }
 
-export const BalanceCard: React.FC<BalanceCardProps> = ({ balance, onPress }) => {
+export const BalanceCard: React.FC<BalanceCardProps> = ({ 
+  balance, 
+  onShowBalance,
+  isBalanceHidden = false,
+  onPress 
+}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.content}>
-        <Text style={styles.label}>Solde disponible</Text>
-        <Text style={styles.balance}>{balance.toLocaleString()} FCFA</Text>
+        <Text style={styles.label}>Available balance</Text>
+        <Text style={styles.balance}>
+          {isBalanceHidden ? '••••••' : `${balance.toLocaleString()} FCFA`}
+        </Text>
       </View>
-      <Text style={{ fontSize: 24, color: '#FFFFFF' }}>👁️</Text>
+      <TouchableOpacity onPress={onShowBalance}>
+        <Text style={{ fontSize: 24, color: '#FFFFFF' }}>👁️</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
