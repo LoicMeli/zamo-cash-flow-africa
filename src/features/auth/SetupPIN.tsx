@@ -1,257 +1,251 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthStackParamList, RootStackParamList } from '../../types/navigation';
-import { LIMITS } from '../../config/constants';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+  Keyboard,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useLanguage } from '../../providers/LanguageProvider';
-import { useTheme } from '../../theme/ThemeContext';
-import { ThemedText } from '../../components/common/ThemedView';
-
-type SetupPINScreenRouteProp = RouteProp<AuthStackParamList, 'SetupPIN'>;
-type SetupPINScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
+import { COLORS, LIMITS } from '../../config/constants';
 
 export const SetupPIN = () => {
-  const navigation = useNavigation<SetupPINScreenNavigationProp>();
-  const route = useRoute<SetupPINScreenRouteProp>();
-  const { phoneNumber, otp } = route.params;
   const { t } = useLanguage();
-  const { colors, isDarkMode } = useTheme();
+  const navigation = useNavigation();
   
   const [pin, setPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
-  const [error, setError] = useState('');
-  const [isConfirmStep, setIsConfirmStep] = useState(false);
-
-  const handleContinue = () => {
-    if (pin.length !== LIMITS.PIN_LENGTH) {
-      setError(t('auth.pinMustBeDigits'));
-      return;
+  const [pinError, setPinError] = useState('');
+  const [isConfirming, setIsConfirming] = useState(false);
+  
+  const pinInputRef = useRef<TextInput>(null);
+  const confirmPinInputRef = useRef<TextInput>(null);
+  
+  useEffect(() => {
+    // Focus PIN input on mount
+    setTimeout(() => pinInputRef.current?.focus(), 300);
+  }, []);
+  
+  const validatePin = (value: string): boolean => {
+    // Only allow digits and ensure length is 4
+    if (!/^\d+$/.test(value) && value.length > 0) {
+      setPinError(t('auth.pinMustBeDigits'));
+      return false;
     }
     
-    setIsConfirmStep(true);
+    setPinError('');
+    return true;
   };
   
-  const handleBack = () => {
-    if (isConfirmStep) {
-      setIsConfirmStep(false);
+  const handlePinChange = (value: string) => {
+    if (validatePin(value)) {
+      setPin(value);
+      
+      // Auto-proceed to confirm when PIN is complete
+      if (value.length === LIMITS.PIN_LENGTH) {
+        setPinError('');
+        setIsConfirming(true);
+        setTimeout(() => confirmPinInputRef.current?.focus(), 100);
+      }
+    }
+  };
+  
+  const handleConfirmPinChange = (value: string) => {
+    if (validatePin(value)) {
+      setConfirmPin(value);
+      
+      // Auto-submit when confirm PIN is complete
+      if (value.length === LIMITS.PIN_LENGTH) {
+        handleSubmit(value);
+      }
+    }
+  };
+  
+  const handleBackPress = () => {
+    if (isConfirming) {
+      setIsConfirming(false);
       setConfirmPin('');
-      setError('');
+      setTimeout(() => pinInputRef.current?.focus(), 100);
     } else {
       navigation.goBack();
     }
   };
-
-  const handleSetupPIN = () => {
-    if (pin.length !== LIMITS.PIN_LENGTH) {
-      setError(t('auth.pinMustBeDigits'));
+  
+  const handleSubmit = (confirmedPin: string) => {
+    // Hide keyboard first
+    Keyboard.dismiss();
+    
+    // Verify PIN matches
+    if (pin !== confirmedPin) {
+      setPinError(t('auth.pinsDoNotMatch'));
+      setConfirmPin('');
       return;
     }
-
-    if (pin !== confirmPin) {
-      setError(t('auth.pinsDoNotMatch'));
-      return;
-    }
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Main' }],
-    });
+    
+    // PIN setup success
+    // In a real app, would save the PIN securely
+    Alert.alert(
+      "PIN Setup Complete",
+      "Your PIN has been set up successfully.",
+      [
+        { 
+          text: "Continue", 
+          onPress: () => {
+            // Navigate to dashboard or next onboarding step
+            navigation.navigate('Dashboard');
+          }
+        }
+      ]
+    );
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, { backgroundColor: colors.background }]}
-    >
-      <View style={styles.content}>
-        <TouchableOpacity
+    <SafeAreaView style={styles.container}>
+      <View style={styles.contentContainer}>
+        <TouchableOpacity 
           style={styles.backButton}
-          onPress={handleBack}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          onPress={handleBackPress}
         >
-          <ThemedText style={styles.backButtonText}>← {t('common.back')}</ThemedText>
+          <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
-
-        <ThemedText style={styles.title}>
-          {isConfirmStep ? t('auth.confirmation') : t('auth.pinSetup')}
-        </ThemedText>
-        <ThemedText style={styles.subtitle} secondary>
-          {isConfirmStep 
-            ? t('auth.confirmPinCode') 
-            : t('auth.createPinDescription')
+        
+        <Text style={styles.title}>
+          {isConfirming ? t('auth.confirmPin') : t('auth.pinSetup')}
+        </Text>
+        
+        <Text style={styles.description}>
+          {isConfirming ? 
+            t('auth.confirmPinCode') : 
+            t('auth.createPinDescription')
           }
-        </ThemedText>
-
-        {!isConfirmStep ? (
-          <View style={styles.formGroup}>
-            <ThemedText style={styles.label}>{t('auth.pinCode')}</ThemedText>
-            <TextInput
-              style={[
-                styles.input,
-                { 
-                  backgroundColor: colors.input,
-                  color: colors.text,
-                  borderColor: colors.border
-                }
-              ]}
-              placeholder="XXXX"
-              placeholderTextColor={colors.textSecondary}
-              keyboardType="number-pad"
-              maxLength={LIMITS.PIN_LENGTH}
-              secureTextEntry
-              value={pin}
-              onChangeText={(text: string) => {
-                setPin(text);
-                setError('');
-              }}
-            />
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleContinue}
-            >
-              <Text style={styles.buttonText}>{t('common.next')}</Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View>
-            <View style={styles.formGroup}>
-              <ThemedText style={styles.label}>{t('auth.confirmPin')}</ThemedText>
-              <TextInput
-                style={[
-                  styles.input, 
-                  { 
-                    backgroundColor: colors.input,
-                    color: colors.text,
-                    borderColor: error ? '#E53935' : colors.border
-                  },
-                  error ? styles.inputError : null
-                ]}
-                placeholder="XXXX"
-                placeholderTextColor={colors.textSecondary}
-                keyboardType="number-pad"
-                maxLength={LIMITS.PIN_LENGTH}
-                secureTextEntry
-                value={confirmPin}
-                onChangeText={(text: string) => {
-                  setConfirmPin(text);
-                  setError('');
-                }}
-              />
-              {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            </View>
-            
-            <View style={styles.buttonRow}>
-              <TouchableOpacity
-                style={[styles.button, styles.secondaryButton]}
-                onPress={handleBack}
-              >
-                <Text style={styles.secondaryButtonText}>{t('common.back')}</Text>
-              </TouchableOpacity>
+        </Text>
+        
+        <View style={styles.pinContainer}>
+          {isConfirming ? (
+            <>
+              <View style={styles.pinIndicators}>
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <View 
+                    key={`confirm-${index}`}
+                    style={[
+                      styles.pinDot,
+                      index < confirmPin.length ? styles.pinDotFilled : {}
+                    ]}
+                  />
+                ))}
+              </View>
               
-              <TouchableOpacity
-                style={[styles.button, styles.primaryButton]}
-                onPress={handleSetupPIN}
-              >
-                <Text style={styles.buttonText}>{t('common.confirm')}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
+              <TextInput
+                ref={confirmPinInputRef}
+                style={styles.hiddenInput}
+                value={confirmPin}
+                onChangeText={handleConfirmPinChange}
+                keyboardType="number-pad"
+                maxLength={4}
+                secureTextEntry
+                autoFocus
+              />
+            </>
+          ) : (
+            <>
+              <View style={styles.pinIndicators}>
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <View 
+                    key={`pin-${index}`}
+                    style={[
+                      styles.pinDot,
+                      index < pin.length ? styles.pinDotFilled : {}
+                    ]}
+                  />
+                ))}
+              </View>
+              
+              <TextInput
+                ref={pinInputRef}
+                style={styles.hiddenInput}
+                value={pin}
+                onChangeText={handlePinChange}
+                keyboardType="number-pad"
+                maxLength={4}
+                secureTextEntry
+              />
+            </>
+          )}
+        </View>
+        
+        {pinError ? (
+          <Text style={styles.errorMessage}>{pinError}</Text>
+        ) : null}
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5',
   },
-  content: {
+  contentContainer: {
     flex: 1,
-    padding: 24,
+    padding: 20,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   backButton: {
     position: 'absolute',
-    top: 40,
+    top: 20,
     left: 20,
-    zIndex: 10,
-    padding: 8,
+    zIndex: 1,
   },
   backButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    color: '#007BFF',
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  formGroup: {
     marginBottom: 20,
+    color: '#333',
   },
-  label: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  input: {
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+  description: {
     fontSize: 16,
-    width: '100%',
-    height: 50,
-    borderWidth: 1,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 30,
   },
-  inputError: {
-    borderColor: '#E53935',
-  },
-  errorText: {
-    color: '#E53935',
-    fontSize: 12,
-    marginTop: 4,
-  },
-  button: {
-    backgroundColor: '#007BFF',
-    borderRadius: 12,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  buttonRow: {
+  pinContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    marginBottom: 30,
   },
-  primaryButton: {
-    flex: 1,
-    marginLeft: 8,
+  pinIndicators: {
+    flexDirection: 'row',
   },
-  secondaryButton: {
-    flex: 1,
-    marginRight: 8,
-    backgroundColor: 'transparent',
+  pinDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#007BFF',
+    marginHorizontal: 8,
   },
-  secondaryButtonText: {
-    color: '#007BFF',
-    fontWeight: 'bold',
-    fontSize: 16,
+  pinDotFilled: {
+    backgroundColor: '#007BFF',
+  },
+  hiddenInput: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    opacity: 0,
+  },
+  errorMessage: {
+    color: '#E53935',
+    fontSize: 14,
+    marginTop: 10,
   },
 });

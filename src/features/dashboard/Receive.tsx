@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { RootStackParamList } from '../../types/navigation';
 import { QRCodeModal } from '../../components/wallet/QRCodeModal';
 
@@ -83,7 +83,7 @@ export const Receive = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Icon name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.title}>Receive Money</Text>
       </View>
@@ -107,7 +107,7 @@ export const Receive = () => {
             onPress={() => setQrModalVisible(true)}
           >
             <View style={styles.qrIconCircle}>
-              <Ionicons name="qr-code" size={36} color="#3B5BFE" />
+              <Icon name="qr-code" size={36} color="#3B5BFE" />
             </View>
             <Text style={styles.qrButtonText}>Show QR Code</Text>
             <Text style={styles.qrButtonSubtext}>
@@ -118,12 +118,12 @@ export const Receive = () => {
           {/* Quick Actions */}
           <View style={styles.quickActions}>
             <TouchableOpacity style={styles.actionButton}>
-              <Ionicons name="copy-outline" size={24} color="#3B5BFE" />
+              <Icon name="copy-outline" size={24} color="#3B5BFE" />
               <Text style={styles.actionText}>Copy Number</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.actionButton}>
-              <Ionicons name="share-social-outline" size={24} color="#3B5BFE" />
+              <Icon name="share-social-outline" size={24} color="#3B5BFE" />
               <Text style={styles.actionText}>Share ID</Text>
             </TouchableOpacity>
           </View>
@@ -151,7 +151,7 @@ export const Receive = () => {
                   <Text style={styles.personName}>{person.name}</Text>
                   <Text style={styles.personNumber}>{person.phoneNumber}</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20} color="#666" />
+                <Icon name="chevron-forward" size={20} color="#666" />
               </TouchableOpacity>
             ))}
           </View>
@@ -284,4 +284,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#AAAAAA',
   },
-}); 
+});

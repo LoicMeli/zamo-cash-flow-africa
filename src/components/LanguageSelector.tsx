@@ -28,7 +28,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     switch (langCode) {
       case 'en': return '🇬🇧';
       case 'fr': return '🇫🇷';
-      case 'pidgin': return '🇨🇲';
+      case 'camfran': return '🇨🇲';
       default: return '🌐';
     }
   };
@@ -40,13 +40,13 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       switch (langCode) {
         case 'en': return 'EN';
         case 'fr': return 'FR';
-        case 'pidgin': return 'PG';
+        case 'camfran': return 'PG';
         default: return 'XX'; // Fallback for unknown languages
       }
     }
     
     const lang = supportedLanguages.find(l => l.code === langCode);
-    return showLocalNames ? lang?.localName || langCode : lang?.name || langCode;
+    return showLocalNames ? (lang?.name || langCode) : (lang?.name || langCode);
   };
 
   return (

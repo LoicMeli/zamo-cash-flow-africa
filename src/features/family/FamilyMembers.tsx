@@ -1,11 +1,12 @@
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
-import { theme } from '../../config/theme';
+import { COLORS } from '../../config/constants';
 import { RootStackParamList } from '../../types/navigation';
 
 type FamilyMembersScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -47,7 +48,7 @@ export const FamilyMembers = () => {
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="Rechercher un membre..."
-            leftIcon={<Ionicons name="search" size={24} color={theme.colors.secondary} />}
+            leftIcon={<Icon name="search" size={24} color={COLORS.secondary} />}
           />
         </View>
 
@@ -56,7 +57,7 @@ export const FamilyMembers = () => {
             <TouchableOpacity key={member.id} style={styles.memberCard}>
               <View style={styles.memberInfo}>
                 <View style={styles.avatarContainer}>
-                  <Ionicons name="person" size={24} color={theme.colors.primary} />
+                  <Icon name="person" size={24} color={COLORS.primary} />
                 </View>
                 <View style={styles.memberDetails}>
                   <Text style={styles.memberName}>{member.name}</Text>
@@ -66,10 +67,10 @@ export const FamilyMembers = () => {
               </View>
               <View style={styles.memberActions}>
                 <TouchableOpacity style={styles.actionButton}>
-                  <Ionicons name="pencil" size={20} color={theme.colors.primary} />
+                  <Icon name="pencil" size={20} color={COLORS.primary} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
-                  <Ionicons name="trash" size={20} color={theme.colors.danger} />
+                  <Icon name="trash" size={20} color={COLORS.danger} />
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>
@@ -85,7 +86,7 @@ export const FamilyMembers = () => {
         </View>
 
         <View style={styles.infoContainer}>
-          <Ionicons name="information-circle" size={24} color={theme.colors.info} />
+          <Icon name="information-circle" size={24} color={COLORS.info} />
           <Text style={styles.infoText}>
             Vous pouvez ajouter jusqu'à 5 membres dans votre portefeuille familial.
           </Text>
@@ -98,32 +99,33 @@ export const FamilyMembers = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    color: COLORS.text,
   },
   searchContainer: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   membersContainer: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   memberCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
   },
   memberInfo: {
     flexDirection: 'row',
@@ -134,55 +136,56 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.primary + '20',
+    backgroundColor: `${COLORS.primary}20`,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: theme.spacing.md,
+    marginRight: 12,
   },
   memberDetails: {
     flex: 1,
   },
   memberName: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginBottom: 4,
   },
   memberRole: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
-    marginBottom: theme.spacing.xs,
+    fontSize: 14,
+    color: COLORS.secondary,
+    marginBottom: 4,
   },
   memberPhone: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
+    fontSize: 14,
+    color: COLORS.secondary,
   },
   memberActions: {
     flexDirection: 'row',
-    gap: theme.spacing.sm,
+    gap: 8,
   },
   actionButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: theme.colors.light,
+    backgroundColor: '#F0F0F0',
     justifyContent: 'center',
     alignItems: 'center',
   },
   addMemberContainer: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.info + '10',
-    margin: theme.spacing.lg,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: `${COLORS.info}10`,
+    margin: 20,
+    padding: 16,
+    borderRadius: 12,
   },
   infoText: {
-    ...theme.typography.body,
-    color: theme.colors.info,
-    marginLeft: theme.spacing.sm,
+    fontSize: 14,
+    color: COLORS.info,
+    marginLeft: 8,
     flex: 1,
   },
-}); 
+});

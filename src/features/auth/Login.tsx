@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
@@ -6,7 +6,6 @@ import {
   TouchableOpacity, 
   StyleSheet,
   Platform, 
-  Alert,
   SafeAreaView,
   ScrollView,
   useWindowDimensions,
@@ -66,7 +65,7 @@ export const LoginScreen = () => {
     switch(lang) {
       case 'en': return 'EN';
       case 'fr': return 'FR';
-      case 'pidgin': return 'PG';
+      case 'camfran': return 'PG';
       default: return 'EN';
     }
   };
@@ -75,8 +74,8 @@ export const LoginScreen = () => {
     switch(lang) {
       case 'en': return '🇬🇧';
       case 'fr': return '🇫🇷';
-      case 'pidgin': return '🇨🇲';
-      default: return '🇬🇧';
+      case 'camfran': return '🇨🇲';
+      default: return '����🇧';
     }
   };
 
@@ -97,7 +96,7 @@ export const LoginScreen = () => {
           {/* Original Language Selector */}
           <View style={styles.langContainer}>
             <View style={[styles.langPill, { backgroundColor: isDarkMode ? '#2A2A2A' : '#1A2233' }]}>
-              {['en', 'fr', 'pidgin'].map((lang) => (
+              {['en', 'fr', 'camfran'].map((lang) => (
                 <Pressable 
                   key={lang}
                   style={({ pressed }) => [
@@ -122,7 +121,7 @@ export const LoginScreen = () => {
           </View>
         </View>
 
-        {/* Main Login Container - Centered Vertically */}
+        {/* Main Login Container */}
         <View style={styles.mainContainer}>
           {/* Login Card */}
           <View style={[styles.card, { backgroundColor: colors.card }]}>
@@ -311,4 +310,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textDecorationLine: 'underline',
   },
-}); 
+});

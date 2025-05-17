@@ -7,7 +7,9 @@ import { COLORS } from '../../config/constants';
 interface QRCodeModalProps {
   visible: boolean;
   onClose: () => void;
-  accountNumber: string;
+  accountNumber?: string;
+  phoneNumber?: string;
+  zamoID?: string;
   userName: string;
 }
 
@@ -15,8 +17,12 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
   visible,
   onClose,
   accountNumber,
+  phoneNumber,
+  zamoID,
   userName,
 }) => {
+  const displayIdentifier = accountNumber || phoneNumber || zamoID || 'N/A';
+
   return (
     <Modal
       visible={visible}
@@ -40,7 +46,11 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
           </View>
           
           <Text style={styles.name}>{userName}</Text>
-          <Text style={styles.accountNumber}>Account: {accountNumber}</Text>
+          <Text style={styles.accountNumber}>
+            {phoneNumber ? `Phone: ${phoneNumber}` : 
+             accountNumber ? `Account: ${accountNumber}` : 
+             zamoID ? `Zamo ID: ${zamoID}` : 'ID: N/A'}
+          </Text>
           
           <TouchableOpacity style={styles.shareButton}>
             <Icon name="share" size={20} color="#FFFFFF" />

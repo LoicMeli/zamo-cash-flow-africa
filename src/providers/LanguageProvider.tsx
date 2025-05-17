@@ -14,7 +14,9 @@ type LanguageContextType = {
   language: Language;
   t: TranslateFunction;
   changeLanguage: (lang: Language) => Promise<void>;
-  getSupportedLanguages: () => { code: Language; name: string }[];
+  setLanguage: (lang: Language) => void;
+  forceRefresh: () => void;
+  getSupportedLanguages: () => Array<{ code: Language; name: string; }>;
 };
 
 // Create context
@@ -22,6 +24,8 @@ const LanguageContext = createContext<LanguageContextType>({
   language: 'en',
   t: (key: string) => key,
   changeLanguage: async () => {},
+  setLanguage: () => {},
+  forceRefresh: () => {},
   getSupportedLanguages: () => [],
 });
 
@@ -135,6 +139,7 @@ const translate = (language: Language, key: string, params?: Record<string, any>
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Load saved language on mount
   useEffect(() => {
@@ -163,6 +168,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
+  const forceRefresh = () => {
+    setRefreshKey(prev => prev + 1);
+  };
+
   const t: TranslateFunction = (key, params) => {
     return translate(language, key, params);
   };
@@ -180,7 +189,17 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }
 
   return (
-    <LanguageContext.Provider value={{ language, t, changeLanguage, getSupportedLanguages }}>
+    <LanguageContext.Provider 
+      value={{ 
+        language, 
+        t, 
+        changeLanguage, 
+        setLanguage, 
+        forceRefresh,
+        getSupportedLanguages 
+      }}
+      key={refreshKey}
+    >
       {children}
     </LanguageContext.Provider>
   );

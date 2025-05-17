@@ -1,11 +1,11 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../utils/IconComponent';
 import { Button } from '../../components/common/Button';
-import { theme } from '../../config/theme';
-import { ROUTES } from '../../config/constants';
+import { theme, COLORS, ROUTES } from '../../config/constants';
 import { RootStackParamList } from '../../types/navigation';
 
 type FamilyWalletScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -34,6 +34,11 @@ const mockFamilyMembers = [
 export const FamilyWallet = () => {
   const navigation = useNavigation<FamilyWalletScreenNavigationProp>();
 
+  const handleAddMemberPress = () => {
+    // Using proper navigation for type safety
+    navigation.navigate(ROUTES.FAMILY.MEMBERS as any);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -41,7 +46,7 @@ export const FamilyWallet = () => {
           <Text style={styles.title}>Portefeuille Familial</Text>
           <Button
             title="Ajouter un membre"
-            onPress={() => navigation.navigate(ROUTES.FAMILY.MEMBERS)}
+            onPress={handleAddMemberPress}
             variant="secondary"
             style={styles.addButton}
           />
@@ -58,7 +63,7 @@ export const FamilyWallet = () => {
             <TouchableOpacity key={member.id} style={styles.memberCard}>
               <View style={styles.memberInfo}>
                 <View style={styles.avatarContainer}>
-                  <Ionicons name="person" size={24} color={theme.colors.primary} />
+                  <Icon name="person" size={24} color={COLORS.primary} />
                 </View>
                 <View style={styles.memberDetails}>
                   <Text style={styles.memberName}>{member.name}</Text>
@@ -73,7 +78,7 @@ export const FamilyWallet = () => {
         </View>
 
         <View style={styles.infoContainer}>
-          <Ionicons name="information-circle" size={24} color={theme.colors.info} />
+          <Icon name="information-circle" size={24} color={COLORS.info} />
           <Text style={styles.infoText}>
             Gérez les dépenses de votre famille en toute simplicité. Chaque membre peut avoir son propre solde.
           </Text>
@@ -86,54 +91,62 @@ export const FamilyWallet = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,
   },
   header: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   title: {
-    ...theme.typography.h1,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginBottom: 16,
   },
   addButton: {
-    marginTop: theme.spacing.md,
+    marginTop: 16,
   },
   balanceCard: {
-    backgroundColor: theme.colors.primary,
-    margin: theme.spacing.lg,
-    padding: theme.spacing.lg,
-    borderRadius: theme.borderRadius.lg,
+    backgroundColor: COLORS.primary,
+    margin: 20,
+    padding: 20,
+    borderRadius: 16,
   },
   balanceLabel: {
-    ...theme.typography.body,
-    color: theme.colors.white,
+    fontSize: 16,
+    color: COLORS.white,
     opacity: 0.8,
   },
   balanceAmount: {
-    ...theme.typography.h1,
-    color: theme.colors.white,
-    marginTop: theme.spacing.xs,
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.white,
+    marginTop: 8,
   },
   membersContainer: {
-    padding: theme.spacing.lg,
+    padding: 20,
   },
   sectionTitle: {
-    ...theme.typography.h2,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginBottom: 16,
   },
   memberCard: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme.colors.light,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
-    marginBottom: theme.spacing.md,
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   memberInfo: {
     flexDirection: 'row',
@@ -143,43 +156,44 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.primary + '20',
+    backgroundColor: `${COLORS.primary}20`,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: theme.spacing.md,
+    marginRight: 12,
   },
   memberDetails: {
     flex: 1,
   },
   memberName: {
-    ...theme.typography.body,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginBottom: 4,
   },
   memberRole: {
-    ...theme.typography.caption,
-    color: theme.colors.secondary,
+    fontSize: 14,
+    color: COLORS.secondary,
   },
   memberBalance: {
     alignItems: 'flex-end',
   },
   balanceText: {
-    ...theme.typography.body,
-    color: theme.colors.primary,
+    fontSize: 16,
     fontWeight: 'bold',
+    color: COLORS.primary,
   },
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.info + '10',
-    margin: theme.spacing.lg,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    backgroundColor: `${COLORS.info}10`,
+    margin: 20,
+    padding: 16,
+    borderRadius: 12,
   },
   infoText: {
-    ...theme.typography.body,
-    color: theme.colors.info,
-    marginLeft: theme.spacing.sm,
+    fontSize: 14,
+    color: COLORS.info,
+    marginLeft: 8,
     flex: 1,
   },
-}); 
+});
