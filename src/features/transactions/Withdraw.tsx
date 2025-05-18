@@ -1,12 +1,13 @@
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { Button } from '../../components/common/Button';
 import { Input } from '../../components/common/Input';
 import { theme } from '../../config/theme';
-import { ROUTES } from '../../config/constants';
+import { COLORS } from '../../theme/colors';
 import { RootStackParamList } from '../../types/navigation';
 
 type WithdrawScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
@@ -27,7 +28,7 @@ export const Withdraw = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
-          <Text style={styles.title}>Retirer de l'argent</Text>
+          <Text style={[styles.title, { fontWeight: "700" }]}>Retirer de l'argent</Text>
         </View>
 
         <View style={styles.form}>
@@ -47,9 +48,9 @@ export const Withdraw = () => {
           <Input
             value={amount}
             onChangeText={setAmount}
-            keyboardType="numeric"
+            keyboardType="number-pad"
             placeholder="Entrez le montant"
-            leftIcon={<Ionicons name="cash-outline" size={24} color={theme.colors.secondary} />}
+            leftIcon={<Icon name="cash-outline" size={24} color={theme.colors.secondary} />}
           />
 
           <Input
@@ -57,13 +58,13 @@ export const Withdraw = () => {
             value={agentCode}
             onChangeText={setAgentCode}
             placeholder="Entrez le code de l'agent"
-            leftIcon={<Ionicons name="person-outline" size={24} color={theme.colors.secondary} />}
+            leftIcon={<Icon name="person-outline" size={24} color={theme.colors.secondary} />}
           />
 
           <View style={styles.actions}>
             <Button
               title="Trouver un agent"
-              onPress={() => navigation.navigate(ROUTES.TRANSACTIONS.FIND_AGENT)}
+              onPress={() => navigation.navigate('FindAgent')}
               variant="secondary"
               style={styles.actionButton}
             />
@@ -76,7 +77,7 @@ export const Withdraw = () => {
         </View>
 
         <View style={styles.infoContainer}>
-          <Ionicons name="information-circle" size={24} color={theme.colors.info} />
+          <Icon name="information-circle" size={24} color={theme.colors.info} />
           <Text style={styles.infoText}>
             Présentez votre code de retrait à l'agent pour recevoir votre argent.
           </Text>
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
     padding: theme.spacing.lg,
   },
   title: {
-    ...theme.typography.h1,
+    fontSize: theme.typography.h1.fontSize,
     color: theme.colors.text,
   },
   form: {
     padding: theme.spacing.lg,
   },
   label: {
-    ...theme.typography.body,
+    fontSize: theme.typography.body.fontSize,
     color: theme.colors.text,
     marginBottom: theme.spacing.sm,
   },
@@ -128,15 +129,15 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.info + '10',
+    backgroundColor: `${theme.colors.info}10`,
     margin: theme.spacing.lg,
     padding: theme.spacing.md,
     borderRadius: theme.borderRadius.md,
   },
   infoText: {
-    ...theme.typography.body,
+    fontSize: theme.typography.body.fontSize,
     color: theme.colors.info,
     marginLeft: theme.spacing.sm,
     flex: 1,
   },
-}); 
+});

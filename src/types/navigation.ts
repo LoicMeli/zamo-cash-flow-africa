@@ -51,6 +51,8 @@ export type RootStackParamList = {
   Profile: undefined;
   NotFound: undefined;
   Dashboard: undefined;
+  CardTopUp: undefined;
+  MobileMoneyTopUp: undefined;
   Auth: {
     screen: string;
     params?: any;

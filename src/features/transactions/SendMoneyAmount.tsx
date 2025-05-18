@@ -21,7 +21,7 @@ type SendMoneyAmountScreenRouteProp = RouteProp<RootStackParamList, 'SendMoneyAm
 export const SendMoneyAmount = () => {
   const navigation = useNavigation<SendMoneyAmountScreenNavigationProp>();
   const route = useRoute<SendMoneyAmountScreenRouteProp>();
-  const { recipient } = route.params;
+  const { recipient } = route.params || { recipient: undefined };
   
   const [amount, setAmount] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -134,7 +134,7 @@ export const SendMoneyAmount = () => {
         useNativeDriver: true
       }).start(() => {
         navigation.navigate('SendMoneyConfirm', {
-          recipient,
+          recipient: recipient,
           amount: parseFloat(amount.replace(/,/g, ''))
         });
       });
@@ -210,7 +210,7 @@ export const SendMoneyAmount = () => {
   };
 
   // Determine if the Next button should be enabled
-  const isNextEnabled = amount.trim().length > 0 && parseFloat(amount.replace(/,/g, '')) > 0;
+  const isNextEnabled = amount.trim().length > 0 && parseFloat(amount.replace(/,/g, '')) > 0 && recipient !== undefined;
 
   // Interpolate input border color based on focus state
   const inputBorderColor = inputBorderAnim.interpolate({

@@ -9,6 +9,7 @@ import { Button } from '../../components/common/Button';
 import { theme } from '../../config/theme';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
+import { COLORS } from '../../theme/colors';
 
 type TransactionsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
 
@@ -41,9 +42,9 @@ export const Transactions = () => {
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.light.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: COLORS.light.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.light.text }]}>Transactions</Text>
+        <Text style={[styles.title, { color: COLORS.light.text, fontWeight: "700" }]}>Transactions</Text>
         <Button
           title="Nouvelle transaction"
           onPress={() => navigation.navigate('SendMoney')}
@@ -56,7 +57,7 @@ export const Transactions = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TransactionItem
-            transactionType={item.transactionType}
+            transactionType={item.transactionType as any}
             amount={item.amount}
             recipient={item.recipient}
             date={item.date}
@@ -79,7 +80,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 16,
-    fontWeight: '700',
   },
   newTransactionButton: {
     marginTop: 16,

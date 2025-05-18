@@ -199,7 +199,7 @@ export const SendMoneyConfirm = () => {
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
           >
-            <Ionicons name="paper-plane" size={20} color="#FFF" style={styles.buttonIcon} />
+            <Icon name="paper-plane" size={20} color="#FFF" style={styles.buttonIcon} />
             <Text style={styles.confirmButtonText}>Confirm & Send</Text>
           </TouchableOpacity>
         </Animated.View>

@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
 import { ThemedText } from '../../components/common/ThemedView';
@@ -58,14 +59,16 @@ export const AddMoney = () => {
   const handleMethodSelect = (methodId: string) => {
     switch(methodId) {
       case 'card':
-        navigation.navigate('CardTopUp');
+        // Navigate to CardTopUp screen - since this isn't in RootStackParamList, we'll alert instead
+        Alert.alert('Navigate to Card Top Up', 'This screen is not yet implemented');
         break;
       case 'mobile':
-        navigation.navigate('MobileMoneyTopUp');
+        // Navigate to MobileMoneyTopUp screen - since this isn't in RootStackParamList, we'll alert instead
+        Alert.alert('Navigate to Mobile Money Top Up', 'This screen is not yet implemented');
         break;
       case 'bank':
         // Show a more descriptive alert for bank transfer
-        alert(`BANK TRANSFER: This payment method is currently under development and will be available soon.`);
+        Alert.alert('BANK TRANSFER', 'This payment method is currently under development and will be available soon.');
         break;
       default:
         break;
@@ -84,7 +87,7 @@ export const AddMoney = () => {
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+          <Icon name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <ThemedText style={styles.headerTitle}>Top Up</ThemedText>
         <View style={{ width: 40 }} />
@@ -281,4 +284,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: 8,
   },
-}); 
+});

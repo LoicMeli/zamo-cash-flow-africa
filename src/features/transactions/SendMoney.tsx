@@ -1,581 +1,175 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
   StyleSheet, 
   SafeAreaView, 
-  ScrollView, 
   TouchableOpacity, 
-  TextInput,
-  Pressable,
-  Animated,
-  Dimensions,
-  Easing
+  FlatList, 
+  TextInput, 
+  KeyboardAvoidingView, 
+  Platform
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Icon } from '../../components/common/Icon';
+import { Icon } from '../../components/common/Icon'; 
 import { RootStackParamList } from '../../types/navigation';
-import { useTheme } from '../../theme/ThemeContext';
-import { ThemedText } from '../../components/common/ThemedView';
-import { useLanguage } from '../../providers/LanguageProvider';
 
 type SendMoneyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-// Mock data for recent contacts
-const RECENT_CONTACTS = [
-  { name: "Sarah", phone: "3456" },
-  { name: "Michael", phone: "9900" },
-  { name: "Olivia", phone: "6677" }
+// Mock recent recipients data
+const mockRecentRecipients = [
+  { id: '1', name: 'Emma Johnson', phone: '+237 678 123 456', avatar: 'EJ' },
+  { id: '2', name: 'Michael Brown', phone: '+237 677 234 567', avatar: 'MB' },
+  { id: '3', name: 'Sophia Davis', phone: '+237 651 345 678', avatar: 'SD' },
+  { id: '4', name: 'James Wilson', phone: '+237 699 456 789', avatar: 'JW' },
 ];
 
-// Mock data for full contacts
-const FULL_CONTACTS = [
-  { name: "Sarah Johnson", phone: "+237655123456" },
-  { name: "Michael Chen", phone: "+237677889900" },
-  { name: "Olivia Smith", phone: "+237644556677" },
-  { name: "David Wilson", phone: "+237688991122" },
-  { name: "Emma Brown", phone: "+237611223344" }
+// Mock contacts data
+const mockContacts = [
+  { id: '5', name: 'Ava Martinez', phone: '+237 673 567 890', avatar: 'AM' },
+  { id: '6', name: 'Oliver Taylor', phone: '+237 698 678 901', avatar: 'OT' },
+  { id: '7', name: 'Isabella Clark', phone: '+237 676 789 012', avatar: 'IC' },
+  { id: '8', name: 'William Walker', phone: '+237 670 890 123', avatar: 'WW' },
+  { id: '9', name: 'Sophie Hernandez', phone: '+237 695 901 234', avatar: 'SH' },
+  { id: '10', name: 'Alexander Young', phone: '+237 672 012 345', avatar: 'AY' },
 ];
 
-// Tab screens enum
-enum TabScreen {
-  PHONE = 'Phone',
-  SCAN = 'Scan',
-  CONTACTS = 'Contacts'
-}
-
-// Screen width
-const { width } = Dimensions.get('window');
-
-export const SendMoney = () => {
+export const SendMoney: React.FC = () => {
   const navigation = useNavigation<SendMoneyScreenNavigationProp>();
-  const [activeTab, setActiveTab] = useState<TabScreen>(TabScreen.PHONE);
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedContact, setSelectedContact] = useState<number | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const { colors, isDarkMode } = useTheme();
+  const [filteredContacts, setFilteredContacts] = useState(mockContacts);
   
-  // Animation values
-  const tabIndicatorPosition = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  const inputScaleAnim = useRef(new Animated.Value(1)).current;
-  const inputBorderAnim = useRef(new Animated.Value(0)).current;
-  const phoneTabOpacity = useRef(new Animated.Value(1)).current;
-  const scanTabOpacity = useRef(new Animated.Value(0)).current;
-  const contactsTabOpacity = useRef(new Animated.Value(0)).current;
-  const buttonScaleAnim = useRef(new Animated.Value(1)).current;
-  const contactItemsAnim = useRef(
-    FULL_CONTACTS.map(() => new Animated.Value(0))
-  ).current;
-
-  // Input ref
-  const inputRef = useRef<TextInput>(null);
-
-  useEffect(() => {
-    // Animate tab indicator
-    let toValue = 0;
-    switch (activeTab) {
-      case TabScreen.PHONE:
-        toValue = 0;
-        animateTabContent(phoneTabOpacity, scanTabOpacity, contactsTabOpacity);
-        break;
-      case TabScreen.SCAN:
-        toValue = width / 3;
-        animateTabContent(scanTabOpacity, phoneTabOpacity, contactsTabOpacity);
-        break;
-      case TabScreen.CONTACTS:
-        toValue = (width / 3) * 2;
-        animateTabContent(contactsTabOpacity, phoneTabOpacity, scanTabOpacity);
-        // Animate contact items when contacts tab is shown
-        if (activeTab === TabScreen.CONTACTS) {
-          animateContactItems();
-        }
-        break;
+  // Filter contacts based on search query
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    if (text.trim() === '') {
+      setFilteredContacts(mockContacts);
+      return;
     }
-
-    Animated.spring(tabIndicatorPosition, {
-      toValue,
-      useNativeDriver: true,
-      tension: 70,
-      friction: 10
-    }).start();
-  }, [activeTab]);
-
-  const animateTabContent = (
-    showAnim: Animated.Value,
-    hideAnim1: Animated.Value,
-    hideAnim2: Animated.Value
-  ) => {
-    // Fade out current content
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 150,
-      useNativeDriver: true
-    }).start(() => {
-      // Reset opacity values
-      hideAnim1.setValue(0);
-      hideAnim2.setValue(0);
-      showAnim.setValue(1);
-      
-      // Fade in new content
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 250,
-        useNativeDriver: true
-      }).start();
-    });
-  };
-
-  const animateContactItems = () => {
-    // Staggered animation for contact items
-    const animations = contactItemsAnim.map((anim, index) => {
-      return Animated.timing(anim, {
-        toValue: 1,
-        duration: 300,
-        delay: index * 50, // Stagger effect
-        useNativeDriver: true,
-        easing: Easing.out(Easing.ease)
-      });
+    
+    const filtered = mockContacts.filter(contact => {
+      return (
+        contact.name.toLowerCase().includes(text.toLowerCase()) ||
+        contact.phone.includes(text)
+      );
     });
     
-    Animated.stagger(50, animations).start();
+    setFilteredContacts(filtered);
   };
 
-  const handleInputFocus = () => {
-    setIsFocused(true);
-    // Séparer les animations pour éviter les conflits
-    Animated.timing(inputScaleAnim, {
-      toValue: 1.02,
-      duration: 300,
-      useNativeDriver: true
-    }).start();
-    
-    Animated.timing(inputBorderAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: false
-    }).start();
+  // Navigate to send money amount screen
+  const handleSelectRecipient = (recipient: { name: string; phone: string }) => {
+    navigation.navigate('SendMoneyAmount', { recipient });
   };
 
-  const handleInputBlur = () => {
-    setIsFocused(false);
-    // Séparer les animations pour éviter les conflits
-    Animated.timing(inputScaleAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true
-    }).start();
-    
-    Animated.timing(inputBorderAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false
-    }).start();
-  };
+  // Render recipient avatar
+  const renderAvatar = (initials: string) => (
+    <View style={styles.avatar}>
+      <Text style={styles.avatarText}>{initials}</Text>
+    </View>
+  );
 
-  const handleButtonPressIn = () => {
-    Animated.spring(buttonScaleAnim, {
-      toValue: 0.95,
-      friction: 5,
-      tension: 100,
-      useNativeDriver: true
-    }).start();
-  };
-
-  const handleButtonPressOut = () => {
-    Animated.spring(buttonScaleAnim, {
-      toValue: 1,
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true
-    }).start();
-  };
-
+  // Go back to previous screen
   const handleGoBack = () => {
     navigation.goBack();
   };
 
-  const handleTabChange = (tab: TabScreen) => {
-    setActiveTab(tab);
+  // Navigate to scan QR code screen
+  const handleScanQR = () => {
+    navigation.navigate('ScanQR');
   };
 
-  const handleContinue = () => {
-    if (phoneNumber.trim()) {
-      // Find if there's a matching contact
-      const matchingContact = FULL_CONTACTS.find(contact => 
-        contact.phone.includes(phoneNumber) || phoneNumber.includes(contact.phone)
-      );
-      
-      const recipient = matchingContact || { 
-        name: `User (${phoneNumber})`, 
-        phone: phoneNumber.includes('+') ? phoneNumber : `+237${phoneNumber}` 
-      };
-      
-      navigation.navigate('SendMoneyAmount', { recipient });
-    } else if (selectedContact !== null) {
-      navigation.navigate('SendMoneyAmount', { recipient: FULL_CONTACTS[selectedContact] });
-    }
-  };
-
-  const handleContactPress = (contact: typeof FULL_CONTACTS[0], index: number) => {
-    // Animate the contact selection
-    setSelectedContact(index);
-    
-    // Add tactile feedback animation
-    Animated.sequence([
-      Animated.timing(contactItemsAnim[index], {
-        toValue: 0.95,
-        duration: 100,
-        useNativeDriver: true
-      }),
-      Animated.timing(contactItemsAnim[index], {
-        toValue: 1,
-        duration: 100,
-        useNativeDriver: true
-      })
-    ]).start(() => {
-      navigation.navigate('SendMoneyAmount', { recipient: contact });
-    });
-  };
-
-  const handleSelectRecentContact = (contact: typeof RECENT_CONTACTS[0], index: number) => {
-    const fullContact = FULL_CONTACTS.find(c => c.phone.includes(contact.phone));
-    
-    if (fullContact) {
-      navigation.navigate('SendMoneyAmount', { recipient: fullContact });
-    } else {
-      // Create a temporary full contact
-      const tempContact = {
-        name: contact.name,
-        phone: `+237${contact.phone}`
-      };
-      navigation.navigate('SendMoneyAmount', { recipient: tempContact });
-    }
-  };
-
-  const filteredContacts = FULL_CONTACTS.filter(contact => {
-    const query = searchQuery.toLowerCase();
-    return (
-      contact.name.toLowerCase().includes(query) || 
-      contact.phone.includes(query)
-    );
-  });
-
-  // Determine if the Next button should be enabled
-  const isNextEnabled = phoneNumber.trim().length > 0 || selectedContact !== null;
-
-  // Interpolate input border color based on focus state
-  const inputBorderColor = inputBorderAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['transparent', '#3B5BFE']
-  });
-  
-  // Interpolate input shadow for glow effect
-  const inputShadowOpacity = inputBorderAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 0.5]
-  });
-
-  const renderPhoneTab = () => (
-    <Animated.View 
-      style={[
-        styles.tabContent, 
-        { opacity: phoneTabOpacity }
-      ]}
+  // Render recent recipient item
+  const renderRecentItem = ({ item }: { item: typeof mockRecentRecipients[0] }) => (
+    <TouchableOpacity 
+      style={styles.recentItem}
+      onPress={() => handleSelectRecipient({ name: item.name, phone: item.phone })}
     >
-      {/* Séparons les animations natives et JS en composants différents */}
-      <Animated.View 
-        style={[
-          {
-            transform: [{ scale: inputScaleAnim }],
-          }
-        ]}
-      >
-        <Animated.View 
-          style={[
-            styles.inputContainer,
-            { 
-              borderColor: inputBorderColor,
-              borderWidth: 1,
-              shadowOpacity: inputShadowOpacity,
-            }
-          ]}
-        >
-          <Text style={[
-            styles.placeholderText, 
-            phoneNumber.length > 0 && styles.placeholderHidden
-          ]}>
-            Recipient
-          </Text>
-          <TextInput
-            ref={inputRef}
-            style={styles.input}
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            keyboardType="phone-pad"
-            placeholderTextColor="#C2C2C2"
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-          />
-        </Animated.View>
-      </Animated.View>
-      
-      <Text style={styles.sectionTitle}>Recent contacts</Text>
-      
-      <View style={styles.recentContactsContainer}>
-        {RECENT_CONTACTS.map((contact, index) => (
-          <TouchableOpacity 
-            key={index}
-            style={styles.recentContactItem}
-            onPress={() => handleSelectRecentContact(contact, index)}
-          >
-            <Animated.View 
-              style={[
-                styles.contactAvatar,
-                {
-                  transform: [{
-                    scale: new Animated.Value(1)
-                  }]
-                }
-              ]}
-            >
-              <Icon name="person" size={24} color="#3B5BFE" />
-            </Animated.View>
-            <Text style={styles.contactName}>{contact.name}</Text>
-            <Text style={styles.contactPhone}>{contact.phone}</Text>
-          </TouchableOpacity>
-        ))}
+      {renderAvatar(item.avatar)}
+      <Text style={styles.recentName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  // Render contact item
+  const renderContactItem = ({ item }: { item: typeof mockContacts[0] }) => (
+    <TouchableOpacity 
+      style={styles.contactItem}
+      onPress={() => handleSelectRecipient({ name: item.name, phone: item.phone })}
+    >
+      {renderAvatar(item.avatar)}
+      <View style={styles.contactInfo}>
+        <Text style={styles.contactName}>{item.name}</Text>
+        <Text style={styles.contactPhone}>{item.phone}</Text>
       </View>
-      
-      <Animated.View 
-        style={{ 
-          opacity: fadeAnim,
-          transform: [{ scale: buttonScaleAnim }]
-        }}
-      >
-        <TouchableOpacity 
-          style={[styles.nextButton, !isNextEnabled && styles.nextButtonDisabled]}
-          onPress={handleContinue}
-          disabled={!isNextEnabled}
-          onPressIn={handleButtonPressIn}
-          onPressOut={handleButtonPressOut}
-        >
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </Animated.View>
+    </TouchableOpacity>
   );
-
-  const renderScanTab = () => (
-    <Animated.View 
-      style={[
-        styles.tabContent, 
-        { opacity: scanTabOpacity }
-      ]}
-    >
-      <View style={styles.scanContainer}>
-        <Animated.View 
-          style={[
-            styles.qrCodeContainer,
-            { 
-              transform: [{ scale: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.8, 1]
-              }) }]
-            }
-          ]}
-        >
-          <Icon name="qr-code" size={80} color="#3B5BFE" />
-        </Animated.View>
-        <Text style={styles.scanText}>Scan QR to Send Money</Text>
-        <Text style={styles.scanSubText}>Position the QR code in the frame to scan</Text>
-      </View>
-    </Animated.View>
-  );
-
-  const renderContactsTab = () => (
-    <Animated.View 
-      style={[
-        styles.tabContent, 
-        { opacity: contactsTabOpacity }
-      ]}
-    >
-      {/* Séparons les animations natives et JS en composants différents */}
-      <Animated.View 
-        style={[
-          {
-            transform: [{ scale: inputScaleAnim }],
-          }
-        ]}
-      >
-        <Animated.View 
-          style={[
-            styles.searchContainer,
-            { 
-              borderColor: inputBorderColor,
-              borderWidth: 1,
-              shadowOpacity: inputShadowOpacity,
-            }
-          ]}
-        >
-          <Icon name="search" size={20} color="#C2C2C2" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search contacts"
-            placeholderTextColor="#C2C2C2"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-          />
-        </Animated.View>
-      </Animated.View>
-      
-      <ScrollView style={styles.contactsList}>
-        {filteredContacts.map((contact, index) => (
-          <Animated.View 
-            key={index}
-            style={{
-              opacity: contactItemsAnim[index],
-              transform: [{ 
-                translateY: contactItemsAnim[index].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [20, 0]
-                })
-              }]
-            }}
-          >
-            <TouchableOpacity 
-              style={[
-                styles.contactItem,
-                selectedContact === index && styles.contactItemSelected
-              ]}
-              onPress={() => handleContactPress(contact, index)}
-            >
-              <View style={styles.fullContactAvatar}>
-                <Icon name="person" size={24} color="#3B5BFE" />
-              </View>
-              <View style={styles.contactInfo}>
-                <Text style={styles.fullContactName}>{contact.name}</Text>
-                <Text style={styles.fullContactPhone}>{contact.phone}</Text>
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
-        ))}
-      </ScrollView>
-      
-      <Animated.View style={{ opacity: fadeAnim }}>
-        <TouchableOpacity 
-          style={styles.addContactButton}
-          onPressIn={handleButtonPressIn}
-          onPressOut={handleButtonPressOut}
-        >
-          <Icon name="person-add" size={20} color="#FFF" />
-          <Text style={styles.addContactText}>Add Contact</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </Animated.View>
-  );
-
-  const renderActiveTab = () => {
-    switch (activeTab) {
-      case TabScreen.PHONE:
-        return renderPhoneTab();
-      case TabScreen.SCAN:
-        return renderScanTab();
-      case TabScreen.CONTACTS:
-        return renderContactsTab();
-      default:
-        return renderPhoneTab();
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleGoBack}
-        >
-          <Icon name="arrow-back" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Send Money</ThemedText>
-        <View style={styles.placeholder} />
-      </View>
-      
-      <View style={styles.tabContainer}>
-        {Object.values(TabScreen).map((tab) => (
-          <TouchableOpacity
-            key={tab}
-            style={[
-              styles.tab,
-              activeTab === tab && styles.activeTab
-            ]}
-            onPress={() => handleTabChange(tab)}
-          >
-            <ThemedText
-              style={[
-                styles.tabText,
-                activeTab === tab && [styles.activeTabText, { color: colors.primary }]
-              ]}
-            >
-              {tab}
-            </ThemedText>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidView}
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#FFF" />
           </TouchableOpacity>
-        ))}
-        <Animated.View
-          style={[
-            styles.tabIndicator,
-            { backgroundColor: colors.primary, transform: [{ translateX: tabIndicatorPosition }] }
-          ]}
-        />
-      </View>
-      
-      <Animated.View style={[styles.tabContent, { opacity: fadeAnim }]}>
-        {renderActiveTab()}
-      </Animated.View>
-      
-      {activeTab === TabScreen.PHONE && phoneNumber.trim().length > 0 && (
-        <Animated.View 
-          style={[
-            styles.continueButtonContainer,
-            { transform: [{ scale: buttonScaleAnim }] }
-          ]}
-        >
-          <TouchableOpacity
-            style={[styles.continueButton, { backgroundColor: colors.primary }]}
-            onPress={handleContinue}
-            onPressIn={handleButtonPressIn}
-            onPressOut={handleButtonPressOut}
-          >
-            <ThemedText style={[styles.continueButtonText, { color: '#FFFFFF' }]}>
-              Continue
-            </ThemedText>
+          <Text style={styles.title}>Envoyer de l'argent</Text>
+          <TouchableOpacity onPress={handleScanQR} style={styles.scanButton}>
+            <Icon name="qr-code" size={24} color="#FFF" />
           </TouchableOpacity>
-        </Animated.View>
-      )}
-      
-      {activeTab === TabScreen.CONTACTS && selectedContact !== null && (
-        <Animated.View 
-          style={[
-            styles.continueButtonContainer,
-            { transform: [{ scale: buttonScaleAnim }] }
-          ]}
-        >
-          <TouchableOpacity
-            style={[styles.continueButton, { backgroundColor: colors.primary }]}
-            onPress={handleContinue}
-            onPressIn={handleButtonPressIn}
-            onPressOut={handleButtonPressOut}
-          >
-            <ThemedText style={[styles.continueButtonText, { color: '#FFFFFF' }]}>
-              Continue with {FULL_CONTACTS[selectedContact].name}
-            </ThemedText>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
+        </View>
+
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <Icon name="search" size={20} color="#888" style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Chercher un contact"
+            placeholderTextColor="#888"
+            value={searchQuery}
+            onChangeText={handleSearch}
+          />
+        </View>
+        
+        {/* Recent Recipients */}
+        {searchQuery.trim() === '' && (
+          <View style={styles.recentsSection}>
+            <Text style={styles.sectionTitle}>Récents</Text>
+            <FlatList
+              data={mockRecentRecipients}
+              renderItem={renderRecentItem}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.recentsList}
+            />
+          </View>
+        )}
+        
+        {/* Contacts List */}
+        <View style={styles.contactsSection}>
+          <Text style={styles.sectionTitle}>
+            {searchQuery.trim() === '' ? 'Contacts' : 'Résultats'}
+          </Text>
+          {filteredContacts.length > 0 ? (
+            <FlatList
+              data={filteredContacts}
+              renderItem={renderContactItem}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.contactsList}
+            />
+          ) : (
+            <View style={styles.noResultsContainer}>
+              <Text style={styles.noResultsText}>
+                Aucun contact trouvé pour "{searchQuery}"
+              </Text>
+            </View>
+          )}
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -598,170 +192,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerTitle: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
-  placeholder: {
-    flex: 1,
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 16,
-    borderRadius: 12,
-    backgroundColor: '#1B1B1B',
-    marginTop: 16,
-    height: 48,
-    position: 'relative',
-    padding: 4,
-  },
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    zIndex: 1,
-  },
-  activeTab: {
-    backgroundColor: '#3B5BFE',
-  },
-  tabText: {
-    color: '#C2C2C2',
-    fontSize: 16,
-    fontWeight: '500',
-    zIndex: 2,
-  },
-  activeTabText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  tabIndicator: {
-    position: 'absolute',
-    top: 4,
-    bottom: 4,
-    left: 4,
-    width: (width - 32 - 8) / 3, // Screen width - horizontal margins - padding
-    backgroundColor: '#3B5BFE',
-    borderRadius: 8,
-    zIndex: 0,
-  },
-  tabContent: {
-    flex: 1,
-  },
-  inputContainer: {
-    backgroundColor: '#1B1B1B',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    height: 55,
-    justifyContent: 'center',
-    marginBottom: 24,
-    position: 'relative',
-    shadowColor: '#3B5BFE',
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  placeholderText: {
-    position: 'absolute',
-    left: 15,
-    color: '#C2C2C2',
-    fontSize: 16,
-  },
-  placeholderHidden: {
-    opacity: 0,
-  },
-  input: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    height: '100%',
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 16,
-  },
-  recentContactsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 32,
-  },
-  recentContactItem: {
-    alignItems: 'center',
-  },
-  contactAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#1B1B1B',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-    shadowColor: '#3B5BFE',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  contactName: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  contactPhone: {
-    color: '#C2C2C2',
-    fontSize: 14,
-    marginTop: 2,
-  },
-  nextButton: {
-    backgroundColor: '#3B5BFE',
-    borderRadius: 12,
-    height: 55,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-  nextButtonDisabled: {
-    backgroundColor: 'rgba(59, 91, 254, 0.5)', // 50% opacity
-  },
-  nextButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  scanContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  qrCodeContainer: {
-    width: 180,
-    height: 180,
-    backgroundColor: '#1B1B1B',
+  scanButton: {
+    marginLeft: 15,
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 24,
-    borderWidth: 2,
-    borderColor: 'rgba(59, 91, 254, 0.3)',
-    shadowColor: '#3B5BFE',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  scanText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  scanSubText: {
-    color: '#C2C2C2',
-    fontSize: 14,
-    textAlign: 'center',
-    paddingHorizontal: 40,
+    justifyContent: 'center',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -784,6 +226,24 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
   },
+  recentsSection: {
+    marginTop: 16,
+  },
+  recentsList: {
+    paddingHorizontal: 10,
+  },
+  recentItem: {
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  recentName: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  contactsSection: {
+    marginTop: 16,
+  },
   contactsList: {
     flex: 1,
   },
@@ -797,72 +257,48 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 8,
   },
-  contactItemSelected: {
-    backgroundColor: '#1B1B1B',
-    borderLeftWidth: 3,
-    borderLeftColor: '#3B5BFE',
+  contactInfo: {
+    flex: 1,
   },
-  fullContactAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+  contactName: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  contactPhone: {
+    color: '#C2C2C2',
+    fontSize: 14,
+    marginTop: 2,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#1B1B1B',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: 10,
     shadowColor: '#3B5BFE',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 2,
   },
-  contactInfo: {
+  avatarText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  noResultsContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  fullContactName: {
+  noResultsText: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '500',
   },
-  fullContactPhone: {
-    color: '#C2C2C2',
-    fontSize: 14,
-    marginTop: 2,
-  },
-  addContactButton: {
-    backgroundColor: '#1B1B1B',
-    borderRadius: 12,
-    height: 55,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(59, 91, 254, 0.3)',
-  },
-  addContactText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
-    marginLeft: 10,
-  },
-  continueButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 16,
-  },
-  continueButton: {
-    backgroundColor: '#3B5BFE',
-    borderRadius: 12,
-    height: 55,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  continueButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
+  keyboardAvoidView: {
+    flex: 1,
   },
 });

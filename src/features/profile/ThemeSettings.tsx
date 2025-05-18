@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import { Icon } from '../../components/common/Icon';
 import { useTheme, ThemeMode } from '../../theme/ThemeContext';
+import { COLORS } from '../../theme/colors';
 
 interface ThemeSelectorProps {
   containerStyle?: object;
 }
 
 export const ThemeSettings: React.FC = () => {
-  const { themeMode, setThemeMode, colors } = useTheme();
+  const { themeMode, setThemeMode } = useTheme();
 
   const options: { value: ThemeMode; label: string; icon: string }[] = [
     { value: 'system', label: 'Système', icon: '📱' },
@@ -24,8 +25,8 @@ export const ThemeSettings: React.FC = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.light.background }]}>
-      <Text style={[styles.title, { color: colors.light.text }]}>Thème</Text>
+    <View style={[styles.container, { backgroundColor: COLORS.light.background }]}>
+      <Text style={[styles.title, { color: COLORS.light.text }]}>Thème</Text>
       
       <View style={styles.optionsContainer}>
         {options.map((option) => (
