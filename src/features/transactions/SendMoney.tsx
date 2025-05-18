@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
+  View, 
+  Text, 
+  StyleSheet, 
   TouchableOpacity,
   TextInput,
   FlatList,
@@ -19,6 +19,7 @@ import { Ionicons } from '../../components/common/Ionicons';
 import { Button } from '../../components/common/Button';
 import { RootStackParamList } from '../../types/navigation';
 import { COLORS } from '../../theme/colors';
+import { navigateTo } from '../../utils/navigation';
 
 type SendMoneyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -42,15 +43,15 @@ export const SendMoney = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleContactPress = (contact: { name: string; phone: string }) => {
-    navigation.navigate('SendMoneyAmount', { recipient: contact });
+    navigateTo(navigation, 'SendMoneyAmount', { recipient: contact });
   };
 
   const handleScanQR = () => {
-    navigation.navigate('ScanQR');
+    navigateTo(navigation, 'ScanQR');
   };
 
   const handleNewContact = () => {
-    navigation.navigate('SendMoneyAmount', {});
+    navigateTo(navigation, 'SendMoneyAmount', {});
   };
 
   return (
@@ -149,7 +150,7 @@ export const SendMoney = () => {
           <View style={styles.buttonContainer}>
             <Button
               title="Voir tous les contacts"
-              onPress={() => navigation.navigate('AddContact')}
+              onPress={() => navigateTo(navigation, 'AddContact')}
               style={styles.button}
             />
           </View>

@@ -1,21 +1,10 @@
 
-export type Transaction = {
-  id: string;
-  type: 'send' | 'receive' | 'payment' | 'deposit' | 'withdrawal';
+// Add the transactionType property to the TransactionItemProps interface
+export interface TransactionItemProps {
+  transactionType?: string;
+  type?: string;
   amount: number;
-  name?: string;
-  date: Date;
-  avatar?: string;
-  fee?: number;
-  status?: string;
-  user?: {
-    name: string;
-    phone: string;
-  };
-};
-
-export interface TransactionListProps {
-  className?: string;
-  limit?: number;
-  transactions?: Transaction[];
+  recipient: string;
+  date: string;
+  onPress: () => void;
 }
