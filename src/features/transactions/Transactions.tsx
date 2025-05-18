@@ -42,9 +42,16 @@ export const Transactions = () => {
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: COLORS.light.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.light.background }]}>
       <View style={styles.header}>
-        <Text style={[styles.title, { color: COLORS.light.text, fontWeight: "700" }]}>Transactions</Text>
+        <Text style={{ 
+          color: colors.light.text, 
+          marginBottom: 16, 
+          fontSize: 24, 
+          lineHeight: 32, 
+          fontFamily: 'System', 
+          fontWeight: '700' 
+        }}>Transactions</Text>
         <Button
           title="Nouvelle transaction"
           onPress={() => navigation.navigate('SendMoney')}
@@ -57,7 +64,7 @@ export const Transactions = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TransactionItem
-            transactionType={item.transactionType as any}
+            type={item.transactionType}
             amount={item.amount}
             recipient={item.recipient}
             date={item.date}

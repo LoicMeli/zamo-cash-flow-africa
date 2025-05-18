@@ -1,174 +1,159 @@
+
 import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  SafeAreaView, 
-  TouchableOpacity, 
-  FlatList, 
-  TextInput, 
-  KeyboardAvoidingView, 
-  Platform
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Icon } from '../../components/common/Icon'; 
+import { Icon } from '../../components/common/Icon';
+import { Ionicons } from '../../components/common/Ionicons';
+import { Button } from '../../components/common/Button';
 import { RootStackParamList } from '../../types/navigation';
+import { COLORS } from '../../theme/colors';
 
 type SendMoneyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-// Mock recent recipients data
-const mockRecentRecipients = [
-  { id: '1', name: 'Emma Johnson', phone: '+237 678 123 456', avatar: 'EJ' },
-  { id: '2', name: 'Michael Brown', phone: '+237 677 234 567', avatar: 'MB' },
-  { id: '3', name: 'Sophia Davis', phone: '+237 651 345 678', avatar: 'SD' },
-  { id: '4', name: 'James Wilson', phone: '+237 699 456 789', avatar: 'JW' },
+// Mock recent contacts data
+const recentContacts = [
+  { id: '1', name: 'Jean Marc', phone: '678901234', avatar: 'JM' },
+  { id: '2', name: 'Marie Claire', phone: '699123456', avatar: 'MC' },
+  { id: '3', name: 'Patrick Démé', phone: '677654321', avatar: 'PD' },
+  { id: '4', name: 'Solange Biya', phone: '650987654', avatar: 'SB' },
 ];
 
-// Mock contacts data
-const mockContacts = [
-  { id: '5', name: 'Ava Martinez', phone: '+237 673 567 890', avatar: 'AM' },
-  { id: '6', name: 'Oliver Taylor', phone: '+237 698 678 901', avatar: 'OT' },
-  { id: '7', name: 'Isabella Clark', phone: '+237 676 789 012', avatar: 'IC' },
-  { id: '8', name: 'William Walker', phone: '+237 670 890 123', avatar: 'WW' },
-  { id: '9', name: 'Sophie Hernandez', phone: '+237 695 901 234', avatar: 'SH' },
-  { id: '10', name: 'Alexander Young', phone: '+237 672 012 345', avatar: 'AY' },
+// Mock frequent contacts data
+const frequentContacts = [
+  { id: '1', name: 'Papa', phone: '699123456', avatar: 'P' },
+  { id: '2', name: 'Maman', phone: '677654321', avatar: 'M' },
+  { id: '3', name: 'Junior', phone: '690123456', avatar: 'J' },
 ];
 
-export const SendMoney: React.FC = () => {
+export const SendMoney = () => {
   const navigation = useNavigation<SendMoneyScreenNavigationProp>();
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredContacts, setFilteredContacts] = useState(mockContacts);
-  
-  // Filter contacts based on search query
-  const handleSearch = (text: string) => {
-    setSearchQuery(text);
-    if (text.trim() === '') {
-      setFilteredContacts(mockContacts);
-      return;
-    }
-    
-    const filtered = mockContacts.filter(contact => {
-      return (
-        contact.name.toLowerCase().includes(text.toLowerCase()) ||
-        contact.phone.includes(text)
-      );
-    });
-    
-    setFilteredContacts(filtered);
+
+  const handleContactPress = (contact: { name: string; phone: string }) => {
+    navigation.navigate('SendMoneyAmount', { recipient: contact });
   };
 
-  // Navigate to send money amount screen
-  const handleSelectRecipient = (recipient: { name: string; phone: string }) => {
-    navigation.navigate('SendMoneyAmount', { recipient });
-  };
-
-  // Render recipient avatar
-  const renderAvatar = (initials: string) => (
-    <View style={styles.avatar}>
-      <Text style={styles.avatarText}>{initials}</Text>
-    </View>
-  );
-
-  // Go back to previous screen
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
-  // Navigate to scan QR code screen
   const handleScanQR = () => {
     navigation.navigate('ScanQR');
   };
 
-  // Render recent recipient item
-  const renderRecentItem = ({ item }: { item: typeof mockRecentRecipients[0] }) => (
-    <TouchableOpacity 
-      style={styles.recentItem}
-      onPress={() => handleSelectRecipient({ name: item.name, phone: item.phone })}
-    >
-      {renderAvatar(item.avatar)}
-      <Text style={styles.recentName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
-  // Render contact item
-  const renderContactItem = ({ item }: { item: typeof mockContacts[0] }) => (
-    <TouchableOpacity 
-      style={styles.contactItem}
-      onPress={() => handleSelectRecipient({ name: item.name, phone: item.phone })}
-    >
-      {renderAvatar(item.avatar)}
-      <View style={styles.contactInfo}>
-        <Text style={styles.contactName}>{item.name}</Text>
-        <Text style={styles.contactPhone}>{item.phone}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const handleNewContact = () => {
+    navigation.navigate('SendMoneyAmount', {});
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidView}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color="#FFF" />
-          </TouchableOpacity>
-          <Text style={styles.title}>Envoyer de l'argent</Text>
-          <TouchableOpacity onPress={handleScanQR} style={styles.scanButton}>
-            <Icon name="qr-code" size={24} color="#FFF" />
-          </TouchableOpacity>
-        </View>
+        <ScrollView>
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Ionicons.name("arrow-back", 24, { color: '#1A1A1A' }) />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>Envoyer de l'argent</Text>
+          </View>
 
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Icon name="search" size={20} color="#888" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Chercher un contact"
-            placeholderTextColor="#888"
-            value={searchQuery}
-            onChangeText={handleSearch}
-          />
-        </View>
-        
-        {/* Recent Recipients */}
-        {searchQuery.trim() === '' && (
-          <View style={styles.recentsSection}>
-            <Text style={styles.sectionTitle}>Récents</Text>
-            <FlatList
-              data={mockRecentRecipients}
-              renderItem={renderRecentItem}
-              keyExtractor={(item) => item.id}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.recentsList}
+          <View style={styles.searchContainer}>
+            <Ionicons.name("search", 20, { color: '#8E8E93' }) />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Chercher un contact"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
           </View>
-        )}
-        
-        {/* Contacts List */}
-        <View style={styles.contactsSection}>
-          <Text style={styles.sectionTitle}>
-            {searchQuery.trim() === '' ? 'Contacts' : 'Résultats'}
-          </Text>
-          {filteredContacts.length > 0 ? (
+
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={handleNewContact}
+            >
+              <View style={styles.iconContainer}>
+                <Ionicons.name("person-add", 24, { color: COLORS.primary }) />
+              </View>
+              <Text style={styles.actionText}>Nouveau destinataire</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={handleScanQR}
+            >
+              <View style={styles.iconContainer}>
+                <Ionicons.name("qr-code", 24, { color: COLORS.primary }) />
+              </View>
+              <Text style={styles.actionText}>Scanner le code QR</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Récemment</Text>
             <FlatList
-              data={filteredContacts}
-              renderItem={renderContactItem}
+              data={recentContacts}
               keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.contactCard}
+                  onPress={() => handleContactPress(item)}
+                >
+                  <View style={styles.avatarContainer}>
+                    <Text style={styles.avatarText}>{item.avatar}</Text>
+                  </View>
+                  <Text style={styles.contactName} numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
               contentContainerStyle={styles.contactsList}
             />
-          ) : (
-            <View style={styles.noResultsContainer}>
-              <Text style={styles.noResultsText}>
-                Aucun contact trouvé pour "{searchQuery}"
-              </Text>
-            </View>
-          )}
-        </View>
+          </View>
+
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Contacts fréquents</Text>
+            {frequentContacts.map((contact) => (
+              <TouchableOpacity
+                key={contact.id}
+                style={styles.contactRow}
+                onPress={() => handleContactPress(contact)}
+              >
+                <View style={styles.contactRowAvatar}>
+                  <Text style={styles.contactRowAvatarText}>{contact.avatar}</Text>
+                </View>
+                <View style={styles.contactInfo}>
+                  <Text style={styles.contactRowName}>{contact.name}</Text>
+                  <Text style={styles.contactPhone}>{contact.phone}</Text>
+                </View>
+                <Ionicons.name("chevron-forward", 20, { color: '#8E8E93' }) />
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Voir tous les contacts"
+              onPress={() => navigation.navigate('AddContact')}
+              style={styles.button}
+            />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -177,7 +162,7 @@ export const SendMoney: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D0D0D',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
@@ -185,118 +170,135 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   backButton: {
-    marginRight: 15,
+    marginRight: 16,
     width: 40,
     height: 40,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  scanButton: {
-    marginLeft: 15,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1A1A1A',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1B1B1B',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    height: 50,
-    marginBottom: 20,
-    shadowColor: '#3B5BFE',
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  searchIcon: {
-    marginRight: 10,
+    backgroundColor: '#F2F2F7',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginHorizontal: 16,
+    marginVertical: 8,
   },
   searchInput: {
     flex: 1,
-    color: '#FFFFFF',
+    marginLeft: 8,
     fontSize: 16,
   },
-  recentsSection: {
-    marginTop: 16,
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
   },
-  recentsList: {
-    paddingHorizontal: 10,
-  },
-  recentItem: {
+  actionButton: {
     alignItems: 'center',
-    marginRight: 10,
+    width: '40%',
   },
-  recentName: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(59, 91, 254, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
   },
-  contactsSection: {
-    marginTop: 16,
+  actionText: {
+    fontSize: 14,
+    color: '#1A1A1A',
+    textAlign: 'center',
+  },
+  sectionContainer: {
+    paddingHorizontal: 16,
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1A1A1A',
+    marginBottom: 12,
   },
   contactsList: {
-    flex: 1,
+    paddingVertical: 8,
   },
-  contactItem: {
+  contactCard: {
+    alignItems: 'center',
+    marginRight: 16,
+    width: 80,
+  },
+  avatarContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(59, 91, 254, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  avatarText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: COLORS.primary,
+  },
+  contactName: {
+    fontSize: 14,
+    color: '#1A1A1A',
+    textAlign: 'center',
+    width: '100%',
+  },
+  contactRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#1B1B1B',
-    borderRadius: 12,
-    marginBottom: 8,
+    borderBottomColor: '#F2F2F7',
+  },
+  contactRowAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(59, 91, 254, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  contactRowAvatarText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.primary,
   },
   contactInfo: {
     flex: 1,
   },
-  contactName: {
-    color: '#FFFFFF',
+  contactRowName: {
     fontSize: 16,
     fontWeight: '500',
+    color: '#1A1A1A',
   },
   contactPhone: {
-    color: '#C2C2C2',
     fontSize: 14,
+    color: '#8E8E93',
     marginTop: 2,
   },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#1B1B1B',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-    shadowColor: '#3B5BFE',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
+  buttonContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 24,
   },
-  avatarText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-  },
-  noResultsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noResultsText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
+  button: {
+    marginBottom: 24,
   },
   keyboardAvoidView: {
     flex: 1,

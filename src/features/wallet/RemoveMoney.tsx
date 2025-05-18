@@ -1,154 +1,103 @@
+
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-  StatusBar,
-  Dimensions
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../components/common/Icon';
+import { Button } from '../../components/common/Button';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
-import { ThemedText } from '../../components/common/ThemedView';
-import { useLanguage } from '../../providers/LanguageProvider';
+import { COLORS } from '../../theme/colors';
+import { navigateWithArray } from '../../utils/navigation';
 
-// Define navigation type
-type RemoveMoneyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Main'>;
-
-// Withdrawal methods data
-const WITHDRAWAL_METHODS = [
-  {
-    id: 'mobile',
-    title: 'Mobile Money',
-    description: 'MTN, Orange Money, Moov, etc.',
-    icon: 'phone-portrait-outline' as const,
-    color: '#FF9500'
-  },
-  {
-    id: 'bank',
-    title: 'Bank Transfer',
-    description: 'Direct transfer to your bank account',
-    icon: 'business-outline' as const,
-    color: '#22C55E'
-  },
-  {
-    id: 'agent',
-    title: 'Zamo Agent',
-    description: 'Withdraw via a nearby agent',
-    icon: 'person-outline' as const,
-    color: '#3B5BFE'
-  }
-];
+type RemoveMoneyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const RemoveMoney = () => {
   const navigation = useNavigation<RemoveMoneyScreenNavigationProp>();
-  const { colors, isDarkMode } = useTheme();
-  const { t } = useLanguage();
-  
-  // Get screen dimensions for responsive design
-  const windowWidth = Dimensions.get('window').width;
-  const isSmallScreen = windowWidth < 375;
-  
-  // Handle method selection
-  const handleMethodSelect = (methodId: string) => {
-    switch(methodId) {
-      case 'mobile':
-        navigation.navigate('MobileMoneyWithdraw');
-        break;
-      case 'bank':
-        navigation.navigate('BankWithdraw');
-        break;
-      case 'agent':
-        navigation.navigate('AgentWithdraw');
-        break;
-      default:
-        break;
-    }
-  };
-  
-  // Go back to previous screen
-  const handleBack = () => {
-    navigation.goBack();
-  };
-  
+  const { colors } = useTheme();
+
+  const withdrawOptions = [
+    {
+      id: 'mobile',
+      title: 'Mobile Money',
+      icon: 'phone-portrait-outline',
+      description: 'MTN, Orange, etc.',
+      action: () => navigateWithArray(navigation, 'MobileMoneyWithdraw'),
+    },
+    {
+      id: 'bank',
+      title: 'Transfert bancaire',
+      icon: 'business-outline',
+      description: 'Retrait vers un compte bancaire',
+      action: () => navigateWithArray(navigation, 'BankWithdraw'),
+    },
+    {
+      id: 'agent',
+      title: 'Agent ZAMO',
+      icon: 'person-outline',
+      description: 'Retrait chez un agent',
+      action: () => navigateWithArray(navigation, 'AgentWithdraw'),
+    },
+  ];
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} backgroundColor={colors.background} />
-      
-      {/* Header */}
-      <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="arrow-back" size={24} color="#1A1A1A" />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Withdraw Money</ThemedText>
-        <View style={{ width: 40 }} />
+        <Text style={styles.headerTitle}>Retirer de l'argent</Text>
       </View>
-      
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Instructions Section */}
-        <View style={[styles.instructionsContainer, { backgroundColor: colors.card }]}>
-          <ThemedText style={styles.instructionsTitle}>How to Withdraw</ThemedText>
-          <ThemedText style={styles.instructionsText} secondary>
-            Choose a method below to withdraw money from your Zamo account.
-          </ThemedText>
+
+      <ScrollView style={styles.content}>
+        <View style={styles.instructionContainer}>
+          <Text style={styles.instructionTitle}>
+            Choisissez un mode de retrait
+          </Text>
+          <Text style={styles.instructionText}>
+            Sélectionnez une des options ci-dessous pour retirer de l'argent de votre compte ZAMO.
+          </Text>
         </View>
-        
-        {/* Withdrawal Methods List */}
-        <View style={styles.methodsContainer}>
-          {WITHDRAWAL_METHODS.map(method => (
+
+        <View style={styles.optionsContainer}>
+          {withdrawOptions.map((option) => (
             <TouchableOpacity
-              key={method.id}
-              style={[styles.methodCard, { backgroundColor: colors.card }]}
-              onPress={() => handleMethodSelect(method.id)}
-              activeOpacity={0.7}
+              key={option.id}
+              style={styles.optionCard}
+              onPress={option.action}
             >
-              <View style={styles.methodLeft}>
-                <View style={[styles.methodIcon, { backgroundColor: method.color }]}>
-                  <Ionicons name={method.icon} size={isSmallScreen ? 18 : 20} color="#FFF" />
-                </View>
-                <View style={styles.methodInfo}>
-                  <ThemedText style={styles.methodTitle}>{method.title}</ThemedText>
-                  <ThemedText style={styles.methodDescription} secondary>{method.description}</ThemedText>
-                </View>
+              <View style={styles.optionIconContainer}>
+                <Icon name={option.icon} size={24} color={COLORS.primary} />
               </View>
-              <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+              <View style={styles.optionContent}>
+                <Text style={styles.optionTitle}>{option.title}</Text>
+                <Text style={styles.optionDescription}>{option.description}</Text>
+              </View>
+              <Icon name="chevron-forward" size={20} color="#8E8E93" />
             </TouchableOpacity>
           ))}
         </View>
-        
-        {/* Additional Information */}
-        <View style={styles.infoSection}>
-          <View style={styles.infoItem}>
-            <Ionicons name="shield-checkmark" size={20} color="#3B5BFE" />
-            <ThemedText style={styles.infoText} secondary>
-              Your withdrawals are secured by Zamo's security protocols.
-            </ThemedText>
-          </View>
-          
-          <View style={styles.infoItem}>
-            <Ionicons name="timer-outline" size={20} color="#3B5BFE" />
-            <ThemedText style={styles.infoText} secondary>
-              Withdrawals are usually processed within 5-15 minutes.
-            </ThemedText>
-          </View>
-        </View>
-        
-        {/* Support Section */}
-        <TouchableOpacity style={[styles.supportButton, { backgroundColor: colors.card }]}>
-          <Ionicons name="help-circle-outline" size={20} color={colors.text} />
-          <ThemedText style={styles.supportButtonText}>
-            Need help with your withdrawal?
-          </ThemedText>
+
+        <TouchableOpacity 
+          style={styles.findAgentButton}
+          onPress={() => navigateWithArray(navigation, 'FindAgent')}
+        >
+          <Icon name="location-outline" size={22} color={COLORS.primary} />
+          <Text style={styles.findAgentText}>Trouver un agent près de chez vous</Text>
         </TouchableOpacity>
+
+        <View style={styles.helpContainer}>
+          <View style={styles.helpIconContainer}>
+            <Icon name="information-circle-outline" size={24} color={COLORS.primary} />
+          </View>
+          <Text style={styles.helpText}>
+            Besoin d'aide pour retirer de l'argent? Contactez-nous au 
+            <Text style={styles.helpBold}> +237 655 123 456</Text>
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -157,127 +106,120 @@ export const RemoveMoney = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D0D0D',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#1A1A1A',
+    padding: 16,
   },
   backButton: {
+    marginRight: 16,
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontWeight: '600',
+    color: '#1A1A1A',
   },
-  scrollView: {
+  content: {
     flex: 1,
-  },
-  scrollContent: {
-    padding: 24,
-    paddingBottom: 40,
-    maxWidth: 480,
-    alignSelf: 'center',
-    width: '100%',
-  },
-  instructionsContainer: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 12,
     padding: 16,
+  },
+  instructionContainer: {
     marginBottom: 24,
   },
-  instructionsTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+  instructionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1A1A1A',
     marginBottom: 8,
   },
-  instructionsText: {
-    fontSize: 14,
-    color: '#AAAAAA',
-    lineHeight: 20,
+  instructionText: {
+    fontSize: 16,
+    color: '#666666',
+    lineHeight: 22,
   },
-  methodsContainer: {
+  optionsContainer: {
     marginBottom: 24,
   },
-  methodCard: {
-    backgroundColor: '#1A1A1A',
+  optionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
     borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
-  methodLeft: {
-    flexDirection: 'row',
+  optionIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(59, 91, 254, 0.1)',
     alignItems: 'center',
-    flex: 1,
-  },
-  methodIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 14,
+    marginRight: 16,
   },
-  methodInfo: {
+  optionContent: {
     flex: 1,
   },
-  methodTitle: {
-    fontSize: 15,
+  optionTitle: {
+    fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#1A1A1A',
     marginBottom: 4,
   },
-  methodDescription: {
-    fontSize: 13,
-    color: '#888888',
-  },
-  infoSection: {
-    backgroundColor: '#1A1A1A',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#222',
-  },
-  infoText: {
+  optionDescription: {
     fontSize: 14,
-    color: '#AAAAAA',
-    marginLeft: 10,
-    flex: 1,
-    lineHeight: 20,
+    color: '#666666',
   },
-  supportButton: {
-    backgroundColor: '#3B5BFE',
-    borderRadius: 12,
-    padding: 16,
+  findAgentButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(59, 91, 254, 0.05)',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(59, 91, 254, 0.2)',
   },
-  supportButtonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '600',
-    marginLeft: 8,
+  findAgentText: {
+    fontSize: 16,
+    marginLeft: 12,
+    color: COLORS.primary,
+    fontWeight: '500',
   },
-}); 
+  helpContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(59, 91, 254, 0.05)',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+  },
+  helpIconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(59, 91, 254, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  helpText: {
+    flex: 1,
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#666666',
+  },
+  helpBold: {
+    fontWeight: '700',
+    color: '#1A1A1A',
+  },
+});

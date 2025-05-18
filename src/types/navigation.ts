@@ -53,6 +53,10 @@ export type RootStackParamList = {
   Dashboard: undefined;
   CardTopUp: undefined;
   MobileMoneyTopUp: undefined;
+  RequestMoney: undefined;
+  MobileMoneyWithdraw: undefined;
+  BankWithdraw: undefined;
+  AgentWithdraw: undefined;
   Auth: {
     screen: string;
     params?: any;

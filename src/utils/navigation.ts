@@ -1,0 +1,21 @@
+
+import { RootStackParamList } from '../types/navigation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+// Type-safe navigation for use in wallet and other features
+export const navigateTo = <K extends keyof RootStackParamList>(
+  navigation: NativeStackNavigationProp<RootStackParamList>,
+  screenName: K,
+  params?: RootStackParamList[K]
+) => {
+  navigation.navigate(screenName, params);
+};
+
+// Convert an array type to proper navigation params
+export const navigateWithArray = (
+  navigation: NativeStackNavigationProp<RootStackParamList>,
+  screenName: keyof RootStackParamList,
+  params?: any
+) => {
+  navigation.navigate(screenName as any, params);
+};
