@@ -80,6 +80,17 @@ export const ThemedBottomTabs = () => {
           ),
         }}
       />
+      <MainTab.Screen
+        name="ReceiveMoney"
+        component={Receive}
+        options={{
+          tabBarLabel: 'Receive',
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="arrow-down" size={size} color={color} />
+          ),
+          tabBarButton: () => null, // Hide from bottom tabs but keep in navigator
+        }}
+      />
     </MainTab.Navigator>
   );
 };

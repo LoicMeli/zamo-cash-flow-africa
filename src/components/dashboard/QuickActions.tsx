@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../config/constants';
+import { Icon } from '../../utils/IconComponent';
 
 interface QuickActionsProps {
   onSendMoney?: () => void;
@@ -18,28 +19,28 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton} onPress={onSendMoney}>
           <View style={[styles.iconContainer, { backgroundColor: '#E8F0FF' }]}>
-            {/* Icon placeholder */}
+            <Icon name="arrow-up" size={24} color={COLORS.primary} />
           </View>
           <Text style={styles.actionText}>Send</Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.actionButton} onPress={onReceiveMoney}>
           <View style={[styles.iconContainer, { backgroundColor: '#E8FFF0' }]}>
-            {/* Icon placeholder */}
+            <Icon name="arrow-down" size={24} color={COLORS.success} />
           </View>
           <Text style={styles.actionText}>Receive</Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.actionButton}>
           <View style={[styles.iconContainer, { backgroundColor: '#FFF0E8' }]}>
-            {/* Icon placeholder */}
+            <Icon name="card" size={24} color="#FF9500" />
           </View>
           <Text style={styles.actionText}>Pay</Text>
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.actionButton}>
           <View style={[styles.iconContainer, { backgroundColor: '#F0E8FF' }]}>
-            {/* Icon placeholder */}
+            <Icon name="grid" size={24} color="#9B51E0" />
           </View>
           <Text style={styles.actionText}>More</Text>
         </TouchableOpacity>
