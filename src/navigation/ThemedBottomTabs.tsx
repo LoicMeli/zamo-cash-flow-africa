@@ -10,6 +10,7 @@ import { Icon } from '../utils/IconComponent';
 import { Dashboard } from '../features/dashboard/Dashboard';
 import { Transactions } from '../features/transactions/Transactions';
 import { Profile } from '../features/profile/Profile';
+import { Receive } from '../features/dashboard/Receive';
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
 

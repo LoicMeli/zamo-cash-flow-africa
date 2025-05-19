@@ -77,7 +77,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleReceiveMoney = () => {
-    navigateTo(navigation, 'Receive');
+    navigateTo(navigation, 'ReceiveMoney');
   };
 
   return (
