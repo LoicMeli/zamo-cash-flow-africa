@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { ArrowUp, ArrowDown, CreditCard, MoreHorizontal, Eye, EyeOff } from 'lucide-react';
 
-// This provides a fallback for all Ionicons usages
 export interface IconProps {
   name: string;
   size?: number;
@@ -10,34 +9,28 @@ export interface IconProps {
   style?: any;
 }
 
-export const Icon: React.FC<IconProps> = ({ 
-  name, 
-  size = 24, 
-  color = '#000', 
-  style 
-}) => {
-  // Simple fallback that shows the first character of the icon name
+export const Icon: React.FC<IconProps> = ({ name, size = 24, color = '#000', style }) => {
+  const iconMap: Record<string, React.ReactNode> = {
+    "arrow-up": <ArrowUp size={size} color={color} />,
+    "arrow-down": <ArrowDown size={size} color={color} />,
+    "credit-card": <CreditCard size={size} color={color} />,
+    "more-horizontal": <MoreHorizontal size={size} color={color} />,
+    "eye-outline": <Eye size={size} color={color} />,
+    "eye-off-outline": <EyeOff size={size} color={color} />,
+    "home": <div style={{ fontSize: size, color }}>🏠</div>,
+    "wallet": <div style={{ fontSize: size, color }}>👛</div>,
+    "list": <div style={{ fontSize: size, color }}>📋</div>,
+    "person": <div style={{ fontSize: size, color }}>👤</div>,
+    "trending-up": <div style={{ fontSize: size, color }}>📈</div>,
+  };
+
   return (
-    <Text style={[styles.icon, { fontSize: size, color }, style]}>
-      {name.charAt(0).toUpperCase()}
-    </Text>
+    <div style={style}>
+      {iconMap[name] || (
+        <div style={{ fontSize: size, color }}>
+          {name.charAt(0).toUpperCase()}
+        </div>
+      )}
+    </div>
   );
 };
-
-// Mock for specific Ionicons components
-export const Ionicons = {
-  name: (name: string, size: number, { color }: { color: string }) => (
-    <Icon name={name} size={size} color={color} />
-  )
-};
-
-export default {
-  Ionicons,
-  Icon
-};
-
-const styles = StyleSheet.create({
-  icon: {
-    textAlign: 'center',
-  }
-});
