@@ -67,7 +67,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    navigation.navigate('Profile' as any);
+    navigation.navigate('Profile');
   };
 
   return (

@@ -22,7 +22,6 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: '1',
     type: 'RECEIVE',
     amount: 50000,
-    currency: 'FCFA',
     status: 'COMPLETED',
     description: 'Reçu de Marie',
     sender: {
@@ -35,7 +34,6 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     id: '2',
     type: 'SEND',
     amount: 25000,
-    currency: 'FCFA',
     status: 'COMPLETED',
     description: 'Envoyé à Pierre',
     recipient: {
@@ -65,7 +63,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    // Fix the navigation call to use an object with proper name property
+    // Use the proper navigation approach directly
     navigation.navigate('Profile' as never);
   };
 
