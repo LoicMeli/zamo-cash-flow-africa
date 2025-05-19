@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
 import { COLORS } from '../theme/colors';
 import { MainTabParamList } from '../types/navigation';
+import { Icon } from '../components/common/Icon';
 
 // Screens
 import { Dashboard } from '../features/dashboard/Dashboard';
-import { Vault } from '../features/vault/Vault'; // Updated import
+import { Vault } from '../features/vault/Vault';
 import { Savings } from '../features/savings/Savings';
 import { Profile } from '../features/profile/Profile';
 
@@ -46,17 +46,17 @@ export const ThemedBottomTabs = () => {
         options={{
           tabBarLabel: 'Accueil',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Icon name="home" size={size} color={color} />
           ),
         }}
       />
       <MainTab.Screen
         name="Wallet"
-        component={Vault} // Changed from Wallet to Vault
+        component={Vault}
         options={{
-          tabBarLabel: 'Vault',  // Updated label
+          tabBarLabel: 'Vault',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="wallet" size={size} color={color} />
+            <Icon name="wallet" size={size} color={color} />
           ),
         }}
       />
@@ -66,7 +66,7 @@ export const ThemedBottomTabs = () => {
         options={{
           tabBarLabel: 'Épargne',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="save" size={size} color={color} />
+            <Icon name="save" size={size} color={color} />
           ),
         }}
       />
@@ -76,7 +76,7 @@ export const ThemedBottomTabs = () => {
         options={{
           tabBarLabel: 'Profil',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <Icon name="person" size={size} color={color} />
           ),
         }}
       />
