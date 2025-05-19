@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,7 +8,7 @@ import { MainTabParamList } from '../types/navigation';
 
 // Screens
 import { Dashboard } from '../features/dashboard/Dashboard';
-import { Wallet } from '../features/wallet/Wallet';
+import { Vault } from '../features/vault/Vault'; // Updated import
 import { Savings } from '../features/savings/Savings';
 import { Profile } from '../features/profile/Profile';
 
@@ -51,9 +52,9 @@ export const ThemedBottomTabs = () => {
       />
       <MainTab.Screen
         name="Wallet"
-        component={Wallet}
+        component={Vault} // Changed from Wallet to Vault
         options={{
-          tabBarLabel: 'Portefeuille',
+          tabBarLabel: 'Vault',  // Updated label
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="wallet" size={size} color={color} />
           ),
@@ -81,4 +82,4 @@ export const ThemedBottomTabs = () => {
       />
     </MainTab.Navigator>
   );
-}; 
+};
