@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import { ROUTES } from '../../config/constants';
 import { RootStackParamList } from '../../types/navigation';
 import { useTheme } from '../../theme/ThemeContext';
 import { COLORS } from '../../theme/colors';
+import { navigateTo } from '../../utils/navigation';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -67,7 +69,7 @@ export const Profile = () => {
 
   // Correctly typed navigation handler
   const navigateToScreen = (screen: keyof RootStackParamList) => {
-    navigation.navigate(screen);
+    navigateTo(navigation, screen);
   };
 
   return (

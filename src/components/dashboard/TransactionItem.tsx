@@ -1,71 +1,72 @@
 
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { ThemedText } from '../common/ThemedView';
-import { useTheme } from '../../theme/ThemeContext';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from '../../utils/IconComponent';
+import { COLORS } from '../../theme/colors';
 
-interface TransactionItemProps {
-  name: string;
-  date: string;
+export interface TransactionItemProps {
+  transactionType: string;
+  type: string;
   amount: number;
-  isPositive: boolean;
-  isService?: boolean;
-  avatar?: string | null;
-  onPress?: () => void;
+  recipient: string;
+  date: string;
+  onPress: () => void;
 }
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({
-  name,
-  date,
+  transactionType,
+  type,
   amount,
-  isPositive,
-  isService = false,
-  avatar = null,
+  recipient,
+  date,
   onPress,
 }) => {
-  const { cssVar } = useTheme();
-  
-  // Get avatar color based on name for consistency
-  const getAvatarColor = (name: string) => {
-    const colors = ['#2C3244', '#3D4663', '#4D64FA', '#293366', '#1E2235'];
-    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return colors[hash % colors.length];
+  const getTransactionIcon = () => {
+    switch (type) {
+      case 'send':
+        return 'arrow-up';
+      case 'receive':
+        return 'arrow-down';
+      default:
+        return 'swap-horizontal';
+    }
   };
-  
+
+  const getTransactionColor = () => {
+    switch (type) {
+      case 'send':
+        return COLORS.primary;
+      case 'receive':
+        return '#28a745';
+      default:
+        return '#6c757d';
+    }
+  };
+
   return (
-    <TouchableOpacity 
-      style={styles.container}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      <View style={styles.leftContent}>
-        <View style={[
-          styles.avatar,
-          { backgroundColor: getAvatarColor(name) }
-        ]}>
-          <ThemedText style={styles.avatarText}>
-            {name.charAt(0)}
-          </ThemedText>
-        </View>
-        <View style={styles.details}>
-          <ThemedText style={styles.name} numberOfLines={1}>
-            {name}
-          </ThemedText>
-          <ThemedText secondary style={styles.date}>
-            {date}
-          </ThemedText>
-        </View>
-      </View>
-      
-      <ThemedText 
+    <TouchableOpacity style={styles.container} onPress={onPress}>
+      <View 
         style={[
-          styles.amount, 
-          { color: isPositive ? cssVar['--success'] : cssVar['--danger'] }
+          styles.iconContainer, 
+          { backgroundColor: `${getTransactionColor()}20` }
         ]}
       >
-        {isPositive ? '+ ' : '- '}
-        {amount.toLocaleString()} FCFA
-      </ThemedText>
+        <Icon name={getTransactionIcon()} size={24} color={getTransactionColor()} />
+      </View>
+      <View style={styles.details}>
+        <Text style={styles.recipient}>{recipient}</Text>
+        <Text style={styles.date}>{new Date(date).toLocaleDateString()}</Text>
+      </View>
+      <View style={styles.amountContainer}>
+        <Text 
+          style={[
+            styles.amount, 
+            { color: type === 'receive' ? '#28a745' : '#dc3545' }
+          ]}
+        >
+          {type === 'receive' ? '+' : '-'} {amount} FCFA
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -73,19 +74,14 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 12,
-    marginBottom: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    marginBottom: 8,
   },
-  leftContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
+  iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -93,24 +89,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  avatarText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
   details: {
-    justifyContent: 'center',
+    flex: 1,
   },
-  name: {
-    fontSize: 15,
+  recipient: {
+    fontSize: 16,
     fontWeight: '500',
-    marginBottom: 3,
+    marginBottom: 4,
   },
   date: {
-    fontSize: 12,
+    fontSize: 14,
+    color: '#6c757d',
+  },
+  amountContainer: {
+    alignItems: 'flex-end',
   },
   amount: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '600',
   },
 });

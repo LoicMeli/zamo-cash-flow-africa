@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
+import { Icon } from '../../../utils/IconComponent'; // Using our own Icon component
 import { RootStackParamList } from '../../../types/navigation';
 
 type MobileMoneyTopUpScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddMoney'>;
@@ -227,7 +227,7 @@ export const MobileMoneyTopUp = () => {
       >
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={goBack}>
-            <Ionicons name="arrow-back" size={24} color="#FFF" />
+            <Icon name="arrow-back" size={24} color="#FFF" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Mobile Money</Text>
           <View style={{ width: 40 }} />
@@ -278,11 +278,11 @@ export const MobileMoneyTopUp = () => {
                           { backgroundColor: operator.color }
                         ]}
                       >
-                        <Ionicons name={operator.icon} size={20} color="#FFF" />
+                        <Icon name={operator.icon} size={20} color="#FFF" />
                       </View>
                       <Text style={styles.operatorName}>{operator.name}</Text>
                       {selectedOperator === operator.id && (
-                        <Ionicons name="checkmark-circle" size={20} color={operator.color} style={styles.checkIcon} />
+                        <Icon name="checkmark-circle" size={20} color={operator.color} style={styles.checkIcon} />
                       )}
                     </TouchableOpacity>
                   ))}
@@ -324,7 +324,7 @@ export const MobileMoneyTopUp = () => {
               </TouchableOpacity>
               
               <View style={styles.securityNote}>
-                <Ionicons name="information-circle" size={16} color="#3B5BFE" />
+                <Icon name="information-circle" size={16} color="#3B5BFE" />
                 <Text style={styles.securityNoteText}>
                   You will receive a prompt on your mobile device to confirm the transaction.
                 </Text>
@@ -348,7 +348,7 @@ export const MobileMoneyTopUp = () => {
                   { backgroundColor: getOperatorColor(selectedOperator) }
                 ]}
               >
-                <Ionicons name="phone-portrait-outline" size={24} color="#FFF" />
+                <Icon name="phone-portrait-outline" size={24} color="#FFF" />
                 <Text style={styles.operatorBannerText}>
                   {getOperator(selectedOperator)?.name}
                 </Text>
@@ -387,7 +387,7 @@ export const MobileMoneyTopUp = () => {
               </View>
               
               <View style={styles.instructionCard}>
-                <Ionicons name="alert-circle" size={20} color="#FF9500" />
+                <Icon name="alert-circle" size={20} color="#FF9500" />
                 <Text style={styles.instructionText}>
                   You'll receive an approval prompt on your phone. Please approve the transaction when it appears.
                 </Text>
@@ -651,4 +651,4 @@ const styles = StyleSheet.create({
     flex: 1,
     lineHeight: 20,
   },
-}); 
+});

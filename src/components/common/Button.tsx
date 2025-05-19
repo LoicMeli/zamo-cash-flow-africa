@@ -1,81 +1,137 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { theme } from '../../config/theme';
 
-interface ButtonProps {
+import React from 'react';
+import { 
+  TouchableOpacity, 
+  Text, 
+  StyleSheet, 
+  ActivityIndicator, 
+  ViewStyle, 
+  TextStyle, 
+  TouchableOpacityProps 
+} from 'react-native';
+import { COLORS } from '../../theme/colors';
+
+export interface ButtonProps extends TouchableOpacityProps {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'text';
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
   style?: ViewStyle;
   textStyle?: TextStyle;
-  disabled?: boolean;
+  loading?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   title,
   onPress,
   variant = 'primary',
+  size = 'medium',
+  disabled = false,
   style,
   textStyle,
-  disabled = false,
-}) => {
-  const getButtonStyle = () => {
+  loading = false,
+  ...props
+}: ButtonProps) => {
+  const getBackgroundColor = () => {
+    if (disabled) return '#E0E0E0';
+    
     switch (variant) {
+      case 'primary':
+        return COLORS.primary;
       case 'secondary':
-        return styles.secondaryButton;
+        return '#6c757d';
       case 'outline':
-        return styles.outlineButton;
+        return 'transparent';
+      case 'text':
+        return 'transparent';
       default:
-        return styles.primaryButton;
+        return COLORS.primary;
     }
   };
 
-  const getTextStyle = () => {
+  const getTextColor = () => {
+    if (disabled) return '#9E9E9E';
+    
     switch (variant) {
       case 'outline':
-        return styles.outlineText;
+        return COLORS.primary;
+      case 'text':
+        return COLORS.primary;
       default:
-        return styles.text;
+        return '#FFFFFF';
+    }
+  };
+
+  const getBorderColor = () => {
+    if (variant === 'outline') {
+      return disabled ? '#E0E0E0' : COLORS.primary;
+    }
+    return 'transparent';
+  };
+
+  const getButtonHeight = () => {
+    switch (size) {
+      case 'small':
+        return 36;
+      case 'medium':
+        return 48;
+      case 'large':
+        return 56;
+      default:
+        return 48;
     }
   };
 
   return (
     <TouchableOpacity
-      style={[styles.button, getButtonStyle(), style]}
+      style={[
+        styles.button,
+        {
+          backgroundColor: getBackgroundColor(),
+          borderColor: getBorderColor(),
+          height: getButtonHeight(),
+          opacity: disabled ? 0.7 : 1,
+        },
+        style,
+      ]}
       onPress={onPress}
-      disabled={disabled}
+      disabled={disabled || loading}
+      activeOpacity={0.8}
+      {...props}
     >
-      <Text style={[getTextStyle(), textStyle]}>{title}</Text>
+      {loading ? (
+        <ActivityIndicator 
+          color={variant === 'outline' || variant === 'text' ? COLORS.primary : '#FFFFFF'} 
+          size="small" 
+        />
+      ) : (
+        <Text
+          style={[
+            styles.text,
+            {
+              color: getTextColor(),
+              fontSize: size === 'small' ? 14 : size === 'large' ? 18 : 16,
+            },
+            textStyle,
+          ]}
+        >
+          {title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: 8,
+    paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  primaryButton: {
-    backgroundColor: theme.colors.primary,
-  },
-  secondaryButton: {
-    backgroundColor: theme.colors.secondary,
-  },
-  outlineButton: {
-    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: theme.colors.primary,
   },
   text: {
-    color: 'white',
-    fontSize: theme.typography.body.fontSize,
     fontWeight: '600',
   },
-  outlineText: {
-    color: theme.colors.primary,
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: '600',
-  },
-}); 
+});

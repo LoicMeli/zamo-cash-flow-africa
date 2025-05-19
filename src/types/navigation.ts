@@ -63,6 +63,9 @@ export type RootStackParamList = {
   Collect: undefined;
   RemoveMoney: undefined;
   AddMoney: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
+  Transactions: undefined;
   Auth: {
     screen: string;
     params?: any;
@@ -74,6 +77,8 @@ export type AuthStackParamList = {
   Register: undefined;
   VerifyOTP: { phoneNumber: string };
   SetupPIN: { phoneNumber: string; otp?: string };
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
 };
 
 export type MainTabParamList = {
@@ -82,4 +87,39 @@ export type MainTabParamList = {
   Transactions: undefined;
   Family: undefined;
   Profile: undefined;
+  Savings: undefined;
+};
+
+// These types are needed for src/navigation/index.tsx
+export type DashboardStackParamList = {
+  Home: undefined;
+  Notifications: undefined;
+};
+
+export type WalletStackParamList = {
+  WalletHome: undefined;
+  SendMoney: undefined;
+  ReceiveMoney: undefined;
+  Withdraw: undefined;
+  Deposit: undefined;
+  ScanQR: undefined;
+};
+
+export type TransactionsStackParamList = {
+  TransactionsList: undefined;
+  TransactionDetails: undefined;
+  FindAgent: undefined;
+};
+
+export type FamilyStackParamList = {
+  FamilyWallet: undefined;
+  FamilyMembers: undefined;
+  AddMember: undefined;
+  EditMember: undefined;
+};
+
+export type ProfileStackParamList = {
+  ProfileHome: undefined;
+  Settings: undefined;
+  Help: undefined;
 };

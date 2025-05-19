@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +16,7 @@ const mockTransactions = [
   {
     id: '1',
     transactionType: 'send',
+    type: 'send',
     amount: 25000,
     recipient: 'John Doe',
     date: '2024-03-20T10:30:00',
@@ -24,6 +24,7 @@ const mockTransactions = [
   {
     id: '2',
     transactionType: 'receive',
+    type: 'receive',
     amount: 50000,
     recipient: 'Jane Smith',
     date: '2024-03-19T15:45:00',
@@ -31,6 +32,7 @@ const mockTransactions = [
   {
     id: '3',
     transactionType: 'send',
+    type: 'send',
     amount: 15000,
     recipient: 'Mike Johnson',
     date: '2024-03-18T09:15:00',
@@ -64,7 +66,8 @@ export const Transactions = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TransactionItem
-            type={item.transactionType}
+            transactionType={item.transactionType}
+            type={item.type}
             amount={item.amount}
             recipient={item.recipient}
             date={item.date}
@@ -94,4 +97,4 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
   },
-}); 
+});
