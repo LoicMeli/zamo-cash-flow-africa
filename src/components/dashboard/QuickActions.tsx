@@ -1,63 +1,83 @@
 
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { QuickActionButton } from '../common/QuickActionButton';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../config/constants';
 
-export const QuickActions: React.FC = () => {
-  const actions = [
-    {
-      icon: '💸',
-      label: 'Send',
-      onPress: () => console.log('Send pressed'),
-      color: COLORS.primary,
-    },
-    {
-      icon: '📷',
-      label: 'Scan',
-      onPress: () => console.log('Scan pressed'),
-      color: COLORS.success,
-    },
-    {
-      icon: '💰',
-      label: 'Withdraw',
-      onPress: () => console.log('Withdraw pressed'),
-      color: COLORS.warning,
-    },
-    {
-      icon: '🏪',
-      label: 'Agents',
-      onPress: () => console.log('Agents pressed'),
-      color: COLORS.info,
-    },
-  ];
+interface QuickActionsProps {
+  onSendMoney?: () => void;
+  onReceiveMoney?: () => void;
+}
 
+export const QuickActions: React.FC<QuickActionsProps> = ({ 
+  onSendMoney, 
+  onReceiveMoney 
+}) => {
   return (
     <View style={styles.container}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {actions.map((action, index) => (
-          <QuickActionButton
-            key={index}
-            icon={action.icon}
-            label={action.label}
-            onPress={action.onPress}
-            color={action.color}
-          />
-        ))}
-      </ScrollView>
+      <Text style={styles.title}>Quick Actions</Text>
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity style={styles.actionButton} onPress={onSendMoney}>
+          <View style={[styles.iconContainer, { backgroundColor: '#E8F0FF' }]}>
+            {/* Icon placeholder */}
+          </View>
+          <Text style={styles.actionText}>Send</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.actionButton} onPress={onReceiveMoney}>
+          <View style={[styles.iconContainer, { backgroundColor: '#E8FFF0' }]}>
+            {/* Icon placeholder */}
+          </View>
+          <Text style={styles.actionText}>Receive</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.actionButton}>
+          <View style={[styles.iconContainer, { backgroundColor: '#FFF0E8' }]}>
+            {/* Icon placeholder */}
+          </View>
+          <Text style={styles.actionText}>Pay</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.actionButton}>
+          <View style={[styles.iconContainer, { backgroundColor: '#F0E8FF' }]}>
+            {/* Icon placeholder */}
+          </View>
+          <Text style={styles.actionText}>More</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 24,
+    marginTop: 16,
+    marginBottom: 16,
   },
-  scrollContent: {
-    paddingHorizontal: 4,
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    marginBottom: 12,
   },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  actionText: {
+    fontSize: 12,
+    color: COLORS.text,
+    marginTop: 4,
+  }
 });

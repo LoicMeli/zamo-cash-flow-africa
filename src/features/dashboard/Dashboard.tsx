@@ -12,6 +12,7 @@ import { TransactionList } from '../../components/transactions/TransactionList';
 import { RootStackParamList } from '../../types/navigation';
 import { Transaction } from '../../types';
 import { navigateTo } from '../../utils/navigation';
+import { text } from '../../lib/translations';
 
 type DashboardScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -71,6 +72,14 @@ export const Dashboard: React.FC = () => {
     navigateTo(navigation, 'Profile');
   };
 
+  const handleSendMoney = () => {
+    navigateTo(navigation, 'SendMoney');
+  };
+
+  const handleReceiveMoney = () => {
+    navigateTo(navigation, 'Receive');
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -93,7 +102,10 @@ export const Dashboard: React.FC = () => {
         onShowBalance={() => setIsBalanceHidden(!isBalanceHidden)}
         isBalanceHidden={isBalanceHidden}
       />
-      <QuickActions />
+      <QuickActions
+        onSendMoney={handleSendMoney}
+        onReceiveMoney={handleReceiveMoney}
+      />
       <TransactionList
         transactions={MOCK_TRANSACTIONS}
         onRefresh={onRefresh}
