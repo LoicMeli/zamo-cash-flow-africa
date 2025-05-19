@@ -23,3 +23,15 @@ export interface Transaction {
 }
 
 export type Language = 'en' | 'fr' | 'camfran';
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  balance: number;
+  currency: string;
+  isVerified: boolean;
+  createdAt: Date;
+  profilePicture?: string;
+}

@@ -90,7 +90,7 @@ export type MainTabParamList = {
   Savings: undefined;
 };
 
-// These types are needed for src/navigation/index.tsx
+// These types are needed for nested navigators
 export type DashboardStackParamList = {
   Home: undefined;
   Notifications: undefined;

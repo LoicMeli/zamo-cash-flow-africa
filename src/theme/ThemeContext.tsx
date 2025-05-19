@@ -2,7 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors } from './colors';
+import { COLORS } from './colors';
 
 // Theme options
 export type ThemeMode = 'light' | 'dark' | 'system';
@@ -48,7 +48,7 @@ const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   themeMode: 'system',
   isDarkMode: false,
-  colors: colors.light,
+  colors: COLORS.light,
   cssVar: {} as ThemeVariables,
   setThemeMode: () => {},
 });
@@ -58,11 +58,11 @@ const THEME_MODE_KEY = 'zamo_theme_mode';
 
 // Generate CSS-like variables from colors
 const generateThemeVariables = (isDark: boolean): ThemeVariables => {
-  const base = isDark ? colors.dark : colors.light;
+  const base = isDark ? COLORS.dark : COLORS.light;
   
   return {
     // Basic colors
-    '--primary': colors.primary,
+    '--primary': COLORS.primary,
     '--background': base.background,
     '--text': base.text,
     '--text-secondary': base.textSecondary,
@@ -73,12 +73,12 @@ const generateThemeVariables = (isDark: boolean): ThemeVariables => {
     '--icon': base.icon,
     
     // Semantic colors
-    '--success': colors.success,
-    '--warning': colors.warning,
-    '--danger': colors.danger,
+    '--success': COLORS.success,
+    '--warning': COLORS.warning,
+    '--danger': COLORS.danger,
     
     // UI element-specific
-    '--header-bg': colors.primary,
+    '--header-bg': COLORS.primary,
     '--chart-bg': isDark ? '#2A2A2A' : base.card,
     '--chart-text': '#FFFFFF',
     '--button-text': '#FFFFFF',
@@ -137,7 +137,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Compute current colors based on theme
   const isDarkMode = theme === 'dark';
-  const currentColors = isDarkMode ? colors.dark : colors.light;
+  const currentColors = isDarkMode ? COLORS.dark : COLORS.light;
   const cssVar = generateThemeVariables(isDarkMode);
   
   // Context value

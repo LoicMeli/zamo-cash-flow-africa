@@ -4,12 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '../theme/ThemeContext';
 import { COLORS } from '../theme/colors';
 import { MainTabParamList } from '../types/navigation';
-import { Icon } from '../components/common/Icon';
+import { Icon } from '../utils/IconComponent';
 
 // Screens
 import { Dashboard } from '../features/dashboard/Dashboard';
-import { Vault } from '../features/vault/Vault';
-import { Savings } from '../features/savings/Savings';
+import { Transactions } from '../features/transactions/Transactions';
 import { Profile } from '../features/profile/Profile';
 
 const MainTab = createBottomTabNavigator<MainTabParamList>();
@@ -21,7 +20,7 @@ export const ThemedBottomTabs = () => {
     <MainTab.Navigator
       screenOptions={{
         tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarInactiveTintColor: COLORS.secondary,
         tabBarStyle: {
           borderTopWidth: 1,
           borderTopColor: colors.border,
@@ -52,7 +51,7 @@ export const ThemedBottomTabs = () => {
       />
       <MainTab.Screen
         name="Wallet"
-        component={Vault}
+        component={Dashboard} // Temporarily use Dashboard as a placeholder
         options={{
           tabBarLabel: 'Vault',
           tabBarIcon: ({ color, size }) => (
@@ -61,12 +60,12 @@ export const ThemedBottomTabs = () => {
         }}
       />
       <MainTab.Screen
-        name="Savings"
-        component={Savings}
+        name="Transactions"
+        component={Transactions}
         options={{
-          tabBarLabel: 'Épargne',
+          tabBarLabel: 'Transactions',
           tabBarIcon: ({ color, size }) => (
-            <Icon name="save" size={size} color={color} />
+            <Icon name="list" size={size} color={color} />
           ),
         }}
       />

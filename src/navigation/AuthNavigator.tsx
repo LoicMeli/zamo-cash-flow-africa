@@ -25,7 +25,5 @@ export const AuthNavigator = () => (
     <AuthStack.Screen name="Register" component={RegisterScreen} />
     <AuthStack.Screen name="VerifyOTP" component={OTPVerification} />
     <AuthStack.Screen name="SetupPIN" component={SetupPIN} />
-    <AuthStack.Screen name="ForgotPassword" component={LoginScreen} />
-    <AuthStack.Screen name="ResetPassword" component={SetupPIN} />
   </AuthStack.Navigator>
 ); 
