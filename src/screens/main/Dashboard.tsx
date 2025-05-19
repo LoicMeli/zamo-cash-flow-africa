@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +8,10 @@ import { BalanceCard } from '../../components/wallet/BalanceCard';
 import { QuickActions } from '../../components/dashboard/QuickActions';
 import { TransactionList } from '../../components/transactions/TransactionList';
 import { Transaction } from '../../types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/navigation';
+
+type DashboardScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // Données de test
 const MOCK_USER = {
@@ -45,7 +48,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
 ];
 
 export const Dashboard: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DashboardScreenNavigationProp>();
   const [refreshing, setRefreshing] = useState(false);
   const [isBalanceHidden, setIsBalanceHidden] = useState(false);
 
@@ -63,8 +66,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    // Use the proper navigation approach directly
-    navigation.navigate('Profile' as never);
+    navigation.navigate('Profile');
   };
 
   return (

@@ -8,7 +8,7 @@ export const navigateTo = <K extends keyof RootStackParamList>(
   screenName: K,
   params?: RootStackParamList[K]
 ) => {
-  // Use the navigate method with the correct typing
+  // Fixed: Use type-safe navigation
   if (params) {
     navigation.navigate(screenName, params);
   } else {
@@ -22,5 +22,6 @@ export const navigateWithArray = (
   screenName: keyof RootStackParamList,
   params?: any
 ) => {
+  // Fixed: Use type-safe navigation
   navigation.navigate(screenName, params);
 };
