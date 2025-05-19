@@ -8,10 +8,11 @@ export const navigateTo = <K extends keyof RootStackParamList>(
   screenName: K,
   params?: RootStackParamList[K]
 ) => {
-  // Fixed: Use type-safe navigation
   if (params) {
+    // Call navigate with screenName and params directly
     navigation.navigate(screenName, params);
   } else {
+    // Call navigate with just screenName when no params
     navigation.navigate(screenName);
   }
 };
@@ -20,8 +21,8 @@ export const navigateTo = <K extends keyof RootStackParamList>(
 export const navigateWithArray = (
   navigation: NativeStackNavigationProp<RootStackParamList>,
   screenName: keyof RootStackParamList,
-  params?: any
+  params?: object
 ) => {
-  // Fixed: Use type-safe navigation
-  navigation.navigate(screenName, params);
+  // Use direct navigation with params
+  navigation.navigate(screenName, params as any);
 };
