@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +29,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
       name: 'Marie',
       phone: '612345678',
     },
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   },
   {
     id: '2',
@@ -41,7 +42,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
       name: 'Pierre',
       phone: '623456789',
     },
-    createdAt: new Date(),
+    createdAt: new Date().toISOString(),
   },
 ];
 
@@ -64,7 +65,8 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    navigation.navigate(ROUTES.MAIN.PROFILE);
+    // Use an explicit type for the navigation object and use correct navigation approach
+    navigation.navigate('Profile' as any);
   };
 
   return (

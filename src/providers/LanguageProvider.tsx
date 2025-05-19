@@ -178,9 +178,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const getSupportedLanguages = () => {
     return [
-      { code: 'en', name: 'English' },
-      { code: 'fr', name: 'Français' },
-      { code: 'camfran', name: 'Camfranglais' }
+      { code: 'en' as Language, name: 'English' },
+      { code: 'fr' as Language, name: 'Français' },
+      { code: 'camfran' as Language, name: 'Camfranglais' }
     ];
   };
 

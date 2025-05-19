@@ -2,78 +2,70 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from '../../utils/IconComponent';
-import { COLORS } from '../../config/constants';
-import { Transaction } from '../../types';
-import { formatCurrency, formatDate } from '../../utils/formatters';
+import { COLORS } from '../../theme/colors';
 
-interface TransactionItemProps {
-  transaction: Transaction;
-  onPress?: () => void;
+export interface TransactionItemProps {
+  transactionType: string;
+  type: string;  // Added this property
+  amount: number;
+  recipient: string;
+  date: string;
+  onPress: () => void;
 }
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({
-  transaction,
+  transactionType,
+  type,
+  amount,
+  recipient,
+  date,
   onPress,
 }) => {
   const getTransactionIcon = () => {
-    switch (transaction.type) {
-      case 'SEND':
+    switch (type) {
+      case 'send':
         return 'arrow-up';
-      case 'RECEIVE':
+      case 'receive':
         return 'arrow-down';
-      case 'WITHDRAW':
-        return 'cash-outline';
-      case 'DEPOSIT':
-        return 'cash-outline';
       default:
         return 'swap-horizontal';
     }
   };
 
   const getTransactionColor = () => {
-    switch (transaction.type) {
-      case 'SEND':
-        return COLORS.danger;
-      case 'RECEIVE':
-        return COLORS.success;
-      case 'WITHDRAW':
-        return COLORS.warning;
-      case 'DEPOSIT':
-        return COLORS.info;
+    switch (type) {
+      case 'send':
+        return COLORS.primary;
+      case 'receive':
+        return '#28a745';
       default:
-        return COLORS.secondary;
-    }
-  };
-
-  const getTransactionPrefix = () => {
-    switch (transaction.type) {
-      case 'SEND':
-        return '-';
-      case 'RECEIVE':
-        return '+';
-      default:
-        return '';
+        return '#6c757d';
     }
   };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      <View style={[styles.iconContainer, { backgroundColor: getTransactionColor() + '20' }]}>
-        <Icon name={getTransactionIcon()} size={20} color={getTransactionColor()} />
+    <TouchableOpacity style={styles.container} onPress={onPress}>
+      <View 
+        style={[
+          styles.iconContainer, 
+          { backgroundColor: `${getTransactionColor()}20` }
+        ]}
+      >
+        <Icon name={getTransactionIcon()} size={24} color={getTransactionColor()} />
       </View>
       <View style={styles.details}>
-        <Text style={styles.description}>{transaction.description}</Text>
-        <Text style={styles.date}>{formatDate(transaction.createdAt)}</Text>
+        <Text style={styles.recipient}>{recipient}</Text>
+        <Text style={styles.date}>{new Date(date).toLocaleDateString()}</Text>
       </View>
       <View style={styles.amountContainer}>
-        <Text style={[styles.amount, { color: getTransactionColor() }]}>
-          {getTransactionPrefix()}{formatCurrency(transaction.amount)} FCFA
+        <Text 
+          style={[
+            styles.amount, 
+            { color: type === 'receive' ? '#28a745' : '#dc3545' }
+          ]}
+        >
+          {type === 'receive' ? '+' : '-'} {amount} FCFA
         </Text>
-        <Text style={styles.status}>{transaction.status}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -83,43 +75,37 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
     marginBottom: 8,
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   details: {
     flex: 1,
   },
-  description: {
-    fontSize: 14,
+  recipient: {
+    fontSize: 16,
     fontWeight: '500',
-    color: COLORS.text,
     marginBottom: 4,
   },
   date: {
-    fontSize: 12,
-    color: COLORS.secondary,
+    fontSize: 14,
+    color: '#6c757d',
   },
   amountContainer: {
     alignItems: 'flex-end',
   },
   amount: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    marginBottom: 4,
-  },
-  status: {
-    fontSize: 12,
-    color: COLORS.secondary,
-    textTransform: 'capitalize',
   },
 });
