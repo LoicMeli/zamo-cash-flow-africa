@@ -10,6 +10,7 @@ import { ThemedButton, ThemedDivider } from '../../components/common/ThemedCompo
 import { RootStackParamList } from '../../types/navigation';
 import { COLORS } from '../../theme/colors';
 import { Button } from '../../components/common/Button';
+import { navigateTo } from '../../utils/navigation';
 
 type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -87,11 +88,11 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
 };
 
 export const Settings = () => {
-  const { isDarkMode, toggleTheme, colors } = useTheme();
+  const { isDarkMode, colors } = useTheme();
   const navigation = useNavigation<SettingsScreenNavigationProp>();
 
   const navigateToScreen = (screen: keyof RootStackParamList) => {
-    navigation.navigate(screen);
+    navigateTo(navigation, screen);
   };
 
   const handleLogout = () => {

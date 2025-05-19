@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -13,7 +12,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PieChart } from 'react-native-chart-kit';
-import { Ionicons } from '../../components/common/Ionicons';
+import { Icon } from '../../components/common/Icon';
 import { useTheme } from '../../theme/ThemeContext';
 import { ThemedView, ThemedText } from '../../components/common/ThemedView';
 import { ThemedButton, ThemedCard } from '../../components/common/ThemedComponents';
@@ -154,7 +153,7 @@ export const Vault = () => {
           <View style={styles.balanceHeader}>
             <ThemedText secondary style={styles.balanceLabel}>Vault Balance</ThemedText>
             <View style={styles.accountLevelContainer}>
-              <Ionicons name="star" size={16} color={COLORS.warning} />
+              <Icon name="star" size={16} color={COLORS.warning} />
               <ThemedText style={styles.accountLevel}>Golden</ThemedText>
             </View>
           </View>
@@ -176,7 +175,7 @@ export const Vault = () => {
               </Animated.Text>
             )}
             <TouchableOpacity onPress={toggleBalanceVisibility} style={styles.visibilityButton}>
-              <Ionicons 
+              <Icon 
                 name={isBalanceHidden ? "eye" : "eye-off"} 
                 size={24} 
                 color={colors.textSecondary}
@@ -189,7 +188,7 @@ export const Vault = () => {
             onPress={handleViewTransactions}
           >
             <ThemedText style={styles.viewTransactionsText}>View Transactions</ThemedText>
-            <Ionicons name="chevron-forward" size={16} color={COLORS.primary} />
+            <Icon name="chevron-forward" size={16} color={COLORS.primary} />
           </TouchableOpacity>
         </ThemedCard>
 
@@ -202,7 +201,7 @@ export const Vault = () => {
               onPress={handleSendMoney}
             >
               <View style={styles.actionIconContainer}>
-                <Ionicons name="arrow-forward" size={24} color={COLORS.primary} />
+                <Icon name="arrow-forward" size={24} color={COLORS.primary} />
               </View>
               <ThemedText style={styles.actionText}>Send</ThemedText>
             </TouchableOpacity>
@@ -212,7 +211,7 @@ export const Vault = () => {
               onPress={handleReceiveMoney}
             >
               <View style={[styles.actionIconContainer, { backgroundColor: 'rgba(34, 197, 94, 0.2)' }]}>
-                <Ionicons name="arrow-down" size={24} color={COLORS.success} />
+                <Icon name="arrow-down" size={24} color={COLORS.success} />
               </View>
               <ThemedText style={styles.actionText}>Receive</ThemedText>
             </TouchableOpacity>
@@ -222,7 +221,7 @@ export const Vault = () => {
               onPress={handleWithdrawMoney}
             >
               <View style={[styles.actionIconContainer, { backgroundColor: 'rgba(255, 149, 0, 0.2)' }]}>
-                <Ionicons name="wallet" size={24} color={COLORS.warning} />
+                <Icon name="wallet" size={24} color={COLORS.warning} />
               </View>
               <ThemedText style={styles.actionText}>Withdraw</ThemedText>
             </TouchableOpacity>
@@ -232,7 +231,7 @@ export const Vault = () => {
               onPress={handleAddMoney}
             >
               <View style={[styles.actionIconContainer, { backgroundColor: 'rgba(0, 122, 255, 0.2)' }]}>
-                <Ionicons name="add-circle" size={24} color={COLORS.info} />
+                <Icon name="add-circle" size={24} color={COLORS.info} />
               </View>
               <ThemedText style={styles.actionText}>Add Money</ThemedText>
             </TouchableOpacity>
@@ -252,7 +251,7 @@ export const Vault = () => {
             {savingsGoals.map((goal) => (
               <ThemedCard key={goal.id} style={styles.savingsGoalCard}>
                 <View style={styles.savingsGoalIconContainer}>
-                  <Ionicons name={goal.icon} size={24} color={COLORS.primary} />
+                  <Icon name={goal.icon} size={24} color={COLORS.primary} />
                 </View>
                 <ThemedText style={styles.savingsGoalName}>{goal.name}</ThemedText>
                 <View style={styles.progressContainer}>
@@ -290,7 +289,7 @@ export const Vault = () => {
             >
               <View style={styles.createSavingsGoalContent}>
                 <View style={[styles.addIconContainer, { backgroundColor: isDarkMode ? 'rgba(59, 91, 254, 0.2)' : 'rgba(59, 91, 254, 0.1)' }]}>
-                  <Ionicons name="add" size={32} color={COLORS.primary} />
+                  <Icon name="add" size={32} color={COLORS.primary} />
                 </View>
                 <ThemedText style={styles.createSavingsGoalText}>Create New Goal</ThemedText>
               </View>
@@ -345,7 +344,7 @@ export const Vault = () => {
           <ThemedCard style={styles.aiCard}>
             <View style={styles.aiCardContent}>
               <View style={styles.aiIconContainer}>
-                <Ionicons name="bulb" size={24} color="#FFD700" />
+                <Icon name="bulb" size={24} color="#FFD700" />
               </View>
               <View style={styles.aiMessageContainer}>
                 <ThemedText style={styles.aiMessage}>

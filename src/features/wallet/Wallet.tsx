@@ -14,18 +14,14 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import { RootStackParamList, MainTabParamList } from '../../types/navigation';
+import { Icon } from '../../components/common/Icon';
+import { RootStackParamList } from '../../types/navigation';
 import { useLanguage } from '../../providers/LanguageProvider';
 import { ThemedText } from '../../components/common/ThemedView';
 import { useTheme } from '../../theme/ThemeContext';
 import { COLORS } from '../../theme/colors';
 
-type WalletScreenNavigationProp = CompositeNavigationProp<
-  BottomTabNavigationProp<MainTabParamList, 'Wallet'>,
-  NativeStackNavigationProp<RootStackParamList>
->;
+type WalletScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 // Mock data for the wallet page
 const WALLET_DATA = {
@@ -48,8 +44,8 @@ const WALLET_DATA = {
   ]
 };
 
-// Define type for Ionicons names we'll be using
-type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+// Define type for icon names we'll be using
+type IconName = string;
 
 // Utility functions to determine wallet tier and icon
 const getWalletTier = (balance: number): string => {
@@ -263,28 +259,28 @@ export const Wallet = () => {
   // Define action card styles with icon background colors
   const actionCardConfig = [
     { 
-      icon: "send" as IoniconsName, 
+      icon: "send" as IconName, 
       label: t('wallet.sendMoney'), 
       color: '#007BFF',
       bgColor: 'rgba(59, 91, 254, 0.1)',
       onPress: navigateToSendMoney
     },
     { 
-      icon: "qr-code" as IoniconsName, 
+      icon: "qr-code" as IconName, 
       label: t('wallet.collect'), 
       color: '#22C55E',
       bgColor: 'rgba(34, 197, 94, 0.1)',
       onPress: navigateToCollect
     },
     { 
-      icon: "cash-outline" as IoniconsName, 
+      icon: "cash-outline" as IconName, 
       label: t('wallet.withdrawMoney'), 
       color: '#EF4444',
       bgColor: 'rgba(239, 68, 68, 0.1)',
       onPress: navigateToWithdraw
     },
     { 
-      icon: "card-outline" as IoniconsName, 
+      icon: "card-outline" as IconName, 
       label: t('wallet.addMoney'), 
       color: '#22C55E',
       bgColor: 'rgba(34, 197, 94, 0.1)',
@@ -306,7 +302,7 @@ export const Wallet = () => {
               onPress={handleAddMemberPress}
               activeOpacity={0.8}
             >
-              <Ionicons name="add" size={24} color="#FFF" />
+              <Icon name="add" size={24} color="#FFF" />
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -348,7 +344,7 @@ export const Wallet = () => {
                 style={styles.hideBalanceButton}
                 onPress={toggleBalanceVisibility}
               >
-                <Ionicons name={isBalanceHidden ? "eye-outline" : "eye-off-outline"} size={20} color="#FFFFFF" />
+                <Icon name={isBalanceHidden ? "eye-outline" : "eye-off-outline"} size={20} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
             
@@ -364,7 +360,7 @@ export const Wallet = () => {
             
             {/* Weekly Stats */}
             <View style={styles.balanceStats}>
-              <Ionicons name="trending-up" size={isSmallScreen ? 14 : 16} color="#22C55E" />
+              <Icon name="trending-up" size={isSmallScreen ? 14 : 16} color="#22C55E" />
               <Text style={[styles.balanceStatsText, isSmallScreen && styles.textSmall]}>
                 +{WALLET_DATA.weeklyChange.toLocaleString()} FCFA cette semaine
               </Text>
@@ -399,7 +395,7 @@ export const Wallet = () => {
                     onPressIn={() => animateButtonPress(index)}
                   >
                     <View style={[styles.iconContainer, { backgroundColor: card.bgColor }]}>
-                      <Ionicons name={card.icon} size={24} color={card.color} />
+                      <Icon name={card.icon} size={24} color={card.color} />
                     </View>
                     <Text style={[styles.actionText, { color: colors.text }]}>{card.label}</Text>
                   </TouchableOpacity>
@@ -428,7 +424,7 @@ export const Wallet = () => {
                     onPressIn={() => animateButtonPress(index + 2)}
                   >
                     <View style={[styles.iconContainer, { backgroundColor: card.bgColor }]}>
-                      <Ionicons name={card.icon} size={24} color={card.color} />
+                      <Icon name={card.icon} size={24} color={card.color} />
                     </View>
                     <Text style={[styles.actionText, { color: colors.text }]}>{card.label}</Text>
                   </TouchableOpacity>
@@ -745,4 +741,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
-}); 
+});

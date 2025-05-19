@@ -57,6 +57,12 @@ export type RootStackParamList = {
   MobileMoneyWithdraw: undefined;
   BankWithdraw: undefined;
   AgentWithdraw: undefined;
+  TransactionsList: undefined;
+  ReceiveMoney: undefined;
+  Deposit: undefined;
+  Collect: undefined;
+  RemoveMoney: undefined;
+  AddMoney: undefined;
   Auth: {
     screen: string;
     params?: any;
@@ -68,4 +74,12 @@ export type AuthStackParamList = {
   Register: undefined;
   VerifyOTP: { phoneNumber: string };
   SetupPIN: { phoneNumber: string; otp?: string };
+};
+
+export type MainTabParamList = {
+  Dashboard: undefined;
+  Wallet: undefined;
+  Transactions: undefined;
+  Family: undefined;
+  Profile: undefined;
 };

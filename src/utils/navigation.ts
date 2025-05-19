@@ -8,6 +8,7 @@ export const navigateTo = <K extends keyof RootStackParamList>(
   screenName: K,
   params?: RootStackParamList[K]
 ) => {
+  // Use the navigate method with the correct typing
   navigation.navigate(screenName, params);
 };
 
