@@ -1,4 +1,3 @@
-
 export type RootStackParamList = {
   Main: undefined;
   SendMoney: undefined;
@@ -88,6 +87,7 @@ export type MainTabParamList = {
   Family: undefined;
   Profile: undefined;
   Savings: undefined;
+  ReceiveMoney: undefined; // Added this to fix the type error
 };
 
 // These types are needed for nested navigators
