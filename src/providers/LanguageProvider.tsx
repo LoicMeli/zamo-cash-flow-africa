@@ -176,6 +176,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return translate(language, key, params);
   };
 
+  // Fix the getSupportedLanguages function to explicitly return Language type
   const getSupportedLanguages = () => {
     return [
       { code: 'en' as Language, name: 'English' },

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { Transaction } from '../../types';
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
     color: COLORS.secondary,
     textAlign: 'center',
   },
-}); 
+});

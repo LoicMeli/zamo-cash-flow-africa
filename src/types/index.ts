@@ -16,6 +16,7 @@ export interface Transaction {
     name: string;
     phone: string;
   };
+  currency?: string;
   fee?: number;
   reference?: string;
   createdAt: string;

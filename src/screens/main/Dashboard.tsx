@@ -65,8 +65,8 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    // Use an explicit type for the navigation object and use correct navigation approach
-    navigation.navigate('Profile' as any);
+    // Fix the navigation call to use an object with proper name property
+    navigation.navigate('Profile' as never);
   };
 
   return (
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
   },
-}); 
+});

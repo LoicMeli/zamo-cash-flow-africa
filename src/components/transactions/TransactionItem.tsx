@@ -1,31 +1,36 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from '../../utils/IconComponent';
 import { COLORS } from '../../theme/colors';
+import { Transaction } from '../../types';
 
 export interface TransactionItemProps {
-  transactionType: string;
-  type: string;  // Added this property
-  amount: number;
-  recipient: string;
-  date: string;
+  transaction: Transaction;
   onPress: () => void;
+  // Keeping other props for backward compatibility
+  transactionType?: string;
+  type?: string;
+  amount?: number;
+  recipient?: string;
+  date?: string;
 }
 
 export const TransactionItem: React.FC<TransactionItemProps> = ({
-  transactionType,
-  type,
-  amount,
-  recipient,
-  date,
+  transaction,
   onPress,
+  // Default values from transaction if direct props not provided
+  type = transaction?.type.toLowerCase(),
+  amount = transaction?.amount,
+  recipient = transaction?.recipient?.name || 'Unknown',
+  date = transaction?.createdAt,
 }) => {
   const getTransactionIcon = () => {
     switch (type) {
       case 'send':
+      case 'SEND':
         return 'arrow-up';
       case 'receive':
+      case 'RECEIVE':
         return 'arrow-down';
       default:
         return 'swap-horizontal';
@@ -35,8 +40,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
   const getTransactionColor = () => {
     switch (type) {
       case 'send':
+      case 'SEND':
         return COLORS.primary;
       case 'receive':
+      case 'RECEIVE':
         return '#28a745';
       default:
         return '#6c757d';
@@ -61,10 +68,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         <Text 
           style={[
             styles.amount, 
-            { color: type === 'receive' ? '#28a745' : '#dc3545' }
+            { color: type.toLowerCase() === 'receive' ? '#28a745' : '#dc3545' }
           ]}
         >
-          {type === 'receive' ? '+' : '-'} {amount} FCFA
+          {type.toLowerCase() === 'receive' ? '+' : '-'} {amount} FCFA
         </Text>
       </View>
     </TouchableOpacity>
