@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS } from '../../config/constants';
-import { Icon } from '../../utils/IconComponent';
+import { Button } from '../ui/button';
+import { ArrowUp, ArrowDown, CreditCard, MoreHorizontal } from 'lucide-react';
 
 interface QuickActionsProps {
   onSendMoney?: () => void;
@@ -14,71 +13,51 @@ export const QuickActions: React.FC<QuickActionsProps> = ({
   onReceiveMoney 
 }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Quick Actions</Text>
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton} onPress={onSendMoney}>
-          <View style={[styles.iconContainer, { backgroundColor: '#E8F0FF' }]}>
-            <Icon name="arrow-up" size={24} color={COLORS.primary} />
-          </View>
-          <Text style={styles.actionText}>Send</Text>
-        </TouchableOpacity>
+    <div className="py-4">
+      <h2 className="text-base font-medium text-foreground mb-3">Quick Actions</h2>
+      <div className="grid grid-cols-4 gap-4">
+        <Button 
+          onClick={onSendMoney} 
+          variant="ghost" 
+          className="flex flex-col items-center h-auto py-3 space-y-2"
+        >
+          <div className="bg-blue-100 rounded-full p-3">
+            <ArrowUp className="h-5 w-5 text-primary-blue" />
+          </div>
+          <span className="text-xs">Send</span>
+        </Button>
         
-        <TouchableOpacity style={styles.actionButton} onPress={onReceiveMoney}>
-          <View style={[styles.iconContainer, { backgroundColor: '#E8FFF0' }]}>
-            <Icon name="arrow-down" size={24} color={COLORS.success} />
-          </View>
-          <Text style={styles.actionText}>Receive</Text>
-        </TouchableOpacity>
+        <Button 
+          onClick={onReceiveMoney} 
+          variant="ghost" 
+          className="flex flex-col items-center h-auto py-3 space-y-2"
+        >
+          <div className="bg-green-100 rounded-full p-3">
+            <ArrowDown className="h-5 w-5 text-green-600" />
+          </div>
+          <span className="text-xs">Receive</span>
+        </Button>
         
-        <TouchableOpacity style={styles.actionButton}>
-          <View style={[styles.iconContainer, { backgroundColor: '#FFF0E8' }]}>
-            <Icon name="card" size={24} color="#FF9500" />
-          </View>
-          <Text style={styles.actionText}>Pay</Text>
-        </TouchableOpacity>
+        <Button 
+          variant="ghost" 
+          className="flex flex-col items-center h-auto py-3 space-y-2"
+        >
+          <div className="bg-orange-100 rounded-full p-3">
+            <CreditCard className="h-5 w-5 text-orange-500" />
+          </div>
+          <span className="text-xs">Pay</span>
+        </Button>
         
-        <TouchableOpacity style={styles.actionButton}>
-          <View style={[styles.iconContainer, { backgroundColor: '#F0E8FF' }]}>
-            <Icon name="grid" size={24} color="#9B51E0" />
-          </View>
-          <Text style={styles.actionText}>More</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <Button 
+          variant="ghost" 
+          className="flex flex-col items-center h-auto py-3 space-y-2"
+        >
+          <div className="bg-purple-100 rounded-full p-3">
+            <MoreHorizontal className="h-5 w-5 text-purple-600" />
+          </div>
+          <span className="text-xs">More</span>
+        </Button>
+      </div>
+    </div>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: 12,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  actionText: {
-    fontSize: 12,
-    color: COLORS.text,
-    marginTop: 4,
-  }
-});
