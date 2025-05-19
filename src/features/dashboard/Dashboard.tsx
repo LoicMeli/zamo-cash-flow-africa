@@ -11,6 +11,7 @@ import { QuickActions } from '../../components/dashboard/QuickActions';
 import { TransactionList } from '../../components/transactions/TransactionList';
 import { RootStackParamList } from '../../types/navigation';
 import { Transaction } from '../../types';
+import { navigateTo } from '../../utils/navigation';
 
 type DashboardScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -67,7 +68,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleProfilePress = () => {
-    navigation.navigate('Profile');
+    navigateTo(navigation, 'Profile');
   };
 
   return (

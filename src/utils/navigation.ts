@@ -9,11 +9,16 @@ export const navigateTo = <K extends keyof RootStackParamList>(
   params?: RootStackParamList[K]
 ) => {
   if (params) {
-    // Call navigate with screenName and params directly
-    navigation.navigate(screenName, params);
+    // Directly call navigate with the correct parameters
+    navigation.navigate({
+      name: screenName,
+      params: params,
+    });
   } else {
-    // Call navigate with just screenName when no params
-    navigation.navigate(screenName);
+    // Call navigate with just the screen name
+    navigation.navigate({
+      name: screenName,
+    });
   }
 };
 
@@ -23,6 +28,9 @@ export const navigateWithArray = (
   screenName: keyof RootStackParamList,
   params?: object
 ) => {
-  // Use direct navigation with params
-  navigation.navigate(screenName, params as any);
+  // Use properly typed navigation
+  navigation.navigate({
+    name: screenName,
+    params: params as any,
+  });
 };
